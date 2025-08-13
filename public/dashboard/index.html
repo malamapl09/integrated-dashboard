@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Integrated Dashboard - Plaza Lama</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="../shared/theme.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100 min-h-screen">
+    <div x-data="dashboardApp()" class="min-h-screen">
+        <!-- Header -->
+        <header class="bg-white shadow-sm">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex justify-between items-center py-6">
+                    <div class="flex items-center">
+                        <div class="flex-shrink-0">
+                            <h1 class="text-3xl font-bold text-gray-900">
+                                <i class="fas fa-tachometer-alt text-blue-600 mr-3"></i>
+                                Plaza Lama Dashboard
+                            </h1>
+                        </div>
+                    </div>
+                    <div class="flex items-center space-x-4">
+                        <div class="text-sm text-gray-500">
+                            Last Updated: <span x-text="lastUpdated"></span>
+                        </div>
+                        <div class="text-sm text-gray-700" x-show="userRole">
+                            Welcome, <span class="font-medium capitalize" x-text="userRole"></span>
+                        </div>
+                        <button 
+                            @click="refreshStats()"
+                            class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition-colors"
+                        >
+                            <i class="fas fa-sync-alt mr-2"></i>
+                            Refresh
+                        </button>
+                        <button 
+                            @click="logout()"
+                            class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg transition-colors"
+                        >
+                            <i class="fas fa-sign-out-alt mr-2"></i>
+                            Logout
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="max-w-7xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
+            <!-- Welcome Section -->
+            <div class="mb-12">
+                <h2 class="text-2xl font-bold text-gray-900 mb-4">Welcome to the Integrated Management System</h2>
+                <p class="text-gray-600 text-lg">Access all your business modules from one central location.</p>
+            </div>
+
+            <!-- Stats Overview -->
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-12">
+                <!-- Quotes Card -->
+                <div class="stat-card p-6 rounded-lg text-white bg-gradient-to-r from-blue-500 to-purple-600">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-blue-100 text-sm">Total Quotes</p>
+                            <p class="text-3xl font-bold" x-text="overview.quotes?.total || stats.quotes"></p>
+                            <p class="text-sm text-blue-200 mt-1" x-show="overview.quotes" x-text="`${overview.quotes?.pending || 0} pending`"></p>
+                        </div>
+                        <i class="fas fa-file-invoice-dollar text-4xl text-blue-200"></i>
+                    </div>
+                </div>
+                
+                <!-- Activity Card -->
+                <div class="stat-card p-6 rounded-lg text-white bg-gradient-to-r from-pink-500 to-red-500">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-pink-100 text-sm">Recent Activity</p>
+                            <p class="text-3xl font-bold" x-text="overview.activity?.recent || stats.userActions"></p>
+                            <p class="text-sm text-pink-200 mt-1" x-show="overview.activity" x-text="`${(overview.activity?.logs || 0).toLocaleString()} total logs`"></p>
+                        </div>
+                        <i class="fas fa-history text-4xl text-pink-200"></i>
+                    </div>
+                </div>
+                
+                <!-- Products Card -->
+                <div class="stat-card p-6 rounded-lg text-white bg-gradient-to-r from-cyan-500 to-blue-500">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-cyan-100 text-sm">Products</p>
+                            <p class="text-3xl font-bold" x-text="(overview.products?.total || stats.products).toLocaleString()"></p>
+                            <p class="text-sm text-cyan-200 mt-1" x-show="overview.products" x-text="`${overview.products?.categories || 0} categories`"></p>
+                        </div>
+                        <i class="fas fa-boxes text-4xl text-cyan-200"></i>
+                    </div>
+                </div>
+                
+                <!-- Sales Card -->
+                <div class="stat-card p-6 rounded-lg text-white bg-gradient-to-r from-green-500 to-teal-500">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-green-100 text-sm">Monthly Revenue</p>
+                            <p class="text-2xl font-bold" x-text="formatCurrency(overview.sales?.monthly || stats.salesRevenue)"></p>
+                            <p class="text-sm text-green-200 mt-1" x-show="overview.sales" x-text="`${(overview.sales?.orders || 0).toLocaleString()} orders (${overview.sales?.source || 'Unknown'})`"></p>
+                        </div>
+                        <i class="fas fa-chart-line text-4xl text-green-200"></i>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Module Cards -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-6 mb-12">
+                <!-- Quotes Module -->
+                <div class="gradient-card quotes rounded-xl p-8 text-white cursor-pointer" 
+                     style="background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%) !important; color: white !important;"
+                     @click="navigateToModule('quotes')"
+                     x-show="canAccessModule('quotes')">
+                    <div class="text-center">
+                        <i class="fas fa-file-invoice-dollar text-6xl mb-6"></i>
+                        <h3 class="text-2xl font-bold mb-4">Quote Management</h3>
+                        <p class="text-sm opacity-90 mb-6">Create, manage, and track customer quotes and invoices</p>
+                        <div class="bg-white bg-opacity-20 rounded-lg p-3 mb-4">
+                            <div class="text-sm opacity-75">Active Quotes</div>
+                            <div class="text-2xl font-bold" x-text="stats.quotes"></div>
+                        </div>
+                        <button class="bg-white bg-opacity-20 hover:bg-opacity-30 px-6 py-2 rounded-lg transition-all">
+                            Open Module
+                        </button>
+                    </div>
+                </div>
+
+                <!-- User Logs Module -->
+                <div class="gradient-card logs rounded-xl p-8 text-white cursor-pointer"
+                     style="background: linear-gradient(135deg, #ec4899 0%, #ef4444 100%) !important; color: white !important;"
+                     @click="navigateToModule('logs')"
+                     x-show="canAccessModule('logs')">
+                    <div class="text-center">
+                        <i class="fas fa-user-edit text-6xl mb-6"></i>
+                        <h3 class="text-2xl font-bold mb-4">User Activity Logs</h3>
+                        <p class="text-sm opacity-90 mb-6">Monitor and audit user actions and system changes</p>
+                        <div class="bg-white bg-opacity-20 rounded-lg p-3 mb-4">
+                            <div class="text-sm opacity-75">Recent Actions</div>
+                            <div class="text-2xl font-bold" x-text="stats.userActions"></div>
+                        </div>
+                        <button class="bg-white bg-opacity-20 hover:bg-opacity-30 px-6 py-2 rounded-lg transition-all">
+                            Open Module
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Catalog Module -->
+                <div class="gradient-card catalog rounded-xl p-8 text-white cursor-pointer"
+                     style="background: linear-gradient(135deg, #0ea5e9 0%, #06b6d4 100%) !important; color: white !important;"
+                     @click="navigateToModule('catalog')"
+                     x-show="canAccessModule('catalog')">
+                    <div class="text-center">
+                        <i class="fas fa-boxes text-6xl mb-6"></i>
+                        <h3 class="text-2xl font-bold mb-4">Catalog Management</h3>
+                        <p class="text-sm opacity-90 mb-6">Automated product catalog sync and management</p>
+                        <div class="bg-white bg-opacity-20 rounded-lg p-3 mb-4">
+                            <div class="text-sm opacity-75">Total Products</div>
+                            <div class="text-2xl font-bold" x-text="stats.products"></div>
+                        </div>
+                        <button class="bg-white bg-opacity-20 hover:bg-opacity-30 px-6 py-2 rounded-lg transition-all">
+                            Open Module
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Sales Analytics Module -->
+                <div class="gradient-card sales rounded-xl p-8 text-white cursor-pointer"
+                     style="background: linear-gradient(135deg, #10b981 0%, #059669 100%) !important; color: white !important;"
+                     @click="navigateToModule('sales')"
+                     x-show="canAccessModule('sales')">
+                    <div class="text-center">
+                        <i class="fas fa-chart-line text-6xl mb-6"></i>
+                        <h3 class="text-2xl font-bold mb-4">Sales Analytics</h3>
+                        <p class="text-sm opacity-90 mb-6">Real-time sales metrics and performance analysis</p>
+                        <div class="bg-white bg-opacity-20 rounded-lg p-3 mb-4">
+                            <div class="text-sm opacity-75">Today's Revenue</div>
+                            <div class="text-2xl font-bold" x-text="formatCurrency(stats.salesRevenue)"></div>
+                        </div>
+                        <button class="bg-white bg-opacity-20 hover:bg-opacity-30 px-6 py-2 rounded-lg transition-all">
+                            Open Module
+                        </button>
+                    </div>
+                </div>
+
+                <!-- System Monitoring Module -->
+                <div class="gradient-card monitoring rounded-xl p-8 text-white cursor-pointer"
+                     style="background: linear-gradient(135deg, #374151 0%, #6b7280 100%) !important; color: white !important;"
+                     @click="navigateToModule('monitoring')"
+                     x-show="canAccessModule('monitoring')">
+                    <div class="text-center">
+                        <i class="fas fa-heartbeat text-6xl mb-6"></i>
+                        <h3 class="text-2xl font-bold mb-4">System Monitor</h3>
+                        <p class="text-sm opacity-90 mb-6">Real-time system health and application monitoring</p>
+                        <div class="bg-white bg-opacity-20 rounded-lg p-3 mb-4">
+                            <div class="text-sm opacity-75">System Status</div>
+                            <div class="text-2xl font-bold" x-text="systemStatus.toUpperCase()"></div>
+                        </div>
+                        <button class="bg-white bg-opacity-20 hover:bg-opacity-30 px-6 py-2 rounded-lg transition-all">
+                            Open Monitor
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quick Actions -->
+            <div class="bg-white rounded-lg shadow-sm p-6">
+                <h3 class="text-lg font-semibold text-gray-900 mb-4">Quick Actions</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                    <button @click="quickAction('new-quote')" class="bg-blue-50 hover:bg-blue-100 text-blue-600 px-4 py-3 rounded-lg transition-colors text-left"
+                            x-show="canAccessModule('quotes')">
+                        <i class="fas fa-plus-circle mr-2"></i>
+                        Create New Quote
+                    </button>
+                    <button @click="quickAction('recent-logs')" class="bg-pink-50 hover:bg-pink-100 text-pink-600 px-4 py-3 rounded-lg transition-colors text-left"
+                            x-show="canAccessModule('logs')">
+                        <i class="fas fa-history mr-2"></i>
+                        View Recent Logs
+                    </button>
+                    <button @click="quickAction('catalog-sync')" class="bg-cyan-50 hover:bg-cyan-100 text-cyan-600 px-4 py-3 rounded-lg transition-colors text-left"
+                            x-show="canAccessModule('catalog')">
+                        <i class="fas fa-sync-alt mr-2"></i>
+                        Sync Catalog
+                    </button>
+                    <button @click="quickAction('sales-report')" class="bg-green-50 hover:bg-green-100 text-green-600 px-4 py-3 rounded-lg transition-colors text-left"
+                            x-show="canAccessModule('sales')">
+                        <i class="fas fa-chart-bar mr-2"></i>
+                        Generate Report
+                    </button>
+                    <button @click="quickAction('user-management')" class="bg-purple-50 hover:bg-purple-100 text-purple-600 px-4 py-3 rounded-lg transition-colors text-left"
+                            x-show="isAdmin()">
+                        <i class="fas fa-users-cog mr-2"></i>
+                        Manage Users
+                    </button>
+                    <button @click="quickAction('system-monitoring')" class="bg-gray-50 hover:bg-gray-100 text-gray-600 px-4 py-3 rounded-lg transition-colors text-left"
+                            x-show="canAccessModule('monitoring')">
+                        <i class="fas fa-heartbeat mr-2"></i>
+                        System Monitor
+                    </button>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        function dashboardApp() {
+            return {
+                lastUpdated: new Date().toLocaleString(),
+                stats: {
+                    quotes: 0,
+                    userActions: 0,
+                    products: 0,
+                    salesRevenue: 0
+                },
+                overview: {},
+                systemStatus: 'healthy',
+                loading: true,
+                userRole: null,
+                
+                async init() {
+                    await this.refreshStats();
+                    await this.loadUserRole();
+                    await this.loadSystemStatus();
+                },
+                
+                async refreshStats() {
+                    try {
+                        this.loading = true;
+                        
+                        // Fetch comprehensive dashboard overview
+                        const token = localStorage.getItem('token') || sessionStorage.getItem('token');
+                        if (!token) {
+                            // No token - redirect to login
+                            console.log('No token found, redirecting to login');
+                            window.location.href = '/login.html';
+                            return;
+                        }
+                        
+                        const response = await fetch('/api/dashboard/overview', {
+                            headers: {
+                                'Authorization': `Bearer ${token}`,
+                                'Content-Type': 'application/json'
+                            }
+                        });
+                        
+                        if (!response.ok) {
+                            if (response.status === 401) {
+                                window.location.href = '/login.html';
+                                return;
+                            }
+                            throw new Error('Failed to fetch dashboard data');
+                        }
+                        
+                        const result = await response.json();
+                        if (result.success) {
+                            this.overview = result.data;
+                            
+                            // Update simplified stats for compatibility
+                            this.stats.quotes = this.overview.quotes.total;
+                            this.stats.userActions = this.overview.activity.recent;
+                            this.stats.products = this.overview.products.total;
+                            this.stats.salesRevenue = this.overview.sales.monthly;
+                        }
+                        
+                        this.lastUpdated = new Date().toLocaleString();
+                        this.loading = false;
+                        
+                    } catch (error) {
+                        console.error('Error refreshing stats:', error);
+                        this.loading = false;
+                    }
+                },
+                
+                navigateToModule(module) {
+                    // Navigate to specific module with full functionality
+                    switch (module) {
+                        case 'quotes':
+                            window.location.href = '/quotes-content/';
+                            break;
+                        case 'logs':
+                            window.location.href = '/logs-content/';
+                            break;
+                        case 'catalog':
+                            window.location.href = '/catalog/';
+                            break;
+                        case 'sales':
+                            window.location.href = '/sales/';
+                            break;
+                        case 'monitoring':
+                            window.location.href = '/monitoring/';
+                            break;
+                    }
+                },
+                
+                quickAction(action) {
+                    switch (action) {
+                        case 'new-quote':
+                            window.location.href = '/quotes-content/?action=new';
+                            break;
+                        case 'recent-logs':
+                            window.location.href = '/logs-content/?filter=recent';
+                            break;
+                        case 'catalog-sync':
+                            window.location.href = '/catalog/?action=sync';
+                            break;
+                        case 'sales-report':
+                            window.location.href = '/sales/?view=report';
+                            break;
+                        case 'user-management':
+                            window.location.href = '/user-management/';
+                            break;
+                        case 'system-monitoring':
+                            window.location.href = '/monitoring/';
+                            break;
+                    }
+                },
+
+                async loadUserRole() {
+                    try {
+                        const token = localStorage.getItem('token') || sessionStorage.getItem('token');
+                        console.log('Dashboard: Checking for token...', token ? 'Found' : 'Not found');
+                        
+                        if (!token) {
+                            // No token - redirect to login
+                            console.log('Dashboard: No token found, redirecting to login');
+                            window.location.href = '/login.html';
+                            return;
+                        }
+
+                        console.log('Dashboard: Making profile request with token');
+                        const response = await fetch('/api/auth/profile', {
+                            headers: {
+                                'Authorization': `Bearer ${token}`,
+                                'Content-Type': 'application/json'
+                            }
+                        });
+
+                        console.log('Dashboard: Profile response status:', response.status);
+                        
+                        if (response.ok) {
+                            const result = await response.json();
+                            console.log('Dashboard: Profile response data:', result);
+                            
+                            if (result.success) {
+                                this.userRole = result.data.role;
+                                console.log('Dashboard: User role loaded:', this.userRole);
+                                console.log('Dashboard: Module visibility check:');
+                                console.log('- Quotes:', this.canAccessModule('quotes'));
+                                console.log('- Logs:', this.canAccessModule('logs'));
+                                console.log('- Catalog:', this.canAccessModule('catalog'));
+                                console.log('- Sales:', this.canAccessModule('sales'));
+                                console.log('- Monitoring:', this.canAccessModule('monitoring'));
+                            }
+                        } else if (response.status === 401) {
+                            // Token invalid - redirect to login
+                            console.log('Dashboard: Token invalid, redirecting to login');
+                            localStorage.removeItem('token');
+                            sessionStorage.removeItem('token');
+                            window.location.href = '/login.html';
+                        }
+                    } catch (error) {
+                        console.error('Dashboard: Error loading user role:', error);
+                        // On error, assume no auth - redirect to login
+                        window.location.href = '/login.html';
+                    }
+                },
+
+                async loadSystemStatus() {
+                    try {
+                        const response = await fetch('/api/monitoring/health');
+                        if (response.ok) {
+                            const result = await response.json();
+                            if (result.success) {
+                                this.systemStatus = result.data.status || 'unknown';
+                            }
+                        }
+                    } catch (error) {
+                        console.error('Error loading system status:', error);
+                        this.systemStatus = 'unknown';
+                    }
+                },
+
+                isAdmin() {
+                    return this.userRole === 'admin';
+                },
+
+                isManager() {
+                    return this.userRole === 'manager' || this.userRole === 'admin';
+                },
+
+                canAccessModule(module) {
+                    if (!this.userRole) return false;
+
+                    const permissions = {
+                        'quotes': ['admin', 'manager', 'user'],
+                        'logs': ['admin', 'manager'],
+                        'catalog': ['admin', 'manager', 'user'],
+                        'sales': ['admin', 'manager'],
+                        'monitoring': ['admin']
+                    };
+
+                    return permissions[module]?.includes(this.userRole) || false;
+                },
+                
+
+                formatCurrency(amount) {
+                    return new Intl.NumberFormat('es-DO', {
+                        style: 'currency',
+                        currency: 'DOP'
+                    }).format(amount);
+                },
+
+                logout() {
+                    // Clear stored tokens
+                    localStorage.removeItem('token');
+                    localStorage.removeItem('refreshToken');
+                    sessionStorage.removeItem('token');
+                    sessionStorage.removeItem('refreshToken');
+
+                    // Redirect to login page
+                    window.location.href = '/login.html';
+                }
+            };
+        }
+    </script>
+</body>
+</html>

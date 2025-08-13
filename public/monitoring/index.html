@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>System Monitoring - Plaza Lama</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="../shared/theme.css" rel="stylesheet">
+    <style>
+        .monitoring-header {
+            background: linear-gradient(135deg, #1f2937 0%, #374151 100%);
+        }
+        .status-indicator {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            display: inline-block;
+            margin-right: 8px;
+        }
+        .status-healthy { background-color: #10b981; }
+        .status-warning { background-color: #f59e0b; }
+        .status-critical { background-color: #ef4444; }
+        .status-disconnected { background-color: #6b7280; }
+        .log-line {
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            padding: 2px 8px;
+            border-bottom: 1px solid #e5e7eb;
+        }
+        .log-error { background-color: #fef2f2; border-left: 4px solid #ef4444; }
+        .log-warn { background-color: #fffbeb; border-left: 4px solid #f59e0b; }
+        .log-info { background-color: #f0f9ff; border-left: 4px solid #3b82f6; }
+        .metric-card { transition: transform 0.2s; }
+        .metric-card:hover { transform: translateY(-2px); }
+    </style>
+</head>
+<body>
+    <div x-data="monitoringApp()" x-init="init()">
+        <!-- Header -->
+        <header class="monitoring-header text-white">
+            <div class="container mx-auto px-6 py-4">
+                <div class="flex justify-between items-center">
+                    <div class="flex items-center">
+                        <a href="/" class="text-white hover:text-gray-300 mr-4">
+                            <i class="fas fa-arrow-left text-xl"></i>
+                        </a>
+                        <i class="fas fa-chart-line mr-3 text-xl"></i>
+                        <h1 class="text-2xl font-bold">System Monitoring</h1>
+                    </div>
+                    <div class="flex items-center space-x-4">
+                        <div class="text-sm">
+                            <span class="status-indicator" :class="{
+                                'status-healthy': systemHealth.status === 'healthy',
+                                'status-warning': systemHealth.status === 'degraded',
+                                'status-critical': systemHealth.status === 'unhealthy'
+                            }"></span>
+                            System Status: <span x-text="systemHealth.status || 'Unknown'" class="font-semibold capitalize"></span>
+                        </div>
+                        <div class="text-sm">
+                            Last Updated: <span x-text="lastUpdated"></span>
+                        </div>
+                        <button @click="refreshData()" class="bg-white bg-opacity-20 hover:bg-opacity-30 px-4 py-2 rounded-lg transition-colors">
+                            <i class="fas fa-sync-alt mr-2" :class="{ 'animate-spin': loading }"></i>
+                            Refresh
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="container mx-auto px-6 py-8">
+            <!-- System Overview -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+                <!-- Uptime -->
+                <div class="theme-card metric-card">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <div class="text-2xl font-bold text-green-600" x-text="formatUptime(systemHealth.uptime)">-</div>
+                            <div class="text-sm text-gray-600">System Uptime</div>
+                        </div>
+                        <i class="fas fa-clock text-3xl text-green-500 opacity-20"></i>
+                    </div>
+                </div>
+
+                <!-- Memory Usage -->
+                <div class="theme-card metric-card">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <div class="text-2xl font-bold" :class="{
+                                'text-green-600': memoryUsagePercent < 70,
+                                'text-yellow-600': memoryUsagePercent >= 70 && memoryUsagePercent < 90,
+                                'text-red-600': memoryUsagePercent >= 90
+                            }" x-text="memoryUsagePercent + '%'">-</div>
+                            <div class="text-sm text-gray-600">Memory Usage</div>
+                        </div>
+                        <i class="fas fa-microchip text-3xl text-blue-500 opacity-20"></i>
+                    </div>
+                </div>
+
+                <!-- Request Count -->
+                <div class="theme-card metric-card">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <div class="text-2xl font-bold text-blue-600" x-text="metrics.requestCount || 0">-</div>
+                            <div class="text-sm text-gray-600">Total Requests</div>
+                        </div>
+                        <i class="fas fa-exchange-alt text-3xl text-blue-500 opacity-20"></i>
+                    </div>
+                </div>
+
+                <!-- Error Rate -->
+                <div class="theme-card metric-card">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <div class="text-2xl font-bold" :class="{
+                                'text-green-600': errorRate < 2,
+                                'text-yellow-600': errorRate >= 2 && errorRate < 5,
+                                'text-red-600': errorRate >= 5
+                            }" x-text="errorRate.toFixed(1) + '%'">-</div>
+                            <div class="text-sm text-gray-600">Error Rate</div>
+                        </div>
+                        <i class="fas fa-exclamation-triangle text-3xl text-red-500 opacity-20"></i>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Performance Metrics -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+                <!-- Performance Stats -->
+                <div class="theme-card">
+                    <h3 class="text-lg font-semibold mb-4 flex items-center">
+                        <i class="fas fa-tachometer-alt mr-2 text-purple-500"></i>
+                        Performance Metrics
+                    </h3>
+                    <div class="space-y-3">
+                        <div class="flex justify-between items-center">
+                            <span class="text-gray-600">Average Response Time</span>
+                            <span class="font-semibold" x-text="Math.round(metrics.averageResponseTime || 0) + 'ms'">-</span>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="text-gray-600">Requests per Second</span>
+                            <span class="font-semibold" x-text="(metrics.requestCount / (systemHealth.uptime || 1)).toFixed(2)">-</span>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="text-gray-600">Database Queries</span>
+                            <span class="font-semibold" x-text="metrics.dbQueryCount || 0">-</span>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="text-gray-600">Node.js Version</span>
+                            <span class="font-semibold" x-text="systemHealth.system?.nodeVersion || '-'">-</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Database Status -->
+                <div class="theme-card">
+                    <h3 class="text-lg font-semibold mb-4 flex items-center">
+                        <i class="fas fa-database mr-2 text-blue-500"></i>
+                        Database Connections
+                    </h3>
+                    <div class="space-y-3">
+                        <template x-for="[name, db] in Object.entries(systemHealth.databases || {})" :key="name">
+                            <div class="flex justify-between items-center">
+                                <span class="text-gray-600 capitalize" x-text="name"></span>
+                                <div class="flex items-center">
+                                    <span class="status-indicator" :class="{
+                                        'status-healthy': db.status === 'connected',
+                                        'status-disconnected': db.status === 'disconnected',
+                                        'status-warning': db.status === 'not_configured'
+                                    }"></span>
+                                    <span class="text-sm font-semibold capitalize" x-text="db.status">-</span>
+                                </div>
+                            </div>
+                        </template>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Alerts -->
+            <div class="theme-card mb-8" x-show="alerts.length > 0">
+                <h3 class="text-lg font-semibold mb-4 flex items-center">
+                    <i class="fas fa-exclamation-circle mr-2 text-red-500"></i>
+                    System Alerts
+                    <span class="ml-2 px-2 py-1 bg-red-100 text-red-800 text-xs rounded-full" x-text="alerts.length"></span>
+                </h3>
+                <div class="max-h-64 overflow-y-auto">
+                    <template x-for="alert in alerts.slice(0, 10)" :key="alert.timestamp">
+                        <div class="flex items-start p-3 border-l-4 mb-2 rounded-r" :class="{
+                            'bg-red-50 border-red-500': alert.severity === 'critical',
+                            'bg-yellow-50 border-yellow-500': alert.severity === 'warning',
+                            'bg-red-50 border-red-400': alert.severity === 'error'
+                        }">
+                            <i class="fas fa-exclamation-circle mt-1 mr-3" :class="{
+                                'text-red-600': alert.severity === 'critical' || alert.severity === 'error',
+                                'text-yellow-600': alert.severity === 'warning'
+                            }"></i>
+                            <div class="flex-1">
+                                <div class="font-medium" x-text="alert.message"></div>
+                                <div class="text-sm text-gray-500" x-text="formatTimestamp(alert.timestamp)"></div>
+                                <div x-show="alert.details" class="text-sm text-gray-600 mt-1" x-text="alert.details"></div>
+                            </div>
+                            <span class="px-2 py-1 text-xs rounded-full capitalize" :class="{
+                                'bg-red-200 text-red-800': alert.severity === 'critical' || alert.severity === 'error',
+                                'bg-yellow-200 text-yellow-800': alert.severity === 'warning'
+                            }" x-text="alert.severity"></span>
+                        </div>
+                    </template>
+                </div>
+            </div>
+
+            <!-- Recent Logs -->
+            <div class="theme-card">
+                <div class="flex justify-between items-center mb-4">
+                    <h3 class="text-lg font-semibold flex items-center">
+                        <i class="fas fa-list-alt mr-2 text-green-500"></i>
+                        Recent Logs
+                    </h3>
+                    <div class="flex items-center space-x-4">
+                        <select x-model="logLevel" @change="loadLogs()" class="form-select text-sm">
+                            <option value="">All Levels</option>
+                            <option value="error">Errors</option>
+                            <option value="warn">Warnings</option>
+                            <option value="info">Info</option>
+                            <option value="debug">Debug</option>
+                        </select>
+                        <select x-model="logType" @change="loadLogs()" class="form-select text-sm">
+                            <option value="combined">Combined</option>
+                            <option value="error">Error Logs</option>
+                            <option value="requests">Request Logs</option>
+                            <option value="performance">Performance</option>
+                            <option value="database">Database</option>
+                        </select>
+                        <button @click="loadLogs()" class="btn-secondary text-sm">
+                            <i class="fas fa-sync-alt mr-1"></i>
+                            Refresh
+                        </button>
+                    </div>
+                </div>
+                <div class="bg-gray-50 rounded-lg max-h-96 overflow-y-auto">
+                    <template x-for="log in logs" :key="log.timestamp + Math.random()">
+                        <div class="log-line" :class="{
+                            'log-error': log.level === 'error',
+                            'log-warn': log.level === 'warn',
+                            'log-info': log.level === 'info'
+                        }">
+                            <span class="text-gray-500" x-text="formatTimestamp(log.timestamp)"></span>
+                            <span class="mx-2 px-2 py-1 text-xs rounded uppercase font-semibold" :class="{
+                                'bg-red-200 text-red-800': log.level === 'error',
+                                'bg-yellow-200 text-yellow-800': log.level === 'warn',
+                                'bg-blue-200 text-blue-800': log.level === 'info',
+                                'bg-gray-200 text-gray-800': !log.level
+                            }" x-text="log.level || 'LOG'"></span>
+                            <span x-text="log.message || log.raw"></span>
+                        </div>
+                    </template>
+                    <div x-show="logs.length === 0" class="text-center py-8 text-gray-500">
+                        No logs available
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        function monitoringApp() {
+            return {
+                loading: false,
+                lastUpdated: '',
+                systemHealth: {},
+                metrics: {},
+                alerts: [],
+                logs: [],
+                logLevel: '',
+                logType: 'combined',
+
+                async init() {
+                    await this.loadSystemHealth();
+                    await this.loadMetrics();
+                    await this.loadAlerts();
+                    await this.loadLogs();
+                    
+                    // Auto-refresh every 30 seconds
+                    setInterval(() => {
+                        this.refreshData();
+                    }, 30000);
+                },
+
+                async refreshData() {
+                    if (this.loading) return;
+                    
+                    this.loading = true;
+                    try {
+                        await Promise.all([
+                            this.loadSystemHealth(),
+                            this.loadMetrics(),
+                            this.loadAlerts(),
+                            this.loadLogs()
+                        ]);
+                        this.lastUpdated = new Date().toLocaleTimeString();
+                    } finally {
+                        this.loading = false;
+                    }
+                },
+
+                async loadSystemHealth() {
+                    try {
+                        const token = localStorage.getItem('token') || sessionStorage.getItem('token');
+                        const response = await fetch('/api/monitoring/health', {
+                            headers: token ? { 'Authorization': `Bearer ${token}` } : {}
+                        });
+                        
+                        if (response.ok) {
+                            const result = await response.json();
+                            this.systemHealth = result.data;
+                        }
+                    } catch (error) {
+                        console.error('Failed to load system health:', error);
+                    }
+                },
+
+                async loadMetrics() {
+                    try {
+                        const token = localStorage.getItem('token') || sessionStorage.getItem('token');
+                        const response = await fetch('/api/monitoring/metrics', {
+                            headers: { 'Authorization': `Bearer ${token}` }
+                        });
+                        
+                        if (response.ok) {
+                            const result = await response.json();
+                            this.metrics = result.data;
+                        }
+                    } catch (error) {
+                        console.error('Failed to load metrics:', error);
+                    }
+                },
+
+                async loadAlerts() {
+                    try {
+                        const token = localStorage.getItem('token') || sessionStorage.getItem('token');
+                        const response = await fetch('/api/monitoring/alerts', {
+                            headers: { 'Authorization': `Bearer ${token}` }
+                        });
+                        
+                        if (response.ok) {
+                            const result = await response.json();
+                            this.alerts = result.data.alerts || [];
+                        }
+                    } catch (error) {
+                        console.error('Failed to load alerts:', error);
+                    }
+                },
+
+                async loadLogs() {
+                    try {
+                        const token = localStorage.getItem('token') || sessionStorage.getItem('token');
+                        const params = new URLSearchParams({
+                            lines: 100,
+                            type: this.logType,
+                            ...(this.logLevel && { level: this.logLevel })
+                        });
+                        
+                        const response = await fetch(`/api/monitoring/logs?${params}`, {
+                            headers: { 'Authorization': `Bearer ${token}` }
+                        });
+                        
+                        if (response.ok) {
+                            const result = await response.json();
+                            this.logs = result.data.logs || [];
+                        }
+                    } catch (error) {
+                        console.error('Failed to load logs:', error);
+                    }
+                },
+
+                get memoryUsagePercent() {
+                    if (!this.systemHealth.system?.memory) return 0;
+                    const { heapUsed, heapTotal } = this.systemHealth.system.memory;
+                    return Math.round((heapUsed / heapTotal) * 100);
+                },
+
+                get errorRate() {
+                    if (!this.metrics.requestCount || this.metrics.requestCount === 0) return 0;
+                    return (this.metrics.errorCount / this.metrics.requestCount) * 100;
+                },
+
+                formatUptime(seconds) {
+                    if (!seconds) return '-';
+                    const hours = Math.floor(seconds / 3600);
+                    const minutes = Math.floor((seconds % 3600) / 60);
+                    return `${hours}h ${minutes}m`;
+                },
+
+                formatTimestamp(timestamp) {
+                    if (!timestamp) return '';
+                    return new Date(timestamp).toLocaleString();
+                }
+            };
+        }
+    </script>
+</body>
+</html>

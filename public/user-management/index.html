@@ -1,0 +1,721 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Management - Plaza Lama</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="../shared/theme.css" rel="stylesheet">
+</head>
+<body>
+    <div x-data="userManagementApp()">
+        <!-- Header -->
+        <header class="unified-header">
+            <div class="header-content">
+                <div class="header-title">
+                    <a href="/" class="back-button">
+                        <i class="fas fa-arrow-left"></i>
+                    </a>
+                    <i class="fas fa-users-cog header-icon" style="color: #6366f1;"></i>
+                    User Management
+                </div>
+                <div class="flex items-center space-x-4">
+                    <div class="relative" x-data="{ showExportMenu: false }">
+                        <button @click="showExportMenu = !showExportMenu" class="btn-secondary">
+                            <i class="fas fa-download"></i>
+                            Export
+                            <i class="fas fa-chevron-down ml-1"></i>
+                        </button>
+                        <div x-show="showExportMenu" 
+                             @click.away="showExportMenu = false"
+                             class="absolute right-0 mt-2 w-56 bg-white rounded-lg shadow-lg border border-gray-200 z-10">
+                            <div class="py-2">
+                                <button @click="exportUsers('excel'); showExportMenu = false" 
+                                        class="w-full text-left px-4 py-2 hover:bg-gray-50 flex items-center">
+                                    <i class="fas fa-file-excel text-green-500 mr-3"></i>
+                                    Users List (Excel)
+                                </button>
+                                <button @click="exportUsers('pdf'); showExportMenu = false" 
+                                        class="w-full text-left px-4 py-2 hover:bg-gray-50 flex items-center">
+                                    <i class="fas fa-file-pdf text-red-500 mr-3"></i>
+                                    Users List (PDF)
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <button @click="showCreateModal = true" class="btn-primary">
+                        <i class="fas fa-plus"></i>
+                        Add User
+                    </button>
+                    <button @click="refreshData()" class="btn-secondary">
+                        <i class="fas fa-sync-alt"></i>
+                        Refresh
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Content -->
+        <main class="main-content">
+            <!-- Statistics Cards -->
+            <div class="content-grid grid-4 mb-8">
+                <div class="theme-card">
+                    <div class="text-center">
+                        <i class="fas fa-users text-3xl mb-3 text-blue-500"></i>
+                        <div class="text-2xl font-bold mb-1" x-text="stats.total">0</div>
+                        <div class="text-sm text-gray-600">Total Users</div>
+                    </div>
+                </div>
+                <div class="theme-card">
+                    <div class="text-center">
+                        <i class="fas fa-user-check text-3xl mb-3 text-green-500"></i>
+                        <div class="text-2xl font-bold mb-1" x-text="stats.active">0</div>
+                        <div class="text-sm text-gray-600">Active Users</div>
+                    </div>
+                </div>
+                <div class="theme-card">
+                    <div class="text-center">
+                        <i class="fas fa-user-shield text-3xl mb-3 text-purple-500"></i>
+                        <div class="text-2xl font-bold mb-1" x-text="stats.byRole?.admin || 0">0</div>
+                        <div class="text-sm text-gray-600">Administrators</div>
+                    </div>
+                </div>
+                <div class="theme-card">
+                    <div class="text-center">
+                        <i class="fas fa-clock text-3xl mb-3 text-orange-500"></i>
+                        <div class="text-2xl font-bold mb-1" x-text="stats.recentLogins">0</div>
+                        <div class="text-sm text-gray-600">Recent Logins</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Filters and Search -->
+            <div class="theme-card mb-8">
+                <div class="flex flex-wrap items-center gap-4">
+                    <div class="flex-1 min-w-64">
+                        <input 
+                            type="text" 
+                            placeholder="Search users..."
+                            class="form-input"
+                            x-model="filters.search"
+                            @input="debounceSearch()"
+                        >
+                    </div>
+                    <div>
+                        <select class="form-input" x-model="filters.role" @change="loadUsers()">
+                            <option value="">All Roles</option>
+                            <template x-for="role in availableRoles" :key="role.value">
+                                <option :value="role.value" x-text="role.label"></option>
+                            </template>
+                        </select>
+                    </div>
+                    <div>
+                        <select class="form-input" x-model="filters.active" @change="loadUsers()">
+                            <option value="">All Status</option>
+                            <option value="true">Active</option>
+                            <option value="false">Inactive</option>
+                        </select>
+                    </div>
+                    <div>
+                        <select class="form-input" x-model="filters.sortBy" @change="loadUsers()">
+                            <option value="created_at">Created Date</option>
+                            <option value="username">Username</option>
+                            <option value="email">Email</option>
+                            <option value="last_login">Last Login</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Users Table -->
+            <div class="theme-card">
+                <div class="flex justify-between items-center mb-4">
+                    <h3 class="text-lg font-semibold">Users</h3>
+                    <div class="text-sm text-gray-600">
+                        Showing <span x-text="users.length"></span> of <span x-text="pagination.total"></span> users
+                    </div>
+                </div>
+
+                <div class="theme-table">
+                    <table class="w-full">
+                        <thead>
+                            <tr>
+                                <th>User</th>
+                                <th>Role</th>
+                                <th>Status</th>
+                                <th>Last Login</th>
+                                <th>Created</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <template x-for="user in users" :key="user.id">
+                                <tr>
+                                    <td>
+                                        <div class="flex items-center">
+                                            <div class="w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center mr-3">
+                                                <i class="fas fa-user text-gray-500"></i>
+                                            </div>
+                                            <div>
+                                                <div class="font-medium" x-text="user.first_name + ' ' + user.last_name"></div>
+                                                <div class="text-sm text-gray-500" x-text="user.username"></div>
+                                                <div class="text-sm text-gray-500" x-text="user.email"></div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <span class="px-2 py-1 rounded-full text-xs font-medium"
+                                              :class="getRoleBadgeClass(user.role)"
+                                              x-text="getRoleLabel(user.role)">
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <span class="px-2 py-1 rounded-full text-xs font-medium"
+                                              :class="user.active ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'"
+                                              x-text="user.active ? 'Active' : 'Inactive'">
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <span x-text="user.last_login ? formatDate(user.last_login) : 'Never'"></span>
+                                    </td>
+                                    <td>
+                                        <span x-text="formatDate(user.created_at)"></span>
+                                    </td>
+                                    <td>
+                                        <div class="flex items-center space-x-2">
+                                            <button @click="editUser(user)" class="text-blue-600 hover:text-blue-800">
+                                                <i class="fas fa-edit"></i>
+                                            </button>
+                                            <button @click="changePassword(user)" class="text-orange-600 hover:text-orange-800">
+                                                <i class="fas fa-key"></i>
+                                            </button>
+                                            <button @click="toggleUserStatus(user)" 
+                                                    :class="user.active ? 'text-red-600 hover:text-red-800' : 'text-green-600 hover:text-green-800'">
+                                                <i :class="user.active ? 'fas fa-user-slash' : 'fas fa-user-check'"></i>
+                                            </button>
+                                            <button @click="deleteUser(user)" class="text-red-600 hover:text-red-800"
+                                                    x-show="user.username !== 'admin'">
+                                                <i class="fas fa-trash"></i>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </template>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Pagination -->
+                <div class="flex justify-between items-center mt-4" x-show="pagination.totalPages > 1">
+                    <div class="text-sm text-gray-600">
+                        Page <span x-text="pagination.page"></span> of <span x-text="pagination.totalPages"></span>
+                    </div>
+                    <div class="flex space-x-2">
+                        <button @click="changePage(pagination.page - 1)" 
+                                :disabled="pagination.page === 1"
+                                class="btn-secondary"
+                                :class="pagination.page === 1 ? 'opacity-50 cursor-not-allowed' : ''">
+                            Previous
+                        </button>
+                        <button @click="changePage(pagination.page + 1)" 
+                                :disabled="pagination.page === pagination.totalPages"
+                                class="btn-secondary"
+                                :class="pagination.page === pagination.totalPages ? 'opacity-50 cursor-not-allowed' : ''">
+                            Next
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Create/Edit User Modal -->
+        <div x-show="showCreateModal || showEditModal" 
+             class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
+             @click.self="closeModals()">
+            <div class="bg-white rounded-lg shadow-lg w-full max-w-md mx-4">
+                <div class="p-6">
+                    <div class="flex justify-between items-center mb-4">
+                        <h3 class="text-lg font-semibold" x-text="showCreateModal ? 'Create New User' : 'Edit User'"></h3>
+                        <button @click="closeModals()" class="text-gray-400 hover:text-gray-600">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+
+                    <form @submit.prevent="saveUser()">
+                        <div class="form-group">
+                            <label class="form-label">Username</label>
+                            <input type="text" class="form-input" x-model="userForm.username" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Email</label>
+                            <input type="email" class="form-input" x-model="userForm.email" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">First Name</label>
+                            <input type="text" class="form-input" x-model="userForm.firstName" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Last Name</label>
+                            <input type="text" class="form-input" x-model="userForm.lastName" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Role</label>
+                            <select class="form-input" x-model="userForm.role" required>
+                                <template x-for="role in availableRoles" :key="role.value">
+                                    <option :value="role.value" x-text="role.label"></option>
+                                </template>
+                            </select>
+                        </div>
+
+                        <div class="form-group" x-show="showCreateModal">
+                            <label class="form-label">Password</label>
+                            <input type="password" class="form-input" x-model="userForm.password" :required="showCreateModal">
+                        </div>
+
+                        <div class="form-group" x-show="showEditModal">
+                            <label class="flex items-center">
+                                <input type="checkbox" x-model="userForm.active" class="mr-2">
+                                Active User
+                            </label>
+                        </div>
+
+                        <div class="flex justify-end space-x-4">
+                            <button type="button" @click="closeModals()" class="btn-secondary">Cancel</button>
+                            <button type="submit" class="btn-primary" :disabled="loading">
+                                <span x-show="!loading" x-text="showCreateModal ? 'Create User' : 'Update User'"></span>
+                                <span x-show="loading">Saving...</span>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Change Password Modal -->
+        <div x-show="showPasswordModal" 
+             class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
+             @click.self="showPasswordModal = false">
+            <div class="bg-white rounded-lg shadow-lg w-full max-w-md mx-4">
+                <div class="p-6">
+                    <div class="flex justify-between items-center mb-4">
+                        <h3 class="text-lg font-semibold">Change Password</h3>
+                        <button @click="showPasswordModal = false" class="text-gray-400 hover:text-gray-600">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+
+                    <form @submit.prevent="savePassword()">
+                        <div class="form-group">
+                            <label class="form-label">New Password</label>
+                            <input type="password" class="form-input" x-model="passwordForm.newPassword" required minlength="6">
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Confirm Password</label>
+                            <input type="password" class="form-input" x-model="passwordForm.confirmPassword" required minlength="6">
+                        </div>
+
+                        <div class="flex justify-end space-x-4">
+                            <button type="button" @click="showPasswordModal = false" class="btn-secondary">Cancel</button>
+                            <button type="submit" class="btn-primary" :disabled="loading">
+                                <span x-show="!loading">Change Password</span>
+                                <span x-show="loading">Changing...</span>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function userManagementApp() {
+            return {
+                users: [],
+                stats: {},
+                availableRoles: [],
+                pagination: { page: 1, limit: 10, total: 0, totalPages: 0 },
+                filters: {
+                    search: '',
+                    role: '',
+                    active: '',
+                    sortBy: 'created_at',
+                    sortOrder: 'DESC'
+                },
+                showCreateModal: false,
+                showEditModal: false,
+                showPasswordModal: false,
+                userForm: {
+                    username: '',
+                    email: '',
+                    firstName: '',
+                    lastName: '',
+                    role: 'user',
+                    password: '',
+                    active: true
+                },
+                passwordForm: {
+                    newPassword: '',
+                    confirmPassword: ''
+                },
+                selectedUser: null,
+                loading: false,
+                searchTimeout: null,
+
+                async init() {
+                    await Promise.all([
+                        this.loadUsers(),
+                        this.loadStats(),
+                        this.loadRoles()
+                    ]);
+                },
+
+                async loadUsers() {
+                    try {
+                        const token = localStorage.getItem('token') || sessionStorage.getItem('token');
+                        if (!token) {
+                            window.location.href = '/login.html';
+                            return;
+                        }
+
+                        const params = new URLSearchParams({
+                            page: this.pagination.page,
+                            limit: this.pagination.limit,
+                            search: this.filters.search,
+                            role: this.filters.role,
+                            active: this.filters.active,
+                            sortBy: this.filters.sortBy,
+                            sortOrder: this.filters.sortOrder
+                        });
+
+                        const response = await fetch(`/api/users?${params}`, {
+                            headers: {
+                                'Authorization': `Bearer ${token}`,
+                                'Content-Type': 'application/json'
+                            }
+                        });
+
+                        if (response.ok) {
+                            const result = await response.json();
+                            if (result.success) {
+                                this.users = result.data.users;
+                                this.pagination = result.data.pagination;
+                            }
+                        } else if (response.status === 403) {
+                            alert('You do not have permission to manage users');
+                            window.location.href = '/';
+                        }
+                    } catch (error) {
+                        console.error('Error loading users:', error);
+                    }
+                },
+
+                async loadStats() {
+                    try {
+                        const token = localStorage.getItem('token') || sessionStorage.getItem('token');
+                        const response = await fetch('/api/users/stats', {
+                            headers: {
+                                'Authorization': `Bearer ${token}`,
+                                'Content-Type': 'application/json'
+                            }
+                        });
+
+                        if (response.ok) {
+                            const result = await response.json();
+                            if (result.success) {
+                                this.stats = result.data;
+                            }
+                        }
+                    } catch (error) {
+                        console.error('Error loading stats:', error);
+                    }
+                },
+
+                async loadRoles() {
+                    try {
+                        const token = localStorage.getItem('token') || sessionStorage.getItem('token');
+                        const response = await fetch('/api/users/roles', {
+                            headers: {
+                                'Authorization': `Bearer ${token}`,
+                                'Content-Type': 'application/json'
+                            }
+                        });
+
+                        if (response.ok) {
+                            const result = await response.json();
+                            if (result.success) {
+                                this.availableRoles = result.data;
+                            }
+                        }
+                    } catch (error) {
+                        console.error('Error loading roles:', error);
+                    }
+                },
+
+                debounceSearch() {
+                    clearTimeout(this.searchTimeout);
+                    this.searchTimeout = setTimeout(() => {
+                        this.pagination.page = 1;
+                        this.loadUsers();
+                    }, 500);
+                },
+
+                changePage(page) {
+                    if (page >= 1 && page <= this.pagination.totalPages) {
+                        this.pagination.page = page;
+                        this.loadUsers();
+                    }
+                },
+
+                editUser(user) {
+                    this.selectedUser = user;
+                    this.userForm = {
+                        username: user.username,
+                        email: user.email,
+                        firstName: user.first_name,
+                        lastName: user.last_name,
+                        role: user.role,
+                        password: '',
+                        active: user.active
+                    };
+                    this.showEditModal = true;
+                },
+
+                changePassword(user) {
+                    this.selectedUser = user;
+                    this.passwordForm = {
+                        newPassword: '',
+                        confirmPassword: ''
+                    };
+                    this.showPasswordModal = true;
+                },
+
+                async saveUser() {
+                    if (this.loading) return;
+
+                    try {
+                        this.loading = true;
+                        const token = localStorage.getItem('token') || sessionStorage.getItem('token');
+                        
+                        const url = this.showCreateModal ? '/api/users' : `/api/users/${this.selectedUser.id}`;
+                        const method = this.showCreateModal ? 'POST' : 'PUT';
+
+                        const response = await fetch(url, {
+                            method,
+                            headers: {
+                                'Authorization': `Bearer ${token}`,
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify(this.userForm)
+                        });
+
+                        const result = await response.json();
+                        
+                        if (result.success) {
+                            alert(result.message);
+                            this.closeModals();
+                            await this.loadUsers();
+                            await this.loadStats();
+                        } else {
+                            alert(result.message);
+                        }
+                    } catch (error) {
+                        console.error('Error saving user:', error);
+                        alert('Failed to save user');
+                    } finally {
+                        this.loading = false;
+                    }
+                },
+
+                async savePassword() {
+                    if (this.passwordForm.newPassword !== this.passwordForm.confirmPassword) {
+                        alert('Passwords do not match');
+                        return;
+                    }
+
+                    if (this.loading) return;
+
+                    try {
+                        this.loading = true;
+                        const token = localStorage.getItem('token') || sessionStorage.getItem('token');
+                        
+                        const response = await fetch(`/api/users/${this.selectedUser.id}/password`, {
+                            method: 'PUT',
+                            headers: {
+                                'Authorization': `Bearer ${token}`,
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify({ newPassword: this.passwordForm.newPassword })
+                        });
+
+                        const result = await response.json();
+                        
+                        if (result.success) {
+                            alert(result.message);
+                            this.showPasswordModal = false;
+                        } else {
+                            alert(result.message);
+                        }
+                    } catch (error) {
+                        console.error('Error changing password:', error);
+                        alert('Failed to change password');
+                    } finally {
+                        this.loading = false;
+                    }
+                },
+
+                async toggleUserStatus(user) {
+                    if (!confirm(`Are you sure you want to ${user.active ? 'deactivate' : 'activate'} this user?`)) {
+                        return;
+                    }
+
+                    try {
+                        const token = localStorage.getItem('token') || sessionStorage.getItem('token');
+                        
+                        const response = await fetch(`/api/users/${user.id}/toggle-status`, {
+                            method: 'PUT',
+                            headers: {
+                                'Authorization': `Bearer ${token}`,
+                                'Content-Type': 'application/json'
+                            }
+                        });
+
+                        const result = await response.json();
+                        
+                        if (result.success) {
+                            await this.loadUsers();
+                            await this.loadStats();
+                        } else {
+                            alert(result.message);
+                        }
+                    } catch (error) {
+                        console.error('Error toggling user status:', error);
+                        alert('Failed to update user status');
+                    }
+                },
+
+                async deleteUser(user) {
+                    if (!confirm(`Are you sure you want to delete user "${user.username}"? This action cannot be undone.`)) {
+                        return;
+                    }
+
+                    try {
+                        const token = localStorage.getItem('token') || sessionStorage.getItem('token');
+                        
+                        const response = await fetch(`/api/users/${user.id}`, {
+                            method: 'DELETE',
+                            headers: {
+                                'Authorization': `Bearer ${token}`,
+                                'Content-Type': 'application/json'
+                            }
+                        });
+
+                        const result = await response.json();
+                        
+                        if (result.success) {
+                            alert(result.message);
+                            await this.loadUsers();
+                            await this.loadStats();
+                        } else {
+                            alert(result.message);
+                        }
+                    } catch (error) {
+                        console.error('Error deleting user:', error);
+                        alert('Failed to delete user');
+                    }
+                },
+
+                closeModals() {
+                    this.showCreateModal = false;
+                    this.showEditModal = false;
+                    this.selectedUser = null;
+                    this.userForm = {
+                        username: '',
+                        email: '',
+                        firstName: '',
+                        lastName: '',
+                        role: 'user',
+                        password: '',
+                        active: true
+                    };
+                },
+
+                async refreshData() {
+                    await Promise.all([
+                        this.loadUsers(),
+                        this.loadStats()
+                    ]);
+                },
+
+                getRoleBadgeClass(role) {
+                    const classes = {
+                        admin: 'bg-red-100 text-red-800',
+                        manager: 'bg-purple-100 text-purple-800',
+                        user: 'bg-blue-100 text-blue-800'
+                    };
+                    return classes[role] || classes.user;
+                },
+
+                getRoleLabel(role) {
+                    const labels = {
+                        admin: 'Administrator',
+                        manager: 'Manager',
+                        user: 'User'
+                    };
+                    return labels[role] || 'User';
+                },
+
+                formatDate(dateString) {
+                    if (!dateString) return 'N/A';
+                    return new Date(dateString).toLocaleDateString();
+                },
+
+                async exportUsers(format) {
+                    try {
+                        const token = localStorage.getItem('token') || sessionStorage.getItem('token');
+                        
+                        // Build query parameters based on current filters
+                        const params = new URLSearchParams({
+                            search: this.filters.search,
+                            role: this.filters.role,
+                            active: this.filters.active,
+                            sortBy: this.filters.sortBy,
+                            sortOrder: this.filters.sortOrder,
+                            limit: 1000 // Export all users
+                        });
+
+                        const response = await fetch(`/api/users/export/${format}?${params}`, {
+                            headers: {
+                                'Authorization': `Bearer ${token}`
+                            }
+                        });
+
+                        if (response.ok) {
+                            const blob = await response.blob();
+                            const url = window.URL.createObjectURL(blob);
+                            const a = document.createElement('a');
+                            a.href = url;
+                            a.download = `users_${new Date().toISOString().split('T')[0]}.${format === 'excel' ? 'xlsx' : format}`;
+                            document.body.appendChild(a);
+                            a.click();
+                            document.body.removeChild(a);
+                            window.URL.revokeObjectURL(url);
+                        } else {
+                            alert('Export failed. Please try again.');
+                        }
+                    } catch (error) {
+                        console.error('Export error:', error);
+                        alert('Export failed. Please try again.');
+                    }
+                }
+            };
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,1052 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cotizador - Plaza Lama</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="../shared/theme.css" rel="stylesheet">
+    <link href="styles.css" rel="stylesheet">
+</head>
+<body>
+    <nav class="modern-nav">
+        <div class="nav-container">
+            <div class="nav-brand">
+                <a href="/" class="back-button" style="margin-right: 1rem; color: var(--quotes-text);">
+                    <i class="fas fa-arrow-left"></i>
+                </a>
+                <i class="fas fa-file-invoice-dollar" style="color: var(--quotes-text);"></i>
+                <span>Cotizador</span>
+            </div>
+            <div class="nav-user" id="navUser" style="display: none;">
+                <div class="user-info" id="userInfo">
+                    <span class="user-name" id="userName">Usuario</span>
+                    <span class="user-role" id="userRole">user</span>
+                </div>
+                <div class="user-dropdown">
+                    <div class="user-avatar" onclick="toggleUserMenu()">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <div class="dropdown-menu" id="userDropdown" style="display: none;">
+                        <a href="#" onclick="openProfileModal()">
+                            <i class="fas fa-user-cog"></i>
+                            <span>Mi Perfil</span>
+                        </a>
+                        <a href="#" onclick="openChangePasswordModal()">
+                            <i class="fas fa-key"></i>
+                            <span>Cambiar Contraseña</span>
+                        </a>
+                        <div class="admin-only">
+                            <hr class="dropdown-divider">
+                            <a href="#" onclick="openUserManagementModal()">
+                                <i class="fas fa-users-cog"></i>
+                                <span>Gestión de Usuarios</span>
+                            </a>
+                            <a href="#" onclick="openAdminPanel()">
+                                <i class="fas fa-chart-line"></i>
+                                <span>Panel de Admin</span>
+                            </a>
+                            <a href="#" onclick="openEmailManagementModal()">
+                                <i class="fas fa-envelope-open-text"></i>
+                                <span>Email Management</span>
+                            </a>
+                            <a href="#" onclick="openInventoryManagementModal()">
+                                <i class="fas fa-boxes"></i>
+                                <span>Gestión de Inventario</span>
+                            </a>
+                        </div>
+                        <hr class="dropdown-divider">
+                        <a href="#" onclick="logout()" class="logout-link">
+                            <i class="fas fa-sign-out-alt"></i>
+                            <span>Cerrar Sesión</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="nav-auth" id="navAuth">
+                <button class="auth-button" onclick="openLoginModal()">
+                    <i class="fas fa-sign-in-alt"></i>
+                    <span>Iniciar Sesión</span>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <div class="main-container">
+        <div class="content-wrapper">
+            <div class="page-header">
+                <h1 class="page-title">Nueva Cotización</h1>
+                <p class="page-subtitle">Crea una cotización profesional para tus clientes</p>
+            </div>
+
+            <div class="modern-card">
+                <div class="card-content">
+                        <form id="quoteForm">
+                            <!-- Client Selection -->
+                            <div class="form-section">
+                                <div class="form-grid">
+                                    <div class="form-group">
+                                        <label class="modern-label">Cliente</label>
+                                        <div class="input-with-button">
+                                            <input type="text" class="modern-input" id="clientSearch" placeholder="Buscar cliente por nombre, email o empresa..." autocomplete="off">
+                                            <button class="add-button" type="button" onclick="openClientModal()">
+                                                <i class="fas fa-plus"></i>
+                                            </button>
+                                        </div>
+                                        <div class="search-results" id="clientSearchResults" style="display: none;">
+                                            <div id="clientSearchResultsBody"></div>
+                                        </div>
+                                        <div class="selected-client" id="selectedClientInfo" style="display: none;">
+                                            <div class="client-info-card">
+                                                <div class="client-info-header">
+                                                    <h4>Cliente Seleccionado</h4>
+                                                    <button class="clear-selection-btn" onclick="quoteGen.clearClientSelection()">
+                                                        <i class="fas fa-times"></i>
+                                                    </button>
+                                                </div>
+                                                <div class="client-info-content" id="selectedClientData"></div>
+                                            </div>
+                                        </div>
+                                        <input type="hidden" id="selectedClientId" value="">
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="modern-label">Válida hasta</label>
+                                        <input type="date" class="modern-input" id="validUntil">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Product Search and Selection -->
+                            <div class="form-section">
+                                <label class="modern-label">Buscar Productos</label>
+                                <div class="search-container">
+                                    <div class="search-input-wrapper">
+                                        <i class="fas fa-search search-icon"></i>
+                                        <input type="text" class="search-input" id="productSearch" placeholder="Buscar por nombre, EAN o descripción...">
+                                        <button class="search-button" type="button" id="searchBtn">
+                                            Buscar
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Search Results -->
+                            <div id="searchResults" class="search-results" style="display: none;">
+                                <div class="results-header">
+                                    <h3>Resultados de búsqueda</h3>
+                                </div>
+                                <div class="results-body" id="searchResultsBody">
+                                </div>
+                            </div>
+
+                            <!-- Selected Products -->
+                            <div class="form-section">
+                                <h3 class="section-title">Productos Seleccionados</h3>
+                                <div class="products-table-wrapper">
+                                    <table class="products-table" id="selectedProductsTable">
+                                        <thead>
+                                            <tr>
+                                                <th>EAN</th>
+                                                <th>Descripción</th>
+                                                <th>Cant.</th>
+                                                <th>Precio</th>
+                                                <th>ITBIS</th>
+                                                <th>Total</th>
+                                                <th>Acc.</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="selectedProducts">
+                                        </tbody>
+                                        <tfoot>
+                                            <tr class="total-row">
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td><strong>Subtotal:</strong></td>
+                                                <td><strong id="subtotalAmount">0.00</strong></td>
+                                                <td><strong id="totalAmount">0.00</strong></td>
+                                                <td></td>
+                                            </tr>
+                                        </tfoot>
+                                    </table>
+                                </div>
+                            </div>
+
+                            <!-- Notes -->
+                            <div class="form-section">
+                                <label class="modern-label">Notas</label>
+                                <textarea class="modern-textarea" id="notes" rows="3" placeholder="Notas adicionales para la cotización..."></textarea>
+                            </div>
+
+                            <!-- Actions -->
+                            <div class="form-actions">
+                                <button type="submit" class="primary-button">
+                                    <i class="fas fa-file-invoice-dollar"></i>
+                                    <span>Generar Cotización</span>
+                                </button>
+                            </div>
+                        </form>
+                </div>
+            </div>
+
+            <!-- Quotes List -->
+            <div class="modern-card">
+                <div class="card-header-section">
+                    <h2 class="card-title">
+                        <i class="fas fa-list"></i>
+                        <span>Cotizaciones Recientes</span>
+                    </h2>
+                </div>
+                <div class="card-content">
+                    <div class="quotes-table-container">
+                        <div class="modern-table" id="quotesTable">
+                            <div class="table-header">
+                                <div class="header-cell">Número</div>
+                                <div class="header-cell">Cliente</div>
+                                <div class="header-cell">Fecha</div>
+                                <div class="header-cell">Total</div>
+                                <div class="header-cell">Acciones</div>
+                            </div>
+                            <div class="table-body" id="quotesList">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Client Modal -->
+    <div class="modern-modal" id="clientModal" style="display: none;">
+        <div class="modal-backdrop" onclick="closeClientModal()"></div>
+        <div class="modal-container">
+            <div class="modal-header">
+                <h3 class="modal-title">Nuevo Cliente</h3>
+                <button type="button" class="modal-close" onclick="closeClientModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="clientForm">
+                    <div class="form-grid-modal">
+                        <div class="form-group">
+                            <label class="modern-label">Nombre <span class="required">*</span></label>
+                            <input type="text" class="modern-input" id="clientName" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="modern-label">Email</label>
+                            <input type="email" class="modern-input" id="clientEmail">
+                        </div>
+                        <div class="form-group">
+                            <label class="modern-label">Teléfono</label>
+                            <input type="tel" class="modern-input" id="clientPhone">
+                        </div>
+                        <div class="form-group">
+                            <label class="modern-label">Empresa</label>
+                            <input type="text" class="modern-input" id="clientCompany">
+                        </div>
+                        <div class="form-group full-width">
+                            <label class="modern-label">Dirección</label>
+                            <textarea class="modern-textarea" id="clientAddress" rows="2"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label class="modern-label">RNC</label>
+                            <input type="text" class="modern-input" id="clientRnc">
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="secondary-button" onclick="closeClientModal()">Cancelar</button>
+                <button type="button" class="primary-button" id="saveClientBtn">
+                    <i class="fas fa-save"></i>
+                    <span>Guardar Cliente</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Login Modal -->
+    <div class="modern-modal" id="loginModal" style="display: none;">
+        <div class="modal-backdrop" onclick="closeLoginModal()"></div>
+        <div class="modal-container auth-modal">
+            <div class="modal-header">
+                <h3 class="modal-title">Iniciar Sesión</h3>
+                <button type="button" class="modal-close" onclick="closeLoginModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="loginForm">
+                    <div class="form-group">
+                        <label class="modern-label">Usuario o Email <span class="required">*</span></label>
+                        <input type="text" class="modern-input" id="loginUsername" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="modern-label">Contraseña <span class="required">*</span></label>
+                        <div class="password-input-container">
+                            <input type="password" class="modern-input" id="loginPassword" required>
+                            <button type="button" class="password-toggle" onclick="togglePasswordVisibility('loginPassword')">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="login-error" id="loginError" style="display: none;"></div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="secondary-button" onclick="closeLoginModal()">Cancelar</button>
+                <button type="button" class="primary-button" id="loginBtn" onclick="login()">
+                    <i class="fas fa-sign-in-alt"></i>
+                    <span>Iniciar Sesión</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Profile Modal -->
+    <div class="modern-modal" id="profileModal" style="display: none;">
+        <div class="modal-backdrop" onclick="closeProfileModal()"></div>
+        <div class="modal-container">
+            <div class="modal-header">
+                <h3 class="modal-title">Mi Perfil</h3>
+                <button type="button" class="modal-close" onclick="closeProfileModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="profileForm">
+                    <div class="form-grid-modal">
+                        <div class="form-group">
+                            <label class="modern-label">Nombre <span class="required">*</span></label>
+                            <input type="text" class="modern-input" id="profileFirstName" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="modern-label">Apellido <span class="required">*</span></label>
+                            <input type="text" class="modern-input" id="profileLastName" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="modern-label">Email <span class="required">*</span></label>
+                            <input type="email" class="modern-input" id="profileEmail" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="modern-label">Usuario</label>
+                            <input type="text" class="modern-input" id="profileUsername" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label class="modern-label">Rol</label>
+                            <input type="text" class="modern-input" id="profileRole" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label class="modern-label">Último acceso</label>
+                            <input type="text" class="modern-input" id="profileLastLogin" readonly>
+                        </div>
+                    </div>
+                    <div class="profile-error" id="profileError" style="display: none;"></div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="secondary-button" onclick="closeProfileModal()">Cancelar</button>
+                <button type="button" class="primary-button" id="saveProfileBtn" onclick="saveProfile()">
+                    <i class="fas fa-save"></i>
+                    <span>Guardar Cambios</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Change Password Modal -->
+    <div class="modern-modal" id="changePasswordModal" style="display: none;">
+        <div class="modal-backdrop" onclick="closeChangePasswordModal()"></div>
+        <div class="modal-container">
+            <div class="modal-header">
+                <h3 class="modal-title">Cambiar Contraseña</h3>
+                <button type="button" class="modal-close" onclick="closeChangePasswordModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="changePasswordForm">
+                    <div class="form-group">
+                        <label class="modern-label">Contraseña Actual <span class="required">*</span></label>
+                        <div class="password-input-container">
+                            <input type="password" class="modern-input" id="currentPassword" required>
+                            <button type="button" class="password-toggle" onclick="togglePasswordVisibility('currentPassword')">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="modern-label">Nueva Contraseña <span class="required">*</span></label>
+                        <div class="password-input-container">
+                            <input type="password" class="modern-input" id="newPassword" required>
+                            <button type="button" class="password-toggle" onclick="togglePasswordVisibility('newPassword')">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                        </div>
+                        <div class="password-requirements">
+                            <small>Mínimo 8 caracteres, incluir mayúscula, minúscula, número y símbolo</small>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="modern-label">Confirmar Nueva Contraseña <span class="required">*</span></label>
+                        <div class="password-input-container">
+                            <input type="password" class="modern-input" id="confirmPassword" required>
+                            <button type="button" class="password-toggle" onclick="togglePasswordVisibility('confirmPassword')">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="password-error" id="passwordError" style="display: none;"></div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="secondary-button" onclick="closeChangePasswordModal()">Cancelar</button>
+                <button type="button" class="primary-button" id="changePasswordBtn" onclick="changePassword()">
+                    <i class="fas fa-key"></i>
+                    <span>Cambiar Contraseña</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Email Modal -->
+    <div class="modern-modal" id="emailModal" style="display: none;">
+        <div class="modal-backdrop" onclick="closeEmailModal()"></div>
+        <div class="modal-container">
+            <div class="modal-header">
+                <h3 class="modal-title">Enviar Cotización por Email</h3>
+                <button type="button" class="modal-close" onclick="closeEmailModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="emailForm">
+                    <div class="email-quote-info" id="emailQuoteInfo">
+                        <div class="quote-preview">
+                            <div class="quote-preview-header">
+                                <i class="fas fa-file-invoice-dollar"></i>
+                                <span id="emailQuoteNumber">Cotización #</span>
+                            </div>
+                            <div class="quote-preview-details">
+                                <div class="preview-row">
+                                    <span class="preview-label">Cliente:</span>
+                                    <span id="emailQuoteClient">-</span>
+                                </div>
+                                <div class="preview-row">
+                                    <span class="preview-label">Total:</span>
+                                    <span id="emailQuoteTotal">$0.00</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="modern-label">Email del Destinatario <span class="required">*</span></label>
+                        <input type="email" class="modern-input" id="recipientEmail" required placeholder="cliente@ejemplo.com">
+                        <small class="form-help">Se enviará la cotización en PDF como adjunto</small>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="modern-label">Asunto (Opcional)</label>
+                        <input type="text" class="modern-input" id="emailSubject" placeholder="Se generará automáticamente si se deja vacío">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="modern-label">Mensaje Personalizado (Opcional)</label>
+                        <textarea class="modern-textarea" id="customMessage" rows="4" placeholder="Agregue un mensaje personalizado que aparecerá en el email..."></textarea>
+                        <small class="form-help">Este mensaje aparecerá destacado al inicio del email</small>
+                    </div>
+                    
+                    <div class="email-preview-section">
+                        <div class="preview-toggle">
+                            <button type="button" class="link-button" onclick="toggleEmailPreview()">
+                                <i class="fas fa-eye"></i>
+                                <span>Vista previa del email</span>
+                                <i class="fas fa-chevron-down" id="previewChevron"></i>
+                            </button>
+                        </div>
+                        <div class="email-preview-content" id="emailPreviewContent" style="display: none;">
+                            <div class="preview-email">
+                                <div class="preview-email-header">
+                                    <strong>De:</strong> <span id="previewSender">Sistema de Cotizaciones</span><br>
+                                    <strong>Para:</strong> <span id="previewRecipient">-</span><br>
+                                    <strong>Asunto:</strong> <span id="previewSubject">-</span>
+                                </div>
+                                <div class="preview-email-body">
+                                    <div id="previewCustomMessage" style="display: none;">
+                                        <div class="custom-message-preview">
+                                            <strong>Mensaje Personalizado:</strong>
+                                            <div id="previewCustomText">-</div>
+                                        </div>
+                                    </div>
+                                    <p>Estimado/a Cliente,</p>
+                                    <p>Esperamos que se encuentre bien. Adjuntamos la cotización solicitada con el detalle de productos y precios.</p>
+                                    <p><strong>📎 Adjunto:</strong> cotizacion-<span id="previewAttachment">Q000</span>.pdf</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="email-error" id="emailError" style="display: none;"></div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="secondary-button" onclick="closeEmailModal()">Cancelar</button>
+                <button type="button" class="primary-button" id="sendEmailBtn" onclick="sendQuoteEmail()">
+                    <i class="fas fa-paper-plane"></i>
+                    <span>Enviar Email</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Email Management Modal -->
+    <div class="modern-modal" id="emailManagementModal" style="display: none;">
+        <div class="modal-backdrop" onclick="closeEmailManagementModal()"></div>
+        <div class="modal-container email-management-modal">
+            <div class="modal-header">
+                <h3 class="modal-title">
+                    <i class="fas fa-envelope-open-text"></i>
+                    Email Management
+                </h3>
+                <button type="button" class="modal-close" onclick="closeEmailManagementModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="email-management-tabs">
+                    <button class="tab-button active" onclick="switchEmailTab('stats')">
+                        <i class="fas fa-chart-bar"></i>
+                        Statistics
+                    </button>
+                    <button class="tab-button" onclick="switchEmailTab('queue')">
+                        <i class="fas fa-list"></i>
+                        Queue
+                    </button>
+                    <button class="tab-button" onclick="switchEmailTab('logs')">
+                        <i class="fas fa-history"></i>
+                        Logs
+                    </button>
+                    <button class="tab-button" onclick="switchEmailTab('config')">
+                        <i class="fas fa-cog"></i>
+                        Configuration
+                    </button>
+                </div>
+
+                <!-- Stats Tab -->
+                <div class="email-tab-content" id="emailStatsTab">
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-icon">
+                                <i class="fas fa-paper-plane"></i>
+                            </div>
+                            <div class="stat-content">
+                                <div class="stat-value" id="totalEmailsSent">-</div>
+                                <div class="stat-label">Total Sent</div>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon">
+                                <i class="fas fa-clock"></i>
+                            </div>
+                            <div class="stat-content">
+                                <div class="stat-value" id="pendingEmails">-</div>
+                                <div class="stat-label">Pending</div>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon">
+                                <i class="fas fa-exclamation-triangle"></i>
+                            </div>
+                            <div class="stat-content">
+                                <div class="stat-value" id="failedEmails">-</div>
+                                <div class="stat-label">Failed</div>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon">
+                                <i class="fas fa-eye"></i>
+                            </div>
+                            <div class="stat-content">
+                                <div class="stat-value" id="openedEmails">-</div>
+                                <div class="stat-label">Opened</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="analytics-section">
+                        <h4>Email Analytics (Last 7 Days)</h4>
+                        <div class="analytics-chart" id="emailAnalyticsChart">
+                            <div class="loading-message">Loading analytics...</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Queue Tab -->
+                <div class="email-tab-content" id="emailQueueTab" style="display: none;">
+                    <div class="queue-controls">
+                        <div class="filter-group">
+                            <select id="queueStatusFilter" onchange="refreshEmailQueue()">
+                                <option value="all">All Status</option>
+                                <option value="pending">Pending</option>
+                                <option value="processing">Processing</option>
+                                <option value="completed">Completed</option>
+                                <option value="failed">Failed</option>
+                            </select>
+                            <button class="secondary-button" onclick="refreshEmailQueue()">
+                                <i class="fas fa-sync"></i>
+                                Refresh
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="email-queue-table">
+                        <div class="table-header">
+                            <div class="header-cell">ID</div>
+                            <div class="header-cell">Recipient</div>
+                            <div class="header-cell">Status</div>
+                            <div class="header-cell">Attempts</div>
+                            <div class="header-cell">Scheduled</div>
+                            <div class="header-cell">Actions</div>
+                        </div>
+                        <div class="table-body" id="emailQueueList">
+                            <div class="loading-message">Loading queue...</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Logs Tab -->
+                <div class="email-tab-content" id="emailLogsTab" style="display: none;">
+                    <div class="logs-controls">
+                        <div class="filter-group">
+                            <select id="logStatusFilter" onchange="refreshEmailLogs()">
+                                <option value="">All Status</option>
+                                <option value="sent">Sent</option>
+                                <option value="failed">Failed</option>
+                                <option value="delivered">Delivered</option>
+                            </select>
+                            <input type="text" id="logRecipientFilter" placeholder="Filter by recipient..." onchange="refreshEmailLogs()">
+                            <button class="secondary-button" onclick="refreshEmailLogs()">
+                                <i class="fas fa-sync"></i>
+                                Refresh
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="email-logs-table">
+                        <div class="table-header">
+                            <div class="header-cell">Quote</div>
+                            <div class="header-cell">Recipient</div>
+                            <div class="header-cell">Status</div>
+                            <div class="header-cell">Sent At</div>
+                            <div class="header-cell">Opened</div>
+                        </div>
+                        <div class="table-body" id="emailLogsList">
+                            <div class="loading-message">Loading logs...</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Configuration Tab -->
+                <div class="email-tab-content" id="emailConfigTab" style="display: none;">
+                    <div class="config-section">
+                        <h4>SMTP Configuration Status</h4>
+                        <div class="config-status" id="emailConfigStatus">
+                            <div class="loading-message">Loading configuration...</div>
+                        </div>
+                        
+                        <div class="config-actions">
+                            <div class="form-group">
+                                <label class="modern-label">Test Email Address</label>
+                                <div class="input-with-button">
+                                    <input type="email" class="modern-input" id="testEmailAddress" placeholder="test@example.com">
+                                    <button class="primary-button" onclick="sendTestEmail()">
+                                        <i class="fas fa-paper-plane"></i>
+                                        Send Test
+                                    </button>
+                                </div>
+                            </div>
+                            
+                            <div class="checkbox-group">
+                                <input type="checkbox" id="useQueueForTest">
+                                <label for="useQueueForTest">Use queue for test email</label>
+                            </div>
+                        </div>
+                        
+                        <div class="config-note">
+                            <p><strong>Note:</strong> SMTP configuration is managed through environment variables. 
+                            Contact your system administrator to update email settings.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="secondary-button" onclick="closeEmailManagementModal()">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Loading Overlay -->
+    <div class="loading-overlay" id="loadingOverlay" style="display: none;">
+        <div class="loading-spinner">
+            <i class="fas fa-spinner fa-spin"></i>
+            <p>Cargando...</p>
+        </div>
+    </div>
+
+    <!-- Auth Check Container -->
+    <div class="auth-required" id="authRequired" style="display: none;">
+        <div class="main-container">
+            <div class="content-wrapper">
+                <div class="auth-message">
+                    <div class="auth-icon">
+                        <i class="fas fa-lock"></i>
+                    </div>
+                    <h2>Acceso Restringido</h2>
+                    <p>Debes iniciar sesión para acceder al sistema de cotizaciones.</p>
+                    <button class="primary-button" onclick="openLoginModal()">
+                        <i class="fas fa-sign-in-alt"></i>
+                        <span>Iniciar Sesión</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Inventory Management Modal -->
+    <div class="modern-modal" id="inventoryManagementModal" style="display: none;">
+        <div class="modal-backdrop" onclick="closeInventoryManagementModal()"></div>
+        <div class="modal-container inventory-management-modal">
+            <div class="modal-header">
+                <h3 class="modal-title">
+                    <i class="fas fa-boxes"></i>
+                    Gestión de Inventario
+                </h3>
+                <button type="button" class="modal-close" onclick="closeInventoryManagementModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <!-- Inventory Dashboard Container -->
+                <div id="inventoryDashboardContainer"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- User Management Modal -->
+    <div class="modern-modal" id="userManagementModal" style="display: none;">
+        <div class="modal-backdrop" onclick="closeUserManagementModal()"></div>
+        <div class="modal-container user-management-modal">
+            <div class="modal-header">
+                <h3 class="modal-title">
+                    <i class="fas fa-users-cog"></i>
+                    Gestión de Usuarios
+                </h3>
+                <button type="button" class="modal-close" onclick="closeUserManagementModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <!-- User Management Controls -->
+                <div class="user-controls">
+                    <div class="search-filters">
+                        <div class="filter-group">
+                            <input type="text" id="userSearch" placeholder="Search users..." onkeyup="userManager.handleSearch()">
+                            <select id="roleFilter" onchange="userManager.handleRoleFilter()">
+                                <option value="">All Roles</option>
+                                <option value="admin">Admin</option>
+                                <option value="manager">Manager</option>
+                                <option value="user">User</option>
+                            </select>
+                            <select id="statusFilter" onchange="userManager.handleStatusFilter()">
+                                <option value="">All Status</option>
+                                <option value="true">Active</option>
+                                <option value="false">Inactive</option>
+                            </select>
+                            <button class="secondary-button" onclick="userManager.clearFilters()">Clear</button>
+                        </div>
+                        <div class="action-group">
+                            <button class="primary-button" onclick="openCreateUserModal()">
+                                <i class="fas fa-user-plus"></i>
+                                Add User
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Users Table -->
+                <div class="users-table">
+                    <div class="table-header">
+                        <div class="header-cell">User</div>
+                        <div class="header-cell">Email</div>
+                        <div class="header-cell">Role</div>
+                        <div class="header-cell">Status</div>
+                        <div class="header-cell">Last Login</div>
+                        <div class="header-cell">Created</div>
+                        <div class="header-cell">Actions</div>
+                    </div>
+                    <div class="table-body" id="userTableBody">
+                        <div class="loading-message">Loading users...</div>
+                    </div>
+                </div>
+
+                <!-- Pagination -->
+                <div class="pagination-container" id="userPagination"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Create User Modal -->
+    <div class="modern-modal" id="createUserModal" style="display: none;">
+        <div class="modal-backdrop" onclick="closeCreateUserModal()"></div>
+        <div class="modal-container">
+            <div class="modal-header">
+                <h3 class="modal-title">
+                    <i class="fas fa-user-plus"></i>
+                    Create New User
+                </h3>
+                <button type="button" class="modal-close" onclick="closeCreateUserModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="createUserForm" onsubmit="event.preventDefault(); createUser();">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="modern-label">Username</label>
+                            <input type="text" name="username" id="createUsername" class="modern-input" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="modern-label">Email</label>
+                            <input type="email" name="email" class="modern-input" required>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="modern-label">First Name</label>
+                            <input type="text" name="firstName" class="modern-input" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="modern-label">Last Name</label>
+                            <input type="text" name="lastName" class="modern-input" required>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="modern-label">Password</label>
+                            <input type="password" name="password" class="modern-input" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="modern-label">Role</label>
+                            <select name="role" class="modern-select" required>
+                                <option value="user">User</option>
+                                <option value="manager">Manager</option>
+                                <option value="admin">Admin</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="modal-actions">
+                        <button type="button" class="secondary-button" onclick="closeCreateUserModal()">Cancel</button>
+                        <button type="submit" class="primary-button">Create User</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit User Modal -->
+    <div class="modern-modal" id="editUserModal" style="display: none;">
+        <div class="modal-backdrop" onclick="closeEditUserModal()"></div>
+        <div class="modal-container">
+            <div class="modal-header">
+                <h3 class="modal-title">
+                    <i class="fas fa-user-edit"></i>
+                    Edit User
+                </h3>
+                <button type="button" class="modal-close" onclick="closeEditUserModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="editUserForm" onsubmit="event.preventDefault(); saveUserChanges();">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="modern-label">First Name</label>
+                            <input type="text" name="firstName" id="editFirstName" class="modern-input" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="modern-label">Last Name</label>
+                            <input type="text" name="lastName" id="editLastName" class="modern-input" required>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="modern-label">Email</label>
+                            <input type="email" name="email" id="editEmail" class="modern-input" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="modern-label">Role</label>
+                            <select name="role" id="editRole" class="modern-select" required>
+                                <option value="user">User</option>
+                                <option value="manager">Manager</option>
+                                <option value="admin">Admin</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="modern-label">Status</label>
+                        <select name="active" id="editActive" class="modern-select" required>
+                            <option value="true">Active</option>
+                            <option value="false">Inactive</option>
+                        </select>
+                    </div>
+                    <div class="modal-actions">
+                        <button type="button" class="secondary-button" onclick="closeEditUserModal()">Cancel</button>
+                        <button type="submit" class="primary-button">Save Changes</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- User Sessions Modal -->
+    <div class="modern-modal" id="sessionsModal" style="display: none;">
+        <div class="modal-backdrop" onclick="closeSessionsModal()"></div>
+        <div class="modal-container">
+            <div class="modal-header">
+                <h3 class="modal-title">
+                    <i class="fas fa-history"></i>
+                    User Sessions
+                </h3>
+                <button type="button" class="modal-close" onclick="closeSessionsModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="sessions-table">
+                    <div class="table-header">
+                        <div class="header-cell">IP Address</div>
+                        <div class="header-cell">Device</div>
+                        <div class="header-cell">Created</div>
+                        <div class="header-cell">Actions</div>
+                    </div>
+                    <div class="table-body" id="sessionsTableBody">
+                        <div class="loading-message">Loading sessions...</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Admin Panel Modal -->
+    <div class="modern-modal" id="adminPanelModal" style="display: none;">
+        <div class="modal-backdrop" onclick="closeAdminPanelModal()"></div>
+        <div class="modal-container admin-panel-modal">
+            <div class="modal-header">
+                <h3 class="modal-title">
+                    <i class="fas fa-chart-line"></i>
+                    Panel de Administración
+                </h3>
+                <div class="modal-header-actions">
+                    <button class="action-btn refresh-btn" onclick="adminPanel.refreshDashboard()">
+                        <i class="fas fa-sync-alt"></i>
+                        Refresh
+                    </button>
+                    <button class="action-btn" id="autoRefreshBtn" onclick="adminPanel.toggleAutoRefresh()">
+                        <i class="fas fa-pause"></i>
+                        Pause Auto-refresh
+                    </button>
+                </div>
+                <button type="button" class="modal-close" onclick="closeAdminPanelModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body admin-panel-body">
+                <!-- System Statistics -->
+                <div class="admin-section">
+                    <h4><i class="fas fa-tachometer-alt"></i> System Overview</h4>
+                    <div id="systemStatsContainer">
+                        <div class="loading-message">Loading system statistics...</div>
+                    </div>
+                </div>
+
+                <!-- Recent Activity -->
+                <div class="admin-section">
+                    <h4><i class="fas fa-clock"></i> Recent Activity</h4>
+                    <div id="recentActivityContainer">
+                        <div class="loading-message">Loading recent activity...</div>
+                    </div>
+                </div>
+
+                <!-- System Health -->
+                <div class="admin-section">
+                    <h4><i class="fas fa-heartbeat"></i> System Health</h4>
+                    <div id="systemHealthContainer">
+                        <div class="loading-message">Loading system health...</div>
+                    </div>
+                </div>
+
+                <!-- Quick Actions -->
+                <div class="admin-section">
+                    <h4><i class="fas fa-bolt"></i> Quick Actions</h4>
+                    <div id="quickActionsContainer">
+                        <div class="loading-message">Loading quick actions...</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Performance Metrics Modal -->
+    <div class="modern-modal" id="performanceModal" style="display: none;">
+        <div class="modal-backdrop" onclick="closePerformanceModal()"></div>
+        <div class="modal-container">
+            <div class="modal-header">
+                <h3 class="modal-title">
+                    <i class="fas fa-chart-line"></i>
+                    Performance Metrics
+                </h3>
+                <button type="button" class="modal-close" onclick="closePerformanceModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div id="performanceContent">
+                    <div class="loading-message">Loading performance metrics...</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- System Configuration Modal -->
+    <div class="modern-modal" id="configModal" style="display: none;">
+        <div class="modal-backdrop" onclick="closeConfigModal()"></div>
+        <div class="modal-container">
+            <div class="modal-header">
+                <h3 class="modal-title">
+                    <i class="fas fa-cogs"></i>
+                    System Configuration
+                </h3>
+                <button type="button" class="modal-close" onclick="closeConfigModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div id="configContent">
+                    <div class="loading-message">Loading system configuration...</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="auth.js"></script>
+    <script src="emailManagement.js"></script>
+    <script src="quoteWorkflow.js"></script>
+    <script src="inventoryManagement.js"></script>
+    <script src="userManagement.js"></script>
+    <script src="adminPanel.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>

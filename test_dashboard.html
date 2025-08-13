@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Dashboard Test</title>
+    <script>
+        // Set a test token in localStorage
+        const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsInVzZXJuYW1lIjoiYWRtaW4iLCJyb2xlIjoiYWRtaW4iLCJ0b2tlbklkIjoiZDRhN2VhY2RjZDZlY2U5ODY2YzgxZDA1YWFkMjk2ZTEiLCJpYXQiOjE3NTUwNTg0OTcsImV4cCI6MTc1NTA2MjA5N30.YLBEv0lF49zdvbqbx3_a_MLzFvOOYsawfZ05VnbTdvk";
+        localStorage.setItem('token', token);
+        
+        // Redirect to dashboard
+        window.location.href = '/dashboard/';
+    </script>
+</head>
+<body>
+    <p>Setting up authentication and redirecting to dashboard...</p>
+</body>
+</html>
