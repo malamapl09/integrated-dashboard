@@ -57,11 +57,9 @@ function globalErrorHandler(error, req, res, next) {
         method: req.method
     };
 
-    // Add error details in development
-    if (process.env.NODE_ENV === 'development') {
-        errorResponse.error.stack = error.stack;
-        errorResponse.error.details = error;
-    }
+    // NEVER expose stack traces or error details to clients in any environment
+    // Stack traces and error details are logged server-side for debugging
+    // This prevents information disclosure attacks
 
     res.status(statusCode).json(errorResponse);
 }

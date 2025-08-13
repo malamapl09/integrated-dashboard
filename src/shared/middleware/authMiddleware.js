@@ -129,9 +129,11 @@ class AuthMiddleware {
       contentSecurityPolicy: {
         directives: {
           defaultSrc: ["'self'"],
-          styleSrc: ["'self'", "'unsafe-inline'", "https://cdn.tailwindcss.com", "https://cdnjs.cloudflare.com", "https://fonts.googleapis.com"],
-          scriptSrc: ["'self'", "'unsafe-inline'", "'unsafe-eval'", "https://cdn.tailwindcss.com", "https://unpkg.com", "https://cdn.jsdelivr.net"],
-          scriptSrcAttr: ["'unsafe-inline'"],  // Allow inline event handlers for development
+          styleSrc: ["'self'", "https://cdn.tailwindcss.com", "https://cdnjs.cloudflare.com", "https://fonts.googleapis.com"],
+          // Note: If you have inline styles, move them to external CSS files or use nonce-based CSP
+          scriptSrc: ["'self'", "https://cdn.tailwindcss.com", "https://unpkg.com", "https://cdn.jsdelivr.net"],
+          // Removed unsafe-inline and unsafe-eval for security
+          // Note: If you need inline scripts, consider implementing nonce-based CSP
           fontSrc: ["'self'", "https://cdnjs.cloudflare.com", "https://fonts.gstatic.com"],
           imgSrc: ["'self'", "data:", "https:"],
           connectSrc: ["'self'"]

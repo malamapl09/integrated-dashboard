@@ -119,7 +119,12 @@ class AuthService {
           role: user.role,
           tokenId
         },
-        process.env.JWT_SECRET || 'your-secret-key',
+        (() => {
+          if (!process.env.JWT_SECRET) {
+            throw new Error('JWT_SECRET environment variable is required');
+          }
+          return process.env.JWT_SECRET;
+        })(),
         { expiresIn: process.env.JWT_EXPIRES_IN || '1h' }
       );
 
@@ -210,7 +215,12 @@ class AuthService {
    */
   async verifyToken(token) {
     try {
-      const decoded = jwt.verify(token, process.env.JWT_SECRET || 'your-secret-key');
+      const decoded = jwt.verify(token, (() => {
+        if (!process.env.JWT_SECRET) {
+          throw new Error('JWT_SECRET environment variable is required');
+        }
+        return process.env.JWT_SECRET;
+      })());
 
       // Check if session is still active
       const [sessions] = await this.db.execute(

@@ -178,6 +178,43 @@ const database = {
   }
 };
 
+// Create secure default admin user
+async function createDefaultAdminUser() {
+  try {
+    const Database = require('better-sqlite3');
+    const db = new Database(path.join(__dirname, '../../data/database.sqlite'));
+    
+    // Check if any users exist
+    const userCount = db.prepare('SELECT COUNT(*) as count FROM users').get();
+    
+    if (userCount.count === 0) {
+      const crypto = require('crypto');
+      const bcrypt = require('bcrypt');
+      
+      // Generate secure random password
+      const defaultPassword = crypto.randomBytes(16).toString('hex');
+      const passwordHash = await bcrypt.hash(defaultPassword, 12);
+      
+      // Insert default admin user
+      const insertUser = db.prepare(`
+        INSERT INTO users (username, email, password_hash, first_name, last_name, role)
+        VALUES (?, ?, ?, ?, ?, ?)
+      `);
+      
+      insertUser.run('admin', 'admin@plazalama.com', passwordHash, 'Admin', 'User', 'admin');
+      
+      console.log('🔐 DEFAULT ADMIN USER CREATED:');
+      console.log('   Username: admin');
+      console.log(`   Password: ${defaultPassword}`);
+      console.log('   ⚠️  SAVE THIS PASSWORD - IT WILL NOT BE SHOWN AGAIN!');
+    }
+    
+    db.close();
+  } catch (error) {
+    console.error('Error creating default admin user:', error);
+  }
+}
+
 // Initialize SQLite database schema
 async function initializeSQLiteDatabase() {
   return new Promise((resolve, reject) => {
@@ -279,9 +316,7 @@ async function initializeSQLiteDatabase() {
       CREATE INDEX IF NOT EXISTS idx_quote_items_quote_id ON quote_items(quote_id);
 
       -- Create default admin user (only if no users exist)
-      INSERT INTO users (username, email, password_hash, first_name, last_name, role)
-      SELECT 'admin', 'admin@plazalama.com', '$2b$12$5fRfnpil6jWOx7ijuU585Ogb0URHPU1cJU5idQ0K2VW5gbYTe1DtO', 'Admin', 'User', 'admin'
-      WHERE NOT EXISTS (SELECT 1 FROM users LIMIT 1);
+      -- Note: Password will be generated dynamically and logged to console on first run
 
       -- Sample client (only if no clients exist)
       INSERT INTO clients (name, email, phone, company, address, rnc) 
@@ -296,12 +331,16 @@ async function initializeSQLiteDatabase() {
         console.error('Error opening SQLite database:', err.message);
         reject(err);
       } else {
-        db.exec(schema, (err) => {
+        db.exec(schema, async (err) => {
           if (err) {
             console.error('Error initializing SQLite database:', err.message);
             reject(err);
           } else {
             console.log('SQLite database initialized successfully');
+            
+            // Create secure default admin user if no users exist
+            await createDefaultAdminUser();
+            
             resolve();
           }
           db.close();
