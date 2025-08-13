@@ -3,54 +3,60 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Integrated Plaza Lama Dashboard - Manage quotes, monitor logs, analyze catalog data, and track sales performance">
     <title>Integrated Dashboard - Plaza Lama</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <link href="../shared/theme.css" rel="stylesheet">
 </head>
-<body class="bg-gray-100 min-h-screen">
+<body>
+    <!-- Skip Link for Screen Readers -->
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+    
     <div x-data="dashboardApp()" class="min-h-screen">
         <!-- Header -->
-        <header class="bg-white shadow-sm">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div class="flex justify-between items-center py-6">
-                    <div class="flex items-center">
-                        <div class="flex-shrink-0">
-                            <h1 class="text-3xl font-bold text-gray-900">
-                                <i class="fas fa-tachometer-alt text-blue-600 mr-3"></i>
-                                Plaza Lama Dashboard
-                            </h1>
-                        </div>
+        <header class="page-header" role="banner">
+            <div class="container">
+                <h1 class="page-title">
+                    <i class="fas fa-tachometer-alt" aria-hidden="true"></i>
+                    <span>Plaza Lama Dashboard</span>
+                </h1>
+                
+                <div class="flex items-center gap-4">
+                    <div class="text-sm text-gray-500" aria-live="polite">
+                        Last Updated: <span x-text="lastUpdated"></span>
                     </div>
-                    <div class="flex items-center space-x-4">
-                        <div class="text-sm text-gray-500">
-                            Last Updated: <span x-text="lastUpdated"></span>
-                        </div>
-                        <div class="text-sm text-gray-700" x-show="userRole">
-                            Welcome, <span class="font-medium capitalize" x-text="userRole"></span>
-                        </div>
-                        <button 
-                            @click="refreshStats()"
-                            class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition-colors"
-                        >
-                            <i class="fas fa-sync-alt mr-2"></i>
-                            Refresh
-                        </button>
-                        <button 
-                            @click="logout()"
-                            class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg transition-colors"
-                        >
-                            <i class="fas fa-sign-out-alt mr-2"></i>
-                            Logout
-                        </button>
+                    <div class="text-sm text-gray-700" x-show="userRole" aria-live="polite">
+                        Welcome, <span class="font-medium capitalize" x-text="userRole"></span>
                     </div>
+                    <button 
+                        @click="refreshStats()"
+                        :disabled="isLoading"
+                        :aria-busy="isLoading.toString()"
+                        class="btn btn-primary"
+                        aria-describedby="refresh-help"
+                    >
+                        <i class="fas fa-sync-alt" :class="{'animate-spin': isLoading}" aria-hidden="true"></i>
+                        <span x-show="!isLoading">Refresh</span>
+                        <span x-show="isLoading" class="sr-only">Refreshing data...</span>
+                    </button>
+                    <div id="refresh-help" class="sr-only">Updates all dashboard statistics and module data</div>
+                    
+                    <button 
+                        @click="logout()"
+                        class="btn btn-secondary"
+                        aria-label="Sign out of dashboard"
+                    >
+                        <i class="fas fa-sign-out-alt" aria-hidden="true"></i>
+                        Logout
+                    </button>
                 </div>
             </div>
         </header>
 
         <!-- Main Content -->
-        <main class="max-w-7xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
+        <main id="main-content" class="container" role="main">
             <!-- Welcome Section -->
             <div class="mb-12">
                 <h2 class="text-2xl font-bold text-gray-900 mb-4">Welcome to the Integrated Management System</h2>
@@ -58,153 +64,172 @@
             </div>
 
             <!-- Stats Overview -->
-            <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-12">
-                <!-- Quotes Card -->
-                <div class="stat-card p-6 rounded-lg text-white bg-gradient-to-r from-blue-500 to-purple-600">
-                    <div class="flex items-center justify-between">
-                        <div>
-                            <p class="text-blue-100 text-sm">Total Quotes</p>
-                            <p class="text-3xl font-bold" x-text="overview.quotes?.total || stats.quotes"></p>
-                            <p class="text-sm text-blue-200 mt-1" x-show="overview.quotes" x-text="`${overview.quotes?.pending || 0} pending`"></p>
+            <section aria-labelledby="stats-heading">
+                <h2 id="stats-heading" class="sr-only">Dashboard Statistics Overview</h2>
+                <div class="grid grid-2 md:grid-4 gap-6 mb-12">
+                    <!-- Quotes Card -->
+                    <div class="card" role="region" aria-labelledby="quotes-stat">
+                        <div class="card-body flex items-center justify-between">
+                            <div>
+                                <h3 id="quotes-stat" class="text-sm font-medium text-gray-600">Total Quotes</h3>
+                                <p class="text-3xl font-bold text-quotes-primary" x-text="overview.quotes?.total || stats.quotes" aria-live="polite"></p>
+                                <p class="text-sm text-gray-500 mt-1" x-show="overview.quotes" x-text="`${overview.quotes?.pending || 0} pending`"></p>
+                            </div>
+                            <i class="fas fa-file-invoice-dollar text-4xl text-quotes-secondary" aria-hidden="true"></i>
                         </div>
-                        <i class="fas fa-file-invoice-dollar text-4xl text-blue-200"></i>
+                    </div>
+                    
+                    <!-- Activity Card -->
+                    <div class="card" role="region" aria-labelledby="activity-stat">
+                        <div class="card-body flex items-center justify-between">
+                            <div>
+                                <h3 id="activity-stat" class="text-sm font-medium text-gray-600">Recent Activity</h3>
+                                <p class="text-3xl font-bold text-logs-primary" x-text="overview.activity?.recent || stats.userActions" aria-live="polite"></p>
+                                <p class="text-sm text-gray-500 mt-1" x-show="overview.activity" x-text="`${(overview.activity?.logs || 0).toLocaleString()} total logs`"></p>
+                            </div>
+                            <i class="fas fa-history text-4xl text-logs-secondary" aria-hidden="true"></i>
+                        </div>
+                    </div>
+                    
+                    <!-- Products Card -->
+                    <div class="card" role="region" aria-labelledby="products-stat">
+                        <div class="card-body flex items-center justify-between">
+                            <div>
+                                <h3 id="products-stat" class="text-sm font-medium text-gray-600">Products</h3>
+                                <p class="text-3xl font-bold text-catalog-primary" x-text="(overview.products?.total || stats.products).toLocaleString()" aria-live="polite"></p>
+                                <p class="text-sm text-gray-500 mt-1" x-show="overview.products" x-text="`${overview.products?.categories || 0} categories`"></p>
+                            </div>
+                            <i class="fas fa-boxes text-4xl text-catalog-secondary" aria-hidden="true"></i>
+                        </div>
+                    </div>
+                    
+                    <!-- Sales Card -->
+                    <div class="card" role="region" aria-labelledby="sales-stat">
+                        <div class="card-body flex items-center justify-between">
+                            <div>
+                                <h3 id="sales-stat" class="text-sm font-medium text-gray-600">Monthly Revenue</h3>
+                                <p class="text-2xl font-bold text-sales-primary" x-text="formatCurrency(overview.sales?.monthly || stats.salesRevenue)" aria-live="polite"></p>
+                                <p class="text-sm text-gray-500 mt-1" x-show="overview.sales" x-text="`${(overview.sales?.orders || 0).toLocaleString()} orders (${overview.sales?.source || 'Unknown'})`"></p>
+                            </div>
+                            <i class="fas fa-chart-line text-4xl text-sales-secondary" aria-hidden="true"></i>
+                        </div>
                     </div>
                 </div>
-                
-                <!-- Activity Card -->
-                <div class="stat-card p-6 rounded-lg text-white bg-gradient-to-r from-pink-500 to-red-500">
-                    <div class="flex items-center justify-between">
-                        <div>
-                            <p class="text-pink-100 text-sm">Recent Activity</p>
-                            <p class="text-3xl font-bold" x-text="overview.activity?.recent || stats.userActions"></p>
-                            <p class="text-sm text-pink-200 mt-1" x-show="overview.activity" x-text="`${(overview.activity?.logs || 0).toLocaleString()} total logs`"></p>
-                        </div>
-                        <i class="fas fa-history text-4xl text-pink-200"></i>
-                    </div>
-                </div>
-                
-                <!-- Products Card -->
-                <div class="stat-card p-6 rounded-lg text-white bg-gradient-to-r from-cyan-500 to-blue-500">
-                    <div class="flex items-center justify-between">
-                        <div>
-                            <p class="text-cyan-100 text-sm">Products</p>
-                            <p class="text-3xl font-bold" x-text="(overview.products?.total || stats.products).toLocaleString()"></p>
-                            <p class="text-sm text-cyan-200 mt-1" x-show="overview.products" x-text="`${overview.products?.categories || 0} categories`"></p>
-                        </div>
-                        <i class="fas fa-boxes text-4xl text-cyan-200"></i>
-                    </div>
-                </div>
-                
-                <!-- Sales Card -->
-                <div class="stat-card p-6 rounded-lg text-white bg-gradient-to-r from-green-500 to-teal-500">
-                    <div class="flex items-center justify-between">
-                        <div>
-                            <p class="text-green-100 text-sm">Monthly Revenue</p>
-                            <p class="text-2xl font-bold" x-text="formatCurrency(overview.sales?.monthly || stats.salesRevenue)"></p>
-                            <p class="text-sm text-green-200 mt-1" x-show="overview.sales" x-text="`${(overview.sales?.orders || 0).toLocaleString()} orders (${overview.sales?.source || 'Unknown'})`"></p>
-                        </div>
-                        <i class="fas fa-chart-line text-4xl text-green-200"></i>
-                    </div>
-                </div>
-            </div>
+            </section>
 
-            <!-- Module Cards -->
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-6 mb-12">
-                <!-- Quotes Module -->
-                <div class="gradient-card quotes rounded-xl p-8 text-white cursor-pointer" 
-                     style="background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%) !important; color: white !important;"
-                     @click="navigateToModule('quotes')"
-                     x-show="canAccessModule('quotes')">
-                    <div class="text-center">
-                        <i class="fas fa-file-invoice-dollar text-6xl mb-6"></i>
-                        <h3 class="text-2xl font-bold mb-4">Quote Management</h3>
-                        <p class="text-sm opacity-90 mb-6">Create, manage, and track customer quotes and invoices</p>
-                        <div class="bg-white bg-opacity-20 rounded-lg p-3 mb-4">
-                            <div class="text-sm opacity-75">Active Quotes</div>
-                            <div class="text-2xl font-bold" x-text="stats.quotes"></div>
+            <!-- Module Navigation -->
+            <section aria-labelledby="modules-heading">
+                <h2 id="modules-heading" class="text-2xl font-bold text-gray-900 mb-6">Business Modules</h2>
+                <div class="grid grid-2 md:grid-3 lg:grid-4 xl:grid-5 gap-6 mb-12">
+                    <!-- Quotes Module -->
+                    <a href="/quotes/" 
+                       class="module-card quotes"
+                       x-show="canAccessModule('quotes')"
+                       role="button"
+                       tabindex="0"
+                       aria-describedby="quotes-description"
+                       @click.prevent="navigateToModule('quotes')"
+                       @keydown.enter.prevent="navigateToModule('quotes')"
+                       @keydown.space.prevent="navigateToModule('quotes')">
+                        <i class="module-icon fas fa-file-invoice-dollar" aria-hidden="true"></i>
+                        <h3 class="module-title">Quote Management</h3>
+                        <p id="quotes-description" class="module-description">
+                            Create, manage, and track customer quotes and invoices. Generate PDFs and manage client relationships.
+                        </p>
+                        <div class="mt-4 p-3 bg-gray-100 rounded-lg">
+                            <div class="text-sm text-gray-600">Active Quotes</div>
+                            <div class="text-xl font-bold text-gray-900" x-text="stats.quotes" aria-live="polite"></div>
                         </div>
-                        <button class="bg-white bg-opacity-20 hover:bg-opacity-30 px-6 py-2 rounded-lg transition-all">
-                            Open Module
-                        </button>
-                    </div>
-                </div>
+                    </a>
 
-                <!-- User Logs Module -->
-                <div class="gradient-card logs rounded-xl p-8 text-white cursor-pointer"
-                     style="background: linear-gradient(135deg, #ec4899 0%, #ef4444 100%) !important; color: white !important;"
-                     @click="navigateToModule('logs')"
-                     x-show="canAccessModule('logs')">
-                    <div class="text-center">
-                        <i class="fas fa-user-edit text-6xl mb-6"></i>
-                        <h3 class="text-2xl font-bold mb-4">User Activity Logs</h3>
-                        <p class="text-sm opacity-90 mb-6">Monitor and audit user actions and system changes</p>
-                        <div class="bg-white bg-opacity-20 rounded-lg p-3 mb-4">
-                            <div class="text-sm opacity-75">Recent Actions</div>
-                            <div class="text-2xl font-bold" x-text="stats.userActions"></div>
+                    <!-- User Logs Module -->
+                    <a href="/logs/" 
+                       class="module-card logs"
+                       x-show="canAccessModule('logs')"
+                       role="button"
+                       tabindex="0"
+                       aria-describedby="logs-description"
+                       @click.prevent="navigateToModule('logs')"
+                       @keydown.enter.prevent="navigateToModule('logs')"
+                       @keydown.space.prevent="navigateToModule('logs')">
+                        <i class="module-icon fas fa-user-edit" aria-hidden="true"></i>
+                        <h3 class="module-title">User Activity Logs</h3>
+                        <p id="logs-description" class="module-description">
+                            Monitor and audit user actions and system changes. Track security events and user behavior.
+                        </p>
+                        <div class="mt-4 p-3 bg-gray-100 rounded-lg">
+                            <div class="text-sm text-gray-600">Recent Actions</div>
+                            <div class="text-xl font-bold text-gray-900" x-text="stats.userActions" aria-live="polite"></div>
                         </div>
-                        <button class="bg-white bg-opacity-20 hover:bg-opacity-30 px-6 py-2 rounded-lg transition-all">
-                            Open Module
-                        </button>
-                    </div>
-                </div>
+                    </a>
 
-                <!-- Catalog Module -->
-                <div class="gradient-card catalog rounded-xl p-8 text-white cursor-pointer"
-                     style="background: linear-gradient(135deg, #0ea5e9 0%, #06b6d4 100%) !important; color: white !important;"
-                     @click="navigateToModule('catalog')"
-                     x-show="canAccessModule('catalog')">
-                    <div class="text-center">
-                        <i class="fas fa-boxes text-6xl mb-6"></i>
-                        <h3 class="text-2xl font-bold mb-4">Catalog Management</h3>
-                        <p class="text-sm opacity-90 mb-6">Automated product catalog sync and management</p>
-                        <div class="bg-white bg-opacity-20 rounded-lg p-3 mb-4">
-                            <div class="text-sm opacity-75">Total Products</div>
-                            <div class="text-2xl font-bold" x-text="stats.products"></div>
+                    <!-- Catalog Module -->
+                    <a href="/catalog/" 
+                       class="module-card catalog"
+                       x-show="canAccessModule('catalog')"
+                       role="button"
+                       tabindex="0"
+                       aria-describedby="catalog-description"
+                       @click.prevent="navigateToModule('catalog')"
+                       @keydown.enter.prevent="navigateToModule('catalog')"
+                       @keydown.space.prevent="navigateToModule('catalog')">
+                        <i class="module-icon fas fa-boxes" aria-hidden="true"></i>
+                        <h3 class="module-title">Catalog Management</h3>
+                        <p id="catalog-description" class="module-description">
+                            Automated product catalog sync and management. Compare ERP vs PIM data and analyze inventory.
+                        </p>
+                        <div class="mt-4 p-3 bg-gray-100 rounded-lg">
+                            <div class="text-sm text-gray-600">Total Products</div>
+                            <div class="text-xl font-bold text-gray-900" x-text="stats.products.toLocaleString()" aria-live="polite"></div>
                         </div>
-                        <button class="bg-white bg-opacity-20 hover:bg-opacity-30 px-6 py-2 rounded-lg transition-all">
-                            Open Module
-                        </button>
-                    </div>
-                </div>
+                    </a>
 
-                <!-- Sales Analytics Module -->
-                <div class="gradient-card sales rounded-xl p-8 text-white cursor-pointer"
-                     style="background: linear-gradient(135deg, #10b981 0%, #059669 100%) !important; color: white !important;"
-                     @click="navigateToModule('sales')"
-                     x-show="canAccessModule('sales')">
-                    <div class="text-center">
-                        <i class="fas fa-chart-line text-6xl mb-6"></i>
-                        <h3 class="text-2xl font-bold mb-4">Sales Analytics</h3>
-                        <p class="text-sm opacity-90 mb-6">Real-time sales metrics and performance analysis</p>
-                        <div class="bg-white bg-opacity-20 rounded-lg p-3 mb-4">
-                            <div class="text-sm opacity-75">Today's Revenue</div>
-                            <div class="text-2xl font-bold" x-text="formatCurrency(stats.salesRevenue)"></div>
+                    <!-- Sales Analytics Module -->
+                    <a href="/sales/" 
+                       class="module-card sales"
+                       x-show="canAccessModule('sales')"
+                       role="button"
+                       tabindex="0"
+                       aria-describedby="sales-description"
+                       @click.prevent="navigateToModule('sales')"
+                       @keydown.enter.prevent="navigateToModule('sales')"
+                       @keydown.space.prevent="navigateToModule('sales')">
+                        <i class="module-icon fas fa-chart-line" aria-hidden="true"></i>
+                        <h3 class="module-title">Sales Analytics</h3>
+                        <p id="sales-description" class="module-description">
+                            Real-time sales metrics and performance analysis. Track revenue, orders, and customer insights.
+                        </p>
+                        <div class="mt-4 p-3 bg-gray-100 rounded-lg">
+                            <div class="text-sm text-gray-600">Monthly Revenue</div>
+                            <div class="text-xl font-bold text-gray-900" x-text="formatCurrency(stats.salesRevenue)" aria-live="polite"></div>
                         </div>
-                        <button class="bg-white bg-opacity-20 hover:bg-opacity-30 px-6 py-2 rounded-lg transition-all">
-                            Open Module
-                        </button>
-                    </div>
-                </div>
+                    </a>
 
-                <!-- System Monitoring Module -->
-                <div class="gradient-card monitoring rounded-xl p-8 text-white cursor-pointer"
-                     style="background: linear-gradient(135deg, #374151 0%, #6b7280 100%) !important; color: white !important;"
-                     @click="navigateToModule('monitoring')"
-                     x-show="canAccessModule('monitoring')">
-                    <div class="text-center">
-                        <i class="fas fa-heartbeat text-6xl mb-6"></i>
-                        <h3 class="text-2xl font-bold mb-4">System Monitor</h3>
-                        <p class="text-sm opacity-90 mb-6">Real-time system health and application monitoring</p>
-                        <div class="bg-white bg-opacity-20 rounded-lg p-3 mb-4">
-                            <div class="text-sm opacity-75">System Status</div>
-                            <div class="text-2xl font-bold" x-text="systemStatus.toUpperCase()"></div>
+                    <!-- System Monitoring Module -->
+                    <a href="/monitoring/" 
+                       class="module-card monitoring"
+                       x-show="canAccessModule('monitoring')"
+                       role="button"
+                       tabindex="0"
+                       aria-describedby="monitoring-description"
+                       @click.prevent="navigateToModule('monitoring')"
+                       @keydown.enter.prevent="navigateToModule('monitoring')"
+                       @keydown.space.prevent="navigateToModule('monitoring')">
+                        <i class="module-icon fas fa-heartbeat" aria-hidden="true"></i>
+                        <h3 class="module-title">System Monitor</h3>
+                        <p id="monitoring-description" class="module-description">
+                            Real-time system health and application monitoring. Track performance metrics and errors.
+                        </p>
+                        <div class="mt-4 p-3 bg-gray-100 rounded-lg">
+                            <div class="text-sm text-gray-600">System Status</div>
+                            <div class="text-xl font-bold" 
+                                 :class="systemStatus === 'healthy' ? 'text-green-600' : 'text-red-600'" 
+                                 x-text="systemStatus.toUpperCase()" 
+                                 aria-live="polite"></div>
                         </div>
-                        <button class="bg-white bg-opacity-20 hover:bg-opacity-30 px-6 py-2 rounded-lg transition-all">
-                            Open Monitor
-                        </button>
-                    </div>
+                    </a>
                 </div>
-            </div>
+            </section>
 
             <!-- Quick Actions -->
             <div class="bg-white rounded-lg shadow-sm p-6">
@@ -243,6 +268,17 @@
                 </div>
             </div>
         </main>
+        
+        <!-- Live Region for Announcements -->
+        <div aria-live="assertive" aria-atomic="true" class="sr-only" x-text="announcement"></div>
+        
+        <!-- Loading Overlay -->
+        <div x-show="isLoading" class="fixed inset-0 bg-black bg-opacity-25 flex items-center justify-center z-50" aria-hidden="true">
+            <div class="bg-white rounded-lg p-6 flex items-center gap-3">
+                <div class="animate-spin w-6 h-6 border-2 border-primary-200 border-t-primary-600 rounded-full" role="status" aria-label="Loading"></div>
+                <span class="text-gray-700">Loading dashboard data...</span>
+            </div>
+        </div>
     </div>
 
     <script>
