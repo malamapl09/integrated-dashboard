@@ -15,4 +15,12 @@ router.use(authMiddleware.authenticate());
 router.get('/stats', dashboardController.getStats.bind(dashboardController));
 router.get('/overview', dashboardController.getOverview.bind(dashboardController));
 
+// Dashboard insights and analytics
+router.get('/insights', dashboardController.getInsights.bind(dashboardController));
+router.get('/activity', dashboardController.getActivityStream.bind(dashboardController));
+router.get('/alerts', dashboardController.getSystemAlerts.bind(dashboardController));
+
+// Dashboard export functionality
+router.get('/export/:type', dashboardController.exportReport.bind(dashboardController));
+
 module.exports = router;

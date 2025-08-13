@@ -22,6 +22,9 @@ router.post('/clients', quotesController.createClient.bind(quotesController));
 // Product search route
 router.get('/products', quotesController.searchProducts.bind(quotesController));
 
+// Quote reminder functionality
+router.post('/send-reminders', quotesController.sendQuoteReminders.bind(quotesController));
+
 // Quote by ID routes (must come after specific routes to avoid conflicts)
 router.get('/:id', quotesController.getQuoteById.bind(quotesController));
 router.put('/:id', quotesController.updateQuote.bind(quotesController));

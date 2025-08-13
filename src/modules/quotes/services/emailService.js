@@ -556,6 +556,69 @@ class EmailService {
       throw new Error(`Failed to send test email: ${error.message}`);
     }
   }
+
+  /**
+   * Send email with template support for quote reminders
+   */
+  async sendEmail(emailData) {
+    if (!this.isConfigured()) {
+      throw new Error('Email service is not configured. Please check SMTP settings.');
+    }
+
+    const fromEmail = process.env.SMTP_FROM || process.env.SMTP_USER;
+    const companyName = process.env.COMPANY_NAME || 'Plaza Lama, S.A.';
+
+    let mailOptions = {
+      from: {
+        name: emailData.data?.createdByName || companyName,
+        address: emailData.data?.createdByEmail || fromEmail
+      },
+      to: emailData.to,
+      subject: emailData.subject
+    };
+
+    // Handle different template types
+    if (emailData.template === 'quote_reminder') {
+      const { clientName, quoteNumber, total, validUntil, daysUntilExpiry } = emailData.data;
+      
+      mailOptions.html = `
+        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
+          <h2 style="color: #1D3F87;">Recordatorio de Cotización</h2>
+          <p>Estimado/a ${clientName},</p>
+          <p>Le recordamos que su cotización <strong>#${quoteNumber}</strong> por valor de <strong>$${parseFloat(total).toFixed(2)}</strong> 
+             ${daysUntilExpiry === 1 ? 'vence mañana' : `vence en ${daysUntilExpiry} días`} (${new Date(validUntil).toLocaleDateString('es-ES')}).</p>
+          <p>Para proceder con su orden o si tiene alguna pregunta, no dude en contactarnos.</p>
+          <div style="margin: 20px 0; padding: 15px; background: #f8f9fa; border-radius: 5px;">
+            <h4 style="margin: 0 0 10px 0;">Detalles de la Cotización:</h4>
+            <p><strong>Número:</strong> ${quoteNumber}<br>
+               <strong>Total:</strong> $${parseFloat(total).toFixed(2)}<br>
+               <strong>Válida hasta:</strong> ${new Date(validUntil).toLocaleDateString('es-ES')}</p>
+          </div>
+          <p>Saludos cordiales,<br>${companyName}</p>
+        </div>
+      `;
+      
+      mailOptions.text = `Recordatorio de Cotización\n\nEstimado/a ${clientName},\n\nLe recordamos que su cotización #${quoteNumber} por valor de $${parseFloat(total).toFixed(2)} ${daysUntilExpiry === 1 ? 'vence mañana' : `vence en ${daysUntilExpiry} días`} (${new Date(validUntil).toLocaleDateString('es-ES')}).\n\nPara proceder con su orden o si tiene alguna pregunta, no dude en contactarnos.\n\nDetalles:\nNúmero: ${quoteNumber}\nTotal: $${parseFloat(total).toFixed(2)}\nVálida hasta: ${new Date(validUntil).toLocaleDateString('es-ES')}\n\nSaludos cordiales,\n${companyName}`;
+    } else {
+      // Generic template
+      mailOptions.html = `<div style="font-family: Arial, sans-serif; padding: 20px;">${emailData.message || 'Email content'}</div>`;
+      mailOptions.text = emailData.message || 'Email content';
+    }
+
+    try {
+      const info = await this.transporter.sendMail(mailOptions);
+      console.log('Template email sent successfully:', info.messageId);
+      return {
+        success: true,
+        messageId: info.messageId,
+        response: info.response,
+        recipient: emailData.to
+      };
+    } catch (error) {
+      console.error('Failed to send template email:', error);
+      throw new Error(`Failed to send email: ${error.message}`);
+    }
+  }
 }
 
 module.exports = new EmailService();

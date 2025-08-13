@@ -356,6 +356,121 @@ class QuotesController {
       });
     }
   }
+
+  /**
+   * Send reminder emails for expiring quotes
+   */
+  async sendQuoteReminders(req, res) {
+    try {
+      // Get quotes expiring in the next 3 days
+      const [expiringQuotes] = await this.db.execute(`
+        SELECT q.*, c.name as client_name, c.email as client_email,
+               u.first_name || ' ' || u.last_name as created_by_name,
+               u.email as created_by_email
+        FROM quotes q
+        JOIN clients c ON q.client_id = c.id
+        LEFT JOIN users u ON q.created_by = u.id
+        WHERE q.status = 'draft' 
+        AND q.valid_until IS NOT NULL
+        AND q.valid_until <= date('now', '+3 days')
+        AND q.valid_until >= date('now')
+      `);
+
+      if (expiringQuotes.length === 0) {
+        return res.json({
+          success: true,
+          message: 'No expiring quotes found',
+          data: {
+            sent: 0,
+            quotes: []
+          }
+        });
+      }
+
+      const emailService = require('./services/emailService');
+      const sentReminders = [];
+      let successCount = 0;
+      let errorCount = 0;
+
+      // Send reminder for each expiring quote
+      for (const quote of expiringQuotes) {
+        try {
+          const daysUntilExpiry = Math.ceil((new Date(quote.valid_until) - new Date()) / (1000 * 60 * 60 * 24));
+          
+          const emailData = {
+            to: quote.client_email,
+            subject: `Reminder: Quote #${quote.quote_number} expires ${daysUntilExpiry === 1 ? 'tomorrow' : `in ${daysUntilExpiry} days`}`,
+            template: 'quote_reminder',
+            data: {
+              clientName: quote.client_name,
+              quoteNumber: quote.quote_number,
+              total: quote.total,
+              validUntil: quote.valid_until,
+              daysUntilExpiry: daysUntilExpiry,
+              createdByName: quote.created_by_name || 'Plaza Lama',
+              createdByEmail: quote.created_by_email || process.env.EMAIL_FROM || 'no-reply@plazalama.com'
+            }
+          };
+
+          await emailService.sendEmail(emailData);
+          
+          sentReminders.push({
+            quote_id: quote.id,
+            quote_number: quote.quote_number,
+            client_name: quote.client_name,
+            client_email: quote.client_email,
+            expires_in_days: daysUntilExpiry,
+            status: 'sent'
+          });
+          
+          successCount++;
+        } catch (emailError) {
+          console.error(`Failed to send reminder for quote ${quote.quote_number}:`, emailError);
+          
+          sentReminders.push({
+            quote_id: quote.id,
+            quote_number: quote.quote_number,
+            client_name: quote.client_name,
+            client_email: quote.client_email,
+            expires_in_days: daysUntilExpiry,
+            status: 'failed',
+            error: emailError.message
+          });
+          
+          errorCount++;
+        }
+      }
+
+      // Log the reminder activity
+      const loggingService = require('../../shared/services/loggingService');
+      await loggingService.info('Quote reminders sent', {
+        user_id: req.user.id,
+        user_name: `${req.user.first_name} ${req.user.last_name}`,
+        total_quotes: expiringQuotes.length,
+        success_count: successCount,
+        error_count: errorCount,
+        action: 'send_quote_reminders'
+      });
+
+      res.json({
+        success: true,
+        message: `Sent ${successCount} reminder(s) successfully${errorCount > 0 ? `, ${errorCount} failed` : ''}`,
+        data: {
+          sent: successCount,
+          failed: errorCount,
+          total: expiringQuotes.length,
+          reminders: sentReminders
+        }
+      });
+
+    } catch (error) {
+      console.error('Error sending quote reminders:', error);
+      res.status(500).json({
+        success: false,
+        message: error.message || 'Failed to send quote reminders'
+      });
+    }
+  }
 }
 
 module.exports = QuotesController;

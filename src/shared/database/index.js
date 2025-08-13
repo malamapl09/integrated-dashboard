@@ -182,7 +182,7 @@ const database = {
 async function createDefaultAdminUser() {
   try {
     const Database = require('better-sqlite3');
-    const db = new Database(path.join(__dirname, '../../data/database.sqlite'));
+    const db = new Database(dbPath);
     
     // Check if any users exist
     const userCount = db.prepare('SELECT COUNT(*) as count FROM users').get();
