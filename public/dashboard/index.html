@@ -481,9 +481,35 @@
                 userRole: 'admin',
                 
                 async init() {
-                    await this.refreshStats();
-                    await this.loadUserRole();
-                    await this.loadSystemStatus();
+                    try {
+                        this.isLoading = true;
+                        console.log('Dashboard: Starting initialization...');
+                        
+                        // Add timeout fallback
+                        const initTimeout = setTimeout(() => {
+                            console.warn('Dashboard: Init timeout - forcing loading state off');
+                            this.isLoading = false;
+                        }, 10000); // 10 second timeout
+                        
+                        console.log('Dashboard: Loading stats...');
+                        await this.refreshStats();
+                        console.log('Dashboard: Stats loaded');
+                        
+                        console.log('Dashboard: Loading user role...');
+                        await this.loadUserRole();
+                        console.log('Dashboard: User role loaded');
+                        
+                        console.log('Dashboard: Loading system status...');
+                        await this.loadSystemStatus();
+                        console.log('Dashboard: System status loaded');
+                        
+                        clearTimeout(initTimeout);
+                        this.isLoading = false;
+                        console.log('Dashboard: Initialization complete');
+                    } catch (error) {
+                        console.error('Dashboard init error:', error);
+                        this.isLoading = false;
+                    }
                 },
                 
                 // Enhanced Dashboard Functions
@@ -587,7 +613,10 @@
 
                 async refreshStats() {
                     try {
-                        this.loading = true;
+                        // Only set loading if not already set by init()
+                        if (!this.isLoading) {
+                            this.isLoading = true;
+                        }
                         
                         // Fetch comprehensive dashboard overview
                         const token = localStorage.getItem('token') || sessionStorage.getItem('token');
@@ -625,11 +654,14 @@
                         }
                         
                         this.lastUpdated = new Date().toLocaleString();
-                        this.loading = false;
                         
                     } catch (error) {
                         console.error('Error refreshing stats:', error);
-                        this.loading = false;
+                        // Only set loading false if we're not in init (init handles it)
+                        if (this.isLoading) {
+                            this.isLoading = false;
+                        }
+                        throw error; // Re-throw so init() can handle it
                     }
                 },
                 

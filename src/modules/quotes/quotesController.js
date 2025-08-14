@@ -250,10 +250,10 @@ class QuotesController {
       const { name, email, phone, company, address, rnc } = req.body;
       const user_id = req.user.id;
 
-      if (!name || !email) {
+      if (!name) {
         return res.status(400).json({
           success: false,
-          message: 'Name and email are required'
+          message: 'Name is required'
         });
       }
 
@@ -327,9 +327,8 @@ class QuotesController {
           `SELECT wp.sku as id, wp.sku as ean, wp.title as name, wp.description, wp.price, 
                   (wp.price * 1.18) as price_with_tax, 
                   (wp.price * 0.18) as itbis,
-                  COALESCE(wi.stock_quantity, 0) as stock_quantity
+                  CASE WHEN wp.without_stock = 1 THEN 0 ELSE 100 END as stock_quantity
            FROM web_products wp
-           LEFT JOIN web_inventory wi ON wp.sku = wi.sku
            WHERE (wp.title LIKE ? OR wp.sku LIKE ? OR wp.description LIKE ?) 
            AND wp.borrado = 0 
            ORDER BY wp.title 

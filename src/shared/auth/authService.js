@@ -15,12 +15,13 @@ class AuthService {
       const { username, email, password, firstName, lastName, role = 'user', createdBy = null } = userData;
 
       // Check if user already exists
-      const [existingUsers] = await this.db.execute(
+      const existingResult = await this.db.execute(
         'SELECT id FROM users WHERE username = ? OR email = ?',
         [username, email]
       );
+      const existingUsers = existingResult[0];
 
-      if (existingUsers.length > 0) {
+      if (existingUsers && existingUsers.length > 0) {
         throw new Error('User with this username or email already exists');
       }
 
@@ -55,17 +56,19 @@ class AuthService {
   async login(username, password, ipAddress = null, userAgent = null) {
     try {
       // Find user by username or email
-      const [users] = await this.db.execute(
+      const result = await this.db.execute(
         'SELECT * FROM users WHERE (username = ? OR email = ?) AND active = 1',
         [username, username]
       );
 
-      if (users.length === 0) {
+      // SQLite returns [rows_array, metadata] format
+      const users = result[0];
+      
+      if (!users || users.length === 0) {
         throw new Error('Invalid username or password');
       }
 
       const user = users[0];
-
       // Check if user is locked
       if (user.locked_until && new Date(user.locked_until) > new Date()) {
         throw new Error('Account is temporarily locked due to failed login attempts');

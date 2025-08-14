@@ -18,11 +18,11 @@ if (!fs.existsSync(dataDir)) {
   fs.mkdirSync(dataDir, { recursive: true });
 }
 
-// Create SQLite connection pool
+// Create SQLite connection pool with more conservative settings to avoid I/O errors
 const sqlitePool = new SQLiteConnectionPool(dbPath, {
-  maxConnections: 15,
-  idleTimeout: 30000,
-  busyTimeout: 30000
+  maxConnections: 1,  // Reduce to single connection to avoid locking issues
+  idleTimeout: 10000,
+  busyTimeout: 10000
 });
 
 // MySQL Configuration (for PIM/products and user logs)
@@ -258,7 +258,7 @@ async function initializeSQLiteDatabase() {
       CREATE TABLE IF NOT EXISTS clients (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         name TEXT NOT NULL,
-        email TEXT NOT NULL,
+        email TEXT,
         phone TEXT,
         company TEXT,
         address TEXT,

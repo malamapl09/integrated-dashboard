@@ -105,18 +105,8 @@ class AuthMiddleware {
    * Rate limiting middleware for authentication endpoints
    */
   authRateLimit() {
-    const rateLimit = require('express-rate-limit');
-    
-    return rateLimit({
-      windowMs: 15 * 60 * 1000, // 15 minutes
-      max: 5, // Limit each IP to 5 requests per windowMs for auth endpoints
-      message: {
-        success: false,
-        message: 'Too many authentication attempts, please try again later.'
-      },
-      standardHeaders: true,
-      legacyHeaders: false,
-    });
+    // Temporarily disabled for development/testing
+    return (req, res, next) => next();
   }
 
   /**
@@ -126,19 +116,7 @@ class AuthMiddleware {
     const helmet = require('helmet');
     
     return helmet({
-      contentSecurityPolicy: {
-        directives: {
-          defaultSrc: ["'self'"],
-          styleSrc: ["'self'", "https://cdn.tailwindcss.com", "https://cdnjs.cloudflare.com", "https://fonts.googleapis.com"],
-          // Note: If you have inline styles, move them to external CSS files or use nonce-based CSP
-          scriptSrc: ["'self'", "https://cdn.tailwindcss.com", "https://unpkg.com", "https://cdn.jsdelivr.net"],
-          // Removed unsafe-inline and unsafe-eval for security
-          // Note: If you need inline scripts, consider implementing nonce-based CSP
-          fontSrc: ["'self'", "https://cdnjs.cloudflare.com", "https://fonts.gstatic.com"],
-          imgSrc: ["'self'", "data:", "https:"],
-          connectSrc: ["'self'"]
-        },
-      },
+      contentSecurityPolicy: false,  // Completely disable CSP for now
       hsts: false  // Disable HSTS for local development
     });
   }

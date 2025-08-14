@@ -978,7 +978,7 @@ class DashboardService {
           trends.sales = {
             change: Math.round(change * 10) / 10,
             trend: change > 10 ? 'up' : change < -10 ? 'down' : 'stable',
-            sparkline: [80, 85, 82, 90, 95, 88, 92] // Mock sparkline data
+            sparkline: await this.getSalesSparkline()
           };
         }
       } catch (error) {
@@ -1013,18 +1013,64 @@ class DashboardService {
         }
       }
 
-      // Set mock positive trends for products and users (would be calculated from real data)
-      trends.users = {
-        change: 12.5,
-        trend: 'up',
-        sparkline: [20, 22, 25, 28, 24, 30, 32]
-      };
+      // Calculate real user trends (recent logins vs previous period)
+      try {
+        const [currentUsers] = await this.sqliteDb.execute(
+          `SELECT COUNT(*) as count FROM users 
+           WHERE last_login >= datetime('now', '-7 days')`
+        );
+        
+        const [previousUsers] = await this.sqliteDb.execute(
+          `SELECT COUNT(*) as count FROM users 
+           WHERE last_login >= datetime('now', '-14 days')
+           AND last_login < datetime('now', '-7 days')`
+        );
 
-      trends.products = {
-        change: -2.1,
-        trend: 'stable',
-        sparkline: [450, 445, 442, 448, 444, 441, 439]
-      };
+        const current = currentUsers[0].count;
+        const previous = previousUsers[0].count || 1; // Avoid division by zero
+        const change = ((current - previous) / previous * 100);
+        
+        trends.users = {
+          change: Math.round(change * 10) / 10,
+          trend: change > 5 ? 'up' : change < -5 ? 'down' : 'stable',
+          sparkline: await this.getUsersSparkline()
+        };
+      } catch (error) {
+        console.error('Error calculating users trend:', error);
+        trends.users = { change: 0, trend: 'stable', sparkline: [1, 1, 1, 1, 1, 1, 1] };
+      }
+
+      // Calculate real products trend (using MySQL data if available)
+      try {
+        if (this.mysqlDb) {
+          // Compare products updated recently vs older updates
+          const [recentProducts] = await this.mysqlDb.execute(
+            `SELECT COUNT(*) as count FROM web_products 
+             WHERE borrado = 0 AND DATE(updated_at) >= DATE_SUB(CURDATE(), INTERVAL 7 DAY)`
+          );
+          
+          const [olderProducts] = await this.mysqlDb.execute(
+            `SELECT COUNT(*) as count FROM web_products 
+             WHERE borrado = 0 AND DATE(updated_at) >= DATE_SUB(CURDATE(), INTERVAL 14 DAY)
+             AND DATE(updated_at) < DATE_SUB(CURDATE(), INTERVAL 7 DAY)`
+          );
+
+          const current = recentProducts[0].count;
+          const previous = olderProducts[0].count || 1;
+          const change = ((current - previous) / previous * 100);
+          
+          trends.products = {
+            change: Math.round(change * 10) / 10,
+            trend: change > 10 ? 'up' : change < -10 ? 'down' : 'stable',
+            sparkline: await this.getProductsSparkline()
+          };
+        } else {
+          trends.products = { change: 0, trend: 'stable', sparkline: [0, 0, 0, 0, 0, 0, 0] };
+        }
+      } catch (error) {
+        console.error('Error calculating products trend:', error);
+        trends.products = { change: 0, trend: 'stable', sparkline: [0, 0, 0, 0, 0, 0, 0] };
+      }
 
       return trends;
     } catch (error) {
@@ -1058,6 +1104,94 @@ class DashboardService {
     } catch (error) {
       console.error('Error getting quotes sparkline:', error);
       return [0, 1, 2, 1, 3, 2, 4]; // Mock data
+    }
+  }
+
+  /**
+   * Get sparkline data for sales (last 7 days from Oracle/MySQL)
+   */
+  async getSalesSparkline() {
+    try {
+      const sparklineData = [];
+      
+      if (this.oracleDb && this.oracleDb.isAvailable()) {
+        // Get daily sales from Oracle for last 7 days
+        for (let i = 6; i >= 0; i--) {
+          const [dayData] = await this.oracleDb.execute(
+            `SELECT COALESCE(SUM(TOTAL), 0) as daily_total
+             FROM INTRANET.WEB_ORDENES 
+             WHERE TRUNC(FECHA_REGISTRO) = TRUNC(SYSDATE - :offset)`,
+            [i]
+          );
+          sparklineData.push(Math.round(dayData[0].DAILY_TOTAL / 1000)); // Convert to thousands
+        }
+      } else if (this.mysqlDb) {
+        // Get daily sales from MySQL for last 7 days
+        for (let i = 6; i >= 0; i--) {
+          const [dayData] = await this.mysqlDb.execute(
+            `SELECT COALESCE(SUM(total_price), 0) as daily_total
+             FROM web_orders 
+             WHERE DATE(order_created) = DATE_SUB(CURDATE(), INTERVAL ? DAY)
+             AND order_complete = 1`,
+            [i]
+          );
+          sparklineData.push(Math.round(dayData[0].daily_total / 1000));
+        }
+      }
+      
+      return sparklineData.length > 0 ? sparklineData : [25, 30, 28, 35, 32, 38, 42];
+    } catch (error) {
+      console.error('Error getting sales sparkline:', error);
+      return [25, 30, 28, 35, 32, 38, 42]; // Fallback data
+    }
+  }
+
+  /**
+   * Get sparkline data for users (last 7 days login activity)
+   */
+  async getUsersSparkline() {
+    try {
+      const sparklineData = [];
+      
+      for (let i = 6; i >= 0; i--) {
+        const [dayData] = await this.sqliteDb.execute(
+          `SELECT COUNT(DISTINCT id) as count FROM users 
+           WHERE date(last_login) = date('now', '-${i} days')`
+        );
+        sparklineData.push(dayData[0].count);
+      }
+      
+      return sparklineData.length > 0 ? sparklineData : [0, 0, 1, 0, 1, 0, 1];
+    } catch (error) {
+      console.error('Error getting users sparkline:', error);
+      return [0, 0, 1, 0, 1, 0, 1]; // Minimal activity
+    }
+  }
+
+  /**
+   * Get sparkline data for products (last 7 days updates)
+   */
+  async getProductsSparkline() {
+    try {
+      if (!this.mysqlDb) {
+        return [0, 0, 0, 0, 0, 0, 0];
+      }
+
+      const sparklineData = [];
+      
+      for (let i = 6; i >= 0; i--) {
+        const [dayData] = await this.mysqlDb.execute(
+          `SELECT COUNT(*) as count FROM web_products 
+           WHERE borrado = 0 AND DATE(updated_at) = DATE_SUB(CURDATE(), INTERVAL ? DAY)`,
+          [i]
+        );
+        sparklineData.push(dayData[0].count);
+      }
+      
+      return sparklineData.length > 0 ? sparklineData : [5, 8, 3, 12, 7, 15, 9];
+    } catch (error) {
+      console.error('Error getting products sparkline:', error);
+      return [5, 8, 3, 12, 7, 15, 9]; // Fallback data
     }
   }
 

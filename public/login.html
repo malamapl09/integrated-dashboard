@@ -4,125 +4,66 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login - Plaza Lama Dashboard</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <link href="shared/theme.css" rel="stylesheet">
-    <style>
-        .login-gradient {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        }
-        .glass-card {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.3);
-        }
-    </style>
+    <link href="/css/login.css" rel="stylesheet">
 </head>
-<body class="min-h-screen flex items-center justify-center" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
-    <div class="bg-white rounded-lg shadow-lg w-full max-w-md mx-4 p-8">
-        <div class="text-center mb-8">
-            <i class="fas fa-tachometer-alt text-4xl text-blue-600 mb-4"></i>
-            <h1 class="text-2xl font-bold text-gray-900">Plaza Lama Dashboard</h1>
-            <p class="text-gray-600">Sign in to your account</p>
+<body>
+    <div class="login-container">
+        <!-- Logo -->
+        <div class="logo">
+            <i class="fas fa-tachometer-alt"></i>
         </div>
-
+        
+        <!-- Header -->
+        <div class="header">
+            <h1>Plaza Lama Dashboard</h1>
+            <p>Sign in to your account</p>
+        </div>
+        
+        <!-- Login Form -->
         <form id="loginForm">
-            <div class="mb-6">
-                <label class="block text-sm font-medium text-gray-700 mb-2">Username</label>
-                <input type="text" id="username" class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500" required>
+            <div class="input-group">
+                <label class="form-label">Username</label>
+                <div style="position: relative;">
+                    <i class="fas fa-user input-icon"></i>
+                    <input type="text" id="username" class="input-field" placeholder="Enter your username" required>
+                </div>
             </div>
-
-            <div class="mb-6">
-                <label class="block text-sm font-medium text-gray-700 mb-2">Password</label>
-                <input type="password" id="password" class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500" required>
+            
+            <div class="input-group">
+                <label class="form-label">Password</label>
+                <div style="position: relative;">
+                    <i class="fas fa-lock input-icon"></i>
+                    <input type="password" id="password" class="input-field" placeholder="Enter your password" required>
+                </div>
             </div>
-
-            <div class="mb-6">
-                <label class="flex items-center">
-                    <input type="checkbox" id="rememberMe" class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded mr-2">
-                    <span class="text-sm text-gray-600">Remember me</span>
+            
+            <div class="form-options">
+                <label class="remember-me">
+                    <input type="checkbox" id="rememberMe" class="checkbox-custom">
+                    <span>Remember me</span>
                 </label>
+                <a href="#" class="forgot-password">Forgot password?</a>
             </div>
-
-            <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition duration-150 ease-in-out">
-                <span id="loginText">Sign In</span>
-                <span id="loginLoader" class="hidden">Signing in...</span>
+            
+            <button type="submit" class="login-btn">
+                <span id="loginText">
+                    <i class="fas fa-sign-in-alt" style="margin-right: 8px;"></i>
+                    Sign In
+                </span>
+                <span id="loginLoader" style="display: none;">
+                    <i class="fas fa-spinner fa-spin" style="margin-right: 8px;"></i>
+                    Signing in...
+                </span>
             </button>
         </form>
-
-        <div id="errorMessage" class="hidden mt-4 p-3 bg-red-100 border border-red-400 text-red-700 rounded"></div>
-
+        
+        <div id="errorMessage" class="error-message"></div>
     </div>
 
-    <script>
-        document.getElementById('loginForm').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            
-            const username = document.getElementById('username').value;
-            const password = document.getElementById('password').value;
-            const rememberMe = document.getElementById('rememberMe').checked;
-            
-            console.log('Login attempt:', { username, password: '***', rememberMe });
-            
-            const loginText = document.getElementById('loginText');
-            const loginLoader = document.getElementById('loginLoader');
-            const errorMessage = document.getElementById('errorMessage');
-            
-            // Show loading state
-            loginText.classList.add('hidden');
-            loginLoader.classList.remove('hidden');
-            errorMessage.classList.add('hidden');
-            
-            try {
-                console.log('Sending request to /api/auth/login');
-                const response = await fetch('/api/auth/login', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({ username, password })
-                });
-                
-                console.log('Response status:', response.status);
-                console.log('Response headers:', response.headers);
-                
-                const result = await response.json();
-                console.log('Response data:', result);
-                
-                if (result.success) {
-                    console.log('Login successful, storing tokens');
-                    // Store tokens
-                    const storage = rememberMe ? localStorage : sessionStorage;
-                    storage.setItem('token', result.data.tokens.accessToken);
-                    storage.setItem('refreshToken', result.data.tokens.refreshToken);
-                    
-                    console.log('Redirecting to dashboard');
-                    // Redirect to dashboard
-                    window.location.href = '/dashboard';
-                } else {
-                    console.log('Login failed:', result.message);
-                    // Show error
-                    errorMessage.textContent = result.message;
-                    errorMessage.classList.remove('hidden');
-                }
-            } catch (error) {
-                console.error('Login error:', error);
-                errorMessage.textContent = 'Login failed. Please try again. Check console for details.';
-                errorMessage.classList.remove('hidden');
-            } finally {
-                // Reset loading state
-                loginText.classList.remove('hidden');
-                loginLoader.classList.add('hidden');
-            }
-        });
-
-
-        // Auto-redirect if already logged in
-        const token = localStorage.getItem('token') || sessionStorage.getItem('token');
-        if (token) {
-            window.location.href = '/dashboard';
-        }
-    </script>
+    <script src="/js/login.js"></script>
 </body>
 </html>
