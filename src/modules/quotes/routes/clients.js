@@ -1,6 +1,6 @@
 const express = require('express');
 const { pool } = require('../config/database');
-const { authenticate, authorize, validateOwnership } = require('../middleware/auth');
+const { authenticate, authorize, validateOwnership } = require('../../../shared/middleware/authMiddleware');
 const router = express.Router();
 
 router.get('/', authenticate, async (req, res) => {

@@ -1,7 +1,7 @@
 const express = require('express');
 const { body, query, validationResult } = require('express-validator');
-const authService = require('../services/authService');
-const { authenticate, authorize, validateOwnership } = require('../middleware/auth');
+const authService = require('../../../shared/auth/authService');
+const { authenticate, authorize, validateOwnership } = require('../../../shared/middleware/authMiddleware');
 const { pool } = require('../config/database');
 const router = express.Router();
 

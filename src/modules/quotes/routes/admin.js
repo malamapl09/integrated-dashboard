@@ -1,6 +1,6 @@
 const express = require('express');
 const { pool, pimPool } = require('../config/database');
-const { authenticate, authorize } = require('../middleware/auth');
+const { authenticate, authorize } = require('../../../shared/middleware/authMiddleware');
 const logger = require('../utils/logger');
 const router = express.Router();
 

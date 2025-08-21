@@ -1,7 +1,7 @@
 const express = require('express');
 const { body, validationResult } = require('express-validator');
-const authService = require('../services/authService');
-const { authenticate, authorize, authRateLimit } = require('../middleware/auth');
+const authService = require('../../../shared/auth/authService');
+const { authenticate, authorize, authRateLimit } = require('../../../shared/middleware/authMiddleware');
 const router = express.Router();
 
 // Validation middleware
@@ -137,9 +137,7 @@ router.post('/login',
           role: result.user.role,
           lastLogin: result.user.last_login
         },
-        accessToken: result.accessToken,
-        refreshToken: result.refreshToken,
-        expiresIn: result.expiresIn
+        ...result.tokens
       });
     } catch (error) {
       console.error('Login error:', error);

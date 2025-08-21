@@ -1,6 +1,6 @@
 const express = require('express');
 const { body, validationResult } = require('express-validator');
-const { authenticate, authorize } = require('../middleware/auth');
+const { authenticate, authorize } = require('../../../shared/middleware/authMiddleware');
 const emailQueueService = require('../services/emailQueueService');
 const emailService = require('../services/emailService');
 const router = express.Router();

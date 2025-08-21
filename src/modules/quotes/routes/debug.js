@@ -1,5 +1,5 @@
 const express = require('express');
-const { authenticate, authorize } = require('../middleware/auth');
+const { authenticate, authorize } = require('../../../shared/middleware/authMiddleware');
 const logger = require('../utils/logger');
 const { pool } = require('../config/database');
 const emailService = require('../services/emailService');

@@ -1,10 +1,15 @@
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const { database } = require('../database');
+const NodeCache = require('node-cache');
 
 class AuthService {
   constructor() {
     this.db = database.sqlite;
+    // Token validation cache - 5 minute TTL
+    this.tokenCache = new NodeCache({ stdTTL: 300, checkperiod: 60 });
+    // Session cache - 10 minute TTL  
+    this.sessionCache = new NodeCache({ stdTTL: 600, checkperiod: 120 });
   }
 
   /**
@@ -205,6 +210,11 @@ class AuthService {
         [tokenId]
       );
 
+      // Clear cache entries for this session
+      this.sessionCache.del(`session:${tokenId}`);
+      // Clear all token cache entries (since we can't easily map token to tokenId)
+      this.tokenCache.flushAll();
+
       return { message: 'Logged out successfully' };
 
     } catch (error) {
@@ -214,10 +224,18 @@ class AuthService {
   }
 
   /**
-   * Verify JWT token
+   * Verify JWT token with caching
    */
   async verifyToken(token) {
     try {
+      // Check token cache first
+      const cacheKey = `token:${token.substring(0, 20)}`; // Use token prefix as key
+      const cachedResult = this.tokenCache.get(cacheKey);
+      
+      if (cachedResult) {
+        return cachedResult;
+      }
+
       const decoded = jwt.verify(token, (() => {
         if (!process.env.JWT_SECRET) {
           throw new Error('JWT_SECRET environment variable is required');
@@ -225,16 +243,28 @@ class AuthService {
         return process.env.JWT_SECRET;
       })());
 
-      // Check if session is still active
-      const [sessions] = await this.db.execute(
-        'SELECT id FROM user_sessions WHERE token_id = ? AND active = 1 AND expires_at > ?',
-        [decoded.tokenId, new Date()]
-      );
+      // Check session cache
+      const sessionKey = `session:${decoded.tokenId}`;
+      let sessionValid = this.sessionCache.get(sessionKey);
+      
+      if (sessionValid === undefined) {
+        // Check database if not in cache
+        const [sessions] = await this.db.execute(
+          'SELECT id FROM user_sessions WHERE token_id = ? AND active = 1 AND expires_at > ?',
+          [decoded.tokenId, new Date()]
+        );
 
-      if (sessions.length === 0) {
+        sessionValid = sessions.length > 0;
+        // Cache the session validation result
+        this.sessionCache.set(sessionKey, sessionValid);
+      }
+
+      if (!sessionValid) {
         throw new Error('Token is invalid or expired');
       }
 
+      // Cache the successful token validation
+      this.tokenCache.set(cacheKey, decoded);
       return decoded;
 
     } catch (error) {
@@ -361,12 +391,42 @@ class AuthService {
         [userId]
       );
 
+      // Clear all caches since user sessions are invalidated
+      this.tokenCache.flushAll();
+      this.sessionCache.flushAll();
+
       return { message: 'Password changed successfully' };
 
     } catch (error) {
       console.error('Change password error:', error);
       throw new Error(error.message || 'Failed to change password');
     }
+  }
+
+  /**
+   * Clear authentication caches (useful for testing or manual cache invalidation)
+   */
+  clearCaches() {
+    this.tokenCache.flushAll();
+    this.sessionCache.flushAll();
+  }
+
+  /**
+   * Get cache statistics
+   */
+  getCacheStats() {
+    return {
+      tokenCache: {
+        keys: this.tokenCache.keys().length,
+        hits: this.tokenCache.getStats().hits,
+        misses: this.tokenCache.getStats().misses
+      },
+      sessionCache: {
+        keys: this.sessionCache.keys().length,
+        hits: this.sessionCache.getStats().hits,
+        misses: this.sessionCache.getStats().misses
+      }
+    };
   }
 }
 

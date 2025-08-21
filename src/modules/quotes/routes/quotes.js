@@ -6,7 +6,7 @@ const emailService = require('../services/emailService');
 const quoteWorkflowService = require('../services/quoteWorkflowService');
 const inventoryService = require('../services/inventoryService');
 const cache = require('../utils/cache');
-const { authenticate, authorize, validateOwnership } = require('../middleware/auth');
+const { authenticate, authorize, validateOwnership } = require('../../../shared/middleware/authMiddleware');
 const router = express.Router();
 
 router.get('/', authenticate, async (req, res) => {

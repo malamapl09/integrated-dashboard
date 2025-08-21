@@ -24,6 +24,7 @@
     "jsonwebtoken": "^9.0.2",
     "moment": "^2.29.4",
     "mysql2": "^3.14.3",
+    "node-cache": "^5.1.2",
     "node-cron": "^3.0.3",
     "nodemailer": "^7.0.5",
     "oracledb": "^6.9.0",

@@ -1,7 +1,7 @@
 const express = require('express');
 const { pimPool } = require('../config/database');
 const cache = require('../utils/cache');
-const { authenticate } = require('../middleware/auth');
+const { authenticate } = require('../../../shared/middleware/authMiddleware');
 const router = express.Router();
 
 // Sample fallback data when PIM is not available

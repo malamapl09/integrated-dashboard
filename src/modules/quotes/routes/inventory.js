@@ -1,5 +1,5 @@
 const express = require('express');
-const { authenticate, authorize } = require('../middleware/auth');
+const { authenticate, authorize } = require('../../../shared/middleware/authMiddleware');
 const { asyncHandler } = require('../middleware/errorHandler');
 const inventoryService = require('../services/inventoryService');
 const logger = require('../utils/logger');

@@ -1,0 +1,4798 @@
+{
+  "indexed_at": "2025-08-20T21:35:21.483279",
+  "root": ".",
+  "project_structure": {
+    "type": "tree",
+    "root": ".",
+    "tree": [
+      ".",
+      "\u251c\u2500\u2500 data/",
+      "\u251c\u2500\u2500 logs/",
+      "\u251c\u2500\u2500 oracle_client/",
+      "\u2502   \u251c\u2500\u2500 lib/",
+      "\u2502   \u2514\u2500\u2500 network/",
+      "\u2502       \u2514\u2500\u2500 admin/",
+      "\u251c\u2500\u2500 public/ (23 files)",
+      "\u2502   \u251c\u2500\u2500 catalog/ (1 files)",
+      "\u2502   \u251c\u2500\u2500 css/ (1 files)",
+      "\u2502   \u251c\u2500\u2500 dashboard/ (1 files)",
+      "\u2502   \u251c\u2500\u2500 js/ (1 files)",
+      "\u2502   \u251c\u2500\u2500 logs/ (1 files)",
+      "\u2502   \u251c\u2500\u2500 logs-content/ (3 files)",
+      "\u2502   \u251c\u2500\u2500 monitoring/ (1 files)",
+      "\u2502   \u251c\u2500\u2500 quotes/ (1 files)",
+      "\u2502   \u251c\u2500\u2500 quotes-content/ (9 files)",
+      "\u2502   \u251c\u2500\u2500 sales/ (1 files)",
+      "\u2502   \u251c\u2500\u2500 shared/ (1 files)",
+      "\u2502   \u2514\u2500\u2500 user-management/ (1 files)",
+      "\u251c\u2500\u2500 src/ (59 files)",
+      "\u2502   \u251c\u2500\u2500 modules/ (33 files)",
+      "\u2502   \u2502   \u251c\u2500\u2500 catalog/ (4 files)",
+      "\u2502   \u2502   \u251c\u2500\u2500 dashboard/ (2 files)",
+      "\u2502   \u2502   \u251c\u2500\u2500 logs/ (4 files)",
+      "\u2502   \u2502   \u251c\u2500\u2500 quotes/ (17 files)",
+      "\u2502   \u2502   \u2502   \u251c\u2500\u2500 routes/ (10 files)",
+      "\u2502   \u2502   \u2502   \u2514\u2500\u2500 services/ (5 files)",
+      "\u2502   \u2502   \u251c\u2500\u2500 sales/ (4 files)",
+      "\u2502   \u2502   \u2514\u2500\u2500 user-management/ (2 files)",
+      "\u2502   \u251c\u2500\u2500 routes/ (9 files)",
+      "\u2502   \u2514\u2500\u2500 shared/ (16 files)",
+      "\u2502       \u251c\u2500\u2500 auth/ (2 files)",
+      "\u2502       \u251c\u2500\u2500 controllers/ (1 files)",
+      "\u2502       \u251c\u2500\u2500 database/ (2 files)",
+      "\u2502       \u251c\u2500\u2500 middleware/ (5 files)",
+      "\u2502       \u251c\u2500\u2500 services/ (3 files)",
+      "\u2502       \u2514\u2500\u2500 utils/ (3 files)",
+      "\u251c\u2500\u2500 temp/",
+      "\u251c\u2500\u2500 package.json",
+      "\u2514\u2500\u2500 README.md"
+    ]
+  },
+  "documentation_map": {
+    "README.md": {
+      "sections": [
+        "Plaza Lama Integrated Dashboard",
+        "\ud83c\udfd7\ufe0f Architecture",
+        "\ud83d\ude80 Quick Start",
+        "Prerequisites",
+        "Installation",
+        "\ud83d\udcca Modules",
+        "\ud83c\udfe0 Main Dashboard",
+        "\ud83d\udcb0 Quote Management",
+        "\ud83d\udcdd User Activity Logs",
+        "\ud83d\udce6 Catalog Management"
+      ],
+      "architecture_hints": []
+    },
+    "CLAUDE.md": {
+      "sections": [
+        "CLAUDE.md - Integrated Dashboard",
+        "Project Overview",
+        "Architecture",
+        "Technology Stack",
+        "Project Structure",
+        "Development Commands",
+        "Primary Commands",
+        "Start development server",
+        "Start production server  ",
+        "Quick setup and start"
+      ],
+      "architecture_hints": []
+    }
+  },
+  "directory_purposes": {
+    "public": "Publicly accessible files",
+    "src": "Source code root directory",
+    "src/routes": "API routes and endpoints",
+    "src/shared/middleware": "Middleware functions and handlers",
+    "src/shared/auth": "Authentication and authorization logic",
+    "src/shared/utils": "Shared utility functions and helpers",
+    "src/shared/controllers": "Request handlers and business logic",
+    "src/shared/services": "Business logic and external service integrations",
+    "src/modules/sales": "Data models and schemas",
+    "src/modules/catalog": "Data models and schemas",
+    "src/modules/quotes/services": "Business logic and external service integrations"
+  },
+  "stats": {
+    "total_files": 90,
+    "total_directories": 39,
+    "fully_parsed": {
+      "javascript": 70
+    },
+    "listed_only": {
+      "html": 11,
+      "json": 4,
+      "shell": 1,
+      "css": 4
+    },
+    "markdown_files": 2
+  },
+  "files": {
+    "test-api.js": {
+      "language": "javascript",
+      "parsed": true,
+      "purpose": "Test file",
+      "imports": [
+        "axios"
+      ],
+      "functions": {
+        "testAPI": "async ()"
+      },
+      "classes": {},
+      "variables": [
+        "axios",
+        "baseURL",
+        "loginResponse",
+        "token",
+        "headers",
+        "logsResponse",
+        "catalogResponse",
+        "totalProducts",
+        "salesResponse",
+        "storesResponse",
+        "topStore",
+        "productsResponse"
+      ],
+      "call_graph": {}
+    },
+    "test_dashboard.html": {
+      "language": "html",
+      "parsed": false,
+      "purpose": "Test file"
+    },
+    "package-lock.json": {
+      "language": "json",
+      "parsed": false
+    },
+    "package.json": {
+      "language": "json",
+      "parsed": false
+    },
+    "PROJECT_INDEX.json": {
+      "language": "json",
+      "parsed": false
+    },
+    "test_login_flow.js": {
+      "language": "javascript",
+      "parsed": true,
+      "purpose": "Test file",
+      "imports": [
+        "puppeteer"
+      ],
+      "functions": {
+        "testLoginFlow": "async ()"
+      },
+      "classes": {},
+      "variables": [
+        "puppeteer",
+        "browser",
+        "page",
+        "modules"
+      ],
+      "call_graph": {}
+    },
+    "start.sh": {
+      "language": "shell",
+      "parsed": false
+    },
+    ".claude/settings.local.json": {
+      "language": "json",
+      "parsed": false,
+      "purpose": "Configuration"
+    },
+    "public/login.html": {
+      "language": "html",
+      "parsed": false
+    },
+    "src/app.js": {
+      "language": "javascript",
+      "parsed": true,
+      "purpose": "Application entry point",
+      "imports": [
+        "express",
+        "cors",
+        "body-parser",
+        "path",
+        "express-rate-limit",
+        "./shared/database",
+        "./shared/middleware/authMiddleware",
+        "./shared/middleware/loggingMiddleware",
+        "./shared/services/loggingService",
+        "./shared/services/scheduledTasks",
+        "./routes",
+        "fs"
+      ],
+      "functions": {
+        "handleLogin": "async (e)",
+        "startServer": "async ()"
+      },
+      "classes": {},
+      "constants": {
+        "PORT": "value"
+      },
+      "variables": [
+        "express",
+        "cors",
+        "bodyParser",
+        "path",
+        "rateLimit",
+        "authMiddleware",
+        "loggingService",
+        "scheduledTasks",
+        "apiRoutes",
+        "app",
+        "generalLimiter",
+        "fs",
+        "loginContent",
+        "username",
+        "password",
+        "response",
+        "result"
+      ],
+      "call_graph": {}
+    },
+    "src/routes/quotesRoutes.js": {
+      "language": "javascript",
+      "parsed": false,
+      "purpose": "Route definitions"
+    },
+    "src/routes/authRoutes.js": {
+      "language": "javascript",
+      "parsed": false,
+      "purpose": "Route definitions"
+    },
+    "src/routes/userManagementRoutes.js": {
+      "language": "javascript",
+      "parsed": false,
+      "purpose": "Route definitions"
+    },
+    "src/routes/index.js": {
+      "language": "javascript",
+      "parsed": false,
+      "purpose": "Application entry point"
+    },
+    "src/routes/monitoringRoutes.js": {
+      "language": "javascript",
+      "parsed": false,
+      "purpose": "Route definitions"
+    },
+    "src/routes/salesRoutes.js": {
+      "language": "javascript",
+      "parsed": false,
+      "purpose": "Route definitions"
+    },
+    "src/routes/dashboardRoutes.js": {
+      "language": "javascript",
+      "parsed": false,
+      "purpose": "Route definitions"
+    },
+    "src/routes/catalogRoutes.js": {
+      "language": "javascript",
+      "parsed": false,
+      "purpose": "Route definitions"
+    },
+    "src/routes/logsRoutes.js": {
+      "language": "javascript",
+      "parsed": false,
+      "purpose": "Route definitions"
+    },
+    "src/modules/sales/salesService.js": {
+      "language": "javascript",
+      "parsed": true,
+      "imports": [
+        "../../shared/database",
+        "moment",
+        "./models"
+      ],
+      "functions": {},
+      "classes": {
+        "SalesService": {
+          "methods": {
+            "constructor": "()",
+            "_buildDateFilter": "(filters)",
+            "_buildOracleWhereClause": "(filters, dateFrom, dateTo)",
+            "_buildMySQLWhereClause": "(filters, dateFrom, dateTo)",
+            "getSalesMetrics": {
+              "calls": [
+                "_getMySQLSalesMetrics",
+                "_getOracleSalesMetrics"
+              ],
+              "signature": "async (filters)",
+              "called_by": [
+                "SalesService.getDashboardData"
+              ]
+            },
+            "_getOracleSalesMetrics": {
+              "signature": "async (filters)",
+              "called_by": [
+                "SalesService.getSalesMetrics"
+              ]
+            },
+            "_getMySQLSalesMetrics": {
+              "signature": "async (filters)",
+              "called_by": [
+                "SalesService.getSalesMetrics"
+              ]
+            },
+            "getDailyTrends": {
+              "calls": [
+                "_getMySQLDailyTrends",
+                "_getOracleDailyTrends"
+              ],
+              "signature": "async (filters)",
+              "called_by": [
+                "SalesService.getDashboardData"
+              ]
+            },
+            "_getOracleDailyTrends": {
+              "signature": "async (filters)",
+              "called_by": [
+                "SalesService.getDailyTrends"
+              ]
+            },
+            "_getMySQLDailyTrends": {
+              "signature": "async (filters)",
+              "called_by": [
+                "SalesService.getDailyTrends"
+              ]
+            },
+            "getStorePerformance": {
+              "calls": [
+                "_getMySQLStorePerformance",
+                "_getOracleStorePerformance"
+              ],
+              "signature": "async (filters)",
+              "called_by": [
+                "SalesController.getStorePerformance",
+                "SalesService.getDashboardData"
+              ]
+            },
+            "_getOracleStorePerformance": {
+              "signature": "async (filters)",
+              "called_by": [
+                "SalesService.getStorePerformance"
+              ]
+            },
+            "_getMySQLStorePerformance": {
+              "signature": "async (filters)",
+              "called_by": [
+                "SalesService.getStorePerformance"
+              ]
+            },
+            "getTopProducts": {
+              "calls": [
+                "_getMySQLTopProducts",
+                "_getOracleTopProducts"
+              ],
+              "signature": "async (filters, limit = 10)",
+              "called_by": [
+                "SalesService.getDashboardData",
+                "SalesController.getTopProducts"
+              ]
+            },
+            "_getOracleTopProducts": {
+              "signature": "async (filters, limit)",
+              "called_by": [
+                "SalesService.getTopProducts"
+              ]
+            },
+            "_getMySQLTopProducts": {
+              "signature": "async (filters, limit)",
+              "called_by": [
+                "SalesService.getTopProducts"
+              ]
+            },
+            "getRecentOrders": {
+              "calls": [
+                "_getMySQLRecentOrders",
+                "_getOracleRecentOrders"
+              ],
+              "signature": "async (filters, limit = 20)",
+              "called_by": [
+                "SalesService.getDashboardData",
+                "SalesController.getRecentOrders"
+              ]
+            },
+            "_getOracleRecentOrders": {
+              "signature": "async (filters, limit)",
+              "called_by": [
+                "SalesService.getRecentOrders"
+              ]
+            },
+            "_getMySQLRecentOrders": {
+              "signature": "async (filters, limit)",
+              "called_by": [
+                "SalesService.getRecentOrders"
+              ]
+            },
+            "getFilterOptions": {
+              "calls": [
+                "_getMySQLFilterOptions",
+                "_getOracleFilterOptions"
+              ],
+              "signature": "async ()",
+              "called_by": [
+                "SalesController.getFilterOptions",
+                "SalesService.getDashboardData",
+                "SalesController.healthCheck"
+              ]
+            },
+            "_getOracleFilterOptions": {
+              "signature": "async ()",
+              "called_by": [
+                "SalesService.getFilterOptions"
+              ]
+            },
+            "_getMySQLFilterOptions": {
+              "signature": "async ()",
+              "called_by": [
+                "SalesService.getFilterOptions"
+              ]
+            },
+            "getDashboardData": {
+              "calls": [
+                "getDailyTrends",
+                "getFilterOptions",
+                "getRecentOrders",
+                "getSalesMetrics",
+                "getStorePerformance",
+                "getTopProducts"
+              ],
+              "signature": "async (filters)"
+            },
+            "__init__": "()"
+          }
+        }
+      },
+      "variables": [
+        "moment",
+        "today",
+        "conditions",
+        "params",
+        "needsFacturaJoin",
+        "placeholders",
+        "fromClause",
+        "currentQuery",
+        "current",
+        "revenueGrowthPercent",
+        "ordersGrowthPercent",
+        "query",
+        "totalRevenueQuery",
+        "totalRevenue",
+        "salesFilters",
+        "validationErrors"
+      ],
+      "call_graph": {}
+    },
+    "src/modules/sales/exportController.js": {
+      "language": "javascript",
+      "parsed": true,
+      "imports": [
+        "./salesService",
+        "../../shared/services/exportService",
+        "moment",
+        "xlsx",
+        "pdfkit"
+      ],
+      "functions": {},
+      "classes": {
+        "SalesExportController": {
+          "methods": {
+            "constructor": "()",
+            "exportSalesMetricsExcel": "async (req, res)",
+            "exportSalesReportPDF": "async (req, res)",
+            "exportTopProductsExcel": "async (req, res)",
+            "exportDailyTrendsExcel": "async (req, res)",
+            "exportStorePerformanceExcel": "async (req, res)",
+            "__init__": "()"
+          }
+        }
+      },
+      "constants": {
+        "XLSX": "value"
+      },
+      "variables": [
+        "exportService",
+        "moment",
+        "filters",
+        "metrics",
+        "dailyTrends",
+        "metricsData",
+        "dailyData",
+        "workbook",
+        "metricsWorksheet",
+        "dailyWorksheet",
+        "buffer",
+        "doc",
+        "pdfBuffer",
+        "chunks",
+        "yPos",
+        "topProducts",
+        "exportData",
+        "excelBuffer",
+        "storePerformance"
+      ],
+      "call_graph": {}
+    },
+    "src/modules/sales/models.js": {
+      "language": "javascript",
+      "parsed": true,
+      "purpose": "Data model",
+      "functions": {},
+      "classes": {
+        "SalesFilters": {
+          "methods": {
+            "constructor": "(data = {})",
+            "validate": "()",
+            "__init__": "(data = {})"
+          }
+        },
+        "SalesMetrics": {
+          "methods": {
+            "constructor": "(data = {})",
+            "__init__": "(data = {})"
+          }
+        },
+        "DailySalesTrend": {
+          "methods": {
+            "constructor": "(data = {})",
+            "__init__": "(data = {})"
+          }
+        },
+        "StorePerformance": {
+          "methods": {
+            "constructor": "(data = {})",
+            "__init__": "(data = {})"
+          }
+        },
+        "HourlyPattern": {
+          "methods": {
+            "constructor": "(data = {})",
+            "__init__": "(data = {})"
+          }
+        },
+        "TopProduct": {
+          "methods": {
+            "constructor": "(data = {})",
+            "__init__": "(data = {})"
+          }
+        },
+        "RecentOrder": {
+          "methods": {
+            "constructor": "(data = {})",
+            "__init__": "(data = {})"
+          }
+        },
+        "SalesDashboardData": {
+          "methods": {
+            "constructor": "(data = {})",
+            "__init__": "(data = {})"
+          }
+        }
+      },
+      "variables": [
+        "errors"
+      ],
+      "call_graph": {}
+    },
+    "src/modules/sales/salesController.js": {
+      "language": "javascript",
+      "parsed": true,
+      "imports": [
+        "./salesService",
+        "./models"
+      ],
+      "functions": {},
+      "classes": {
+        "SalesController": {
+          "methods": {
+            "constructor": "()",
+            "getDashboard": "async (req, res)",
+            "getMetrics": {
+              "signature": "async (req, res)",
+              "called_by": [
+                "MonitoringController.getMetrics",
+                "MonitoringController.getAlerts",
+                "MonitoringController.getSystemHealth"
+              ]
+            },
+            "getTrends": "async (req, res)",
+            "getStorePerformance": {
+              "calls": [
+                "getStorePerformance"
+              ],
+              "signature": "async (req, res)",
+              "called_by": [
+                "SalesController.getStorePerformance",
+                "SalesService.getDashboardData"
+              ]
+            },
+            "getHourlyPatterns": {
+              "calls": [
+                "getHourlyPatterns"
+              ],
+              "signature": "async (req, res)",
+              "called_by": [
+                "SalesController.getHourlyPatterns"
+              ]
+            },
+            "getTopProducts": {
+              "calls": [
+                "getTopProducts"
+              ],
+              "signature": "async (req, res)",
+              "called_by": [
+                "SalesService.getDashboardData",
+                "SalesController.getTopProducts"
+              ]
+            },
+            "getRecentOrders": {
+              "calls": [
+                "getRecentOrders"
+              ],
+              "signature": "async (req, res)",
+              "called_by": [
+                "SalesService.getDashboardData",
+                "SalesController.getRecentOrders"
+              ]
+            },
+            "getFilterOptions": {
+              "calls": [
+                "getFilterOptions"
+              ],
+              "signature": "async (req, res)",
+              "called_by": [
+                "SalesController.getFilterOptions",
+                "SalesService.getDashboardData",
+                "SalesController.healthCheck"
+              ]
+            },
+            "healthCheck": {
+              "calls": [
+                "getFilterOptions"
+              ],
+              "signature": "async (req, res)"
+            },
+            "__init__": "()"
+          }
+        }
+      },
+      "variables": [
+        "filters",
+        "dashboardData",
+        "metrics",
+        "trends",
+        "storePerformance",
+        "patterns",
+        "limit",
+        "topProducts",
+        "recentOrders",
+        "filterOptions"
+      ],
+      "call_graph": {}
+    },
+    "src/modules/quotes/exportController.js": {
+      "language": "javascript",
+      "parsed": true,
+      "imports": [
+        "../../shared/database",
+        "../../shared/services/exportService",
+        "moment"
+      ],
+      "functions": {},
+      "classes": {
+        "QuotesExportController": {
+          "methods": {
+            "constructor": "()",
+            "exportQuotesExcel": "async (req, res)",
+            "exportQuotesPDF": "async (req, res)",
+            "exportQuotePDF": "async (req, res)",
+            "exportClientsExcel": "async (req, res)",
+            "exportSalesSummaryPDF": "async (req, res)",
+            "__init__": "()"
+          }
+        }
+      },
+      "variables": [
+        "exportService",
+        "moment",
+        "whereClause",
+        "params",
+        "query",
+        "excelBuffer",
+        "columns",
+        "pdfBuffer",
+        "quote",
+        "client"
+      ],
+      "call_graph": {}
+    },
+    "src/modules/quotes/quotesController.js": {
+      "language": "javascript",
+      "parsed": true,
+      "imports": [
+        "../../shared/database",
+        "../../shared/database",
+        "./services/emailService",
+        "../../shared/services/loggingService"
+      ],
+      "functions": {},
+      "classes": {
+        "QuotesController": {
+          "methods": {
+            "constructor": "()",
+            "getQuotes": "async (req, res)",
+            "getQuoteById": "async (req, res)",
+            "createQuote": "async (req, res)",
+            "updateQuote": "async (req, res)",
+            "getClients": "async (req, res)",
+            "createClient": "async (req, res)",
+            "getStats": "async (req, res)",
+            "searchProducts": "async (req, res)",
+            "sendQuoteReminders": "async (req, res)",
+            "__init__": "()"
+          }
+        }
+      },
+      "variables": [
+        "offset",
+        "whereClause",
+        "params",
+        "countQuery",
+        "total",
+        "quotesQuery",
+        "quote",
+        "user_id",
+        "subtotal",
+        "totalItbis",
+        "itemTotal",
+        "itemItbis",
+        "nextNumber",
+        "lastNumber",
+        "quoteNumber",
+        "quoteId",
+        "searchTerm",
+        "emailService",
+        "sentReminders",
+        "successCount",
+        "errorCount",
+        "daysUntilExpiry",
+        "emailData",
+        "loggingService"
+      ],
+      "call_graph": {}
+    },
+    "src/modules/catalog/catalogController.js": {
+      "language": "javascript",
+      "parsed": true,
+      "imports": [
+        "./catalogService"
+      ],
+      "functions": {},
+      "classes": {
+        "CatalogController": {
+          "methods": {
+            "constructor": "()",
+            "ping": "async (req, res)",
+            "listPIMSkus": "async (req, res)",
+            "getCatalogStatus": "async (req, res)",
+            "getCategoryBasedStatus": "async (req, res)",
+            "getCategories": {
+              "calls": [
+                "getCategories"
+              ],
+              "signature": "async (req, res)",
+              "called_by": [
+                "CatalogController.getCategories"
+              ]
+            },
+            "getCategorySummary": {
+              "calls": [
+                "getCategorySummary"
+              ],
+              "signature": "async (req, res)",
+              "called_by": [
+                "CatalogController.getCategorySummary"
+              ]
+            },
+            "__init__": "()"
+          }
+        }
+      },
+      "variables": [
+        "health",
+        "limit",
+        "skus",
+        "page",
+        "status",
+        "categoryData",
+        "categories",
+        "summary"
+      ],
+      "call_graph": {}
+    },
+    "src/modules/catalog/exportController.js": {
+      "language": "javascript",
+      "parsed": true,
+      "imports": [
+        "./catalogService",
+        "../../shared/services/exportService",
+        "moment",
+        "xlsx",
+        "xlsx",
+        "pdfkit",
+        "xlsx"
+      ],
+      "functions": {},
+      "classes": {
+        "CatalogExportController": {
+          "methods": {
+            "constructor": "()",
+            "exportERPvsPIMExcel": "async (req, res)",
+            "exportCategoryComparisonExcel": "async (req, res)",
+            "exportCatalogStatusPDF": "async (req, res)",
+            "exportInventoryReportExcel": "async (req, res)",
+            "__init__": "()"
+          }
+        }
+      },
+      "constants": {
+        "XLSX": "value"
+      },
+      "variables": [
+        "exportService",
+        "moment",
+        "comparison",
+        "exportData",
+        "summaryData",
+        "workbook",
+        "summaryWorksheet",
+        "comparisonWorksheet",
+        "buffer",
+        "categoryComparison",
+        "categorySummary",
+        "productsWorksheet",
+        "doc",
+        "pdfBuffer",
+        "chunks",
+        "yPos",
+        "recommendations",
+        "pimProducts",
+        "totalProducts",
+        "lowStockProducts",
+        "totalStockValue",
+        "inventoryWorksheet",
+        "lowStockData",
+        "lowStockWorksheet"
+      ],
+      "call_graph": {}
+    },
+    "src/modules/catalog/models.js": {
+      "language": "javascript",
+      "parsed": true,
+      "purpose": "Data model",
+      "functions": {},
+      "classes": {
+        "ERPProduct": {
+          "methods": {
+            "constructor": "(data = {})",
+            "__init__": "(data = {})"
+          }
+        },
+        "PIMProduct": {
+          "methods": {
+            "constructor": "(data = {})",
+            "__init__": "(data = {})"
+          }
+        },
+        "ComparisonResult": {
+          "methods": {
+            "constructor": "(data = {})",
+            "__init__": "(data = {})"
+          }
+        },
+        "CategoryConfig": {
+          "methods": {
+            "constructor": "(area, threshold = 10)",
+            "__init__": "(area, threshold = 10)"
+          }
+        },
+        "CatalogStatusResponse": {
+          "methods": {
+            "constructor": "(data = {})",
+            "__init__": "(data = {})"
+          }
+        },
+        "SKUResponse": {
+          "methods": {
+            "constructor": "(sku, title)",
+            "__init__": "(sku, title)"
+          }
+        },
+        "CategorySummary": {
+          "methods": {
+            "constructor": "(data = {})",
+            "__init__": "(data = {})"
+          }
+        },
+        "CategoryBasedResponse": {
+          "methods": {
+            "constructor": "(data = {})",
+            "__init__": "(data = {})"
+          }
+        }
+      },
+      "constants": {
+        "DEFAULT_CATEGORY_CONFIGS": "collection"
+      },
+      "call_graph": {}
+    },
+    "src/modules/catalog/catalogService.js": {
+      "language": "javascript",
+      "parsed": true,
+      "imports": [
+        "../../shared/database",
+        "./models"
+      ],
+      "functions": {},
+      "classes": {
+        "CatalogService": {
+          "methods": {
+            "constructor": "()",
+            "getThreshold": {
+              "signature": "(area)",
+              "called_by": [
+                "CatalogService.getCategorySummary",
+                "CatalogService.getCategoryBasedComparison"
+              ]
+            },
+            "getPIMSkus": "async (limit = 0)",
+            "getERPProducts": {
+              "signature": "async (limit = 0)",
+              "called_by": [
+                "CatalogService.getCategoryBasedComparison"
+              ]
+            },
+            "getPIMProducts": {
+              "signature": "async (limit = 0)",
+              "called_by": [
+                "CatalogService.getCategoryBasedComparison"
+              ]
+            },
+            "compareERPvsPIM": "async (page = 1, limit = 1000)",
+            "getCategoryBasedComparison": {
+              "calls": [
+                "getERPProducts",
+                "getPIMProducts",
+                "getThreshold"
+              ],
+              "signature": "async ()"
+            },
+            "getCategories": {
+              "signature": "async ()",
+              "called_by": [
+                "CatalogController.getCategories"
+              ]
+            },
+            "getCategorySummary": {
+              "calls": [
+                "getThreshold"
+              ],
+              "signature": "async ()",
+              "called_by": [
+                "CatalogController.getCategorySummary"
+              ]
+            },
+            "healthCheck": "async ()",
+            "__init__": "()"
+          }
+        }
+      },
+      "variables": [
+        "areaKey",
+        "query",
+        "params",
+        "startTime",
+        "offset",
+        "erpMap",
+        "pimMap",
+        "results",
+        "newProducts",
+        "obsoleteProducts",
+        "availableProducts",
+        "pimProduct",
+        "threshold",
+        "result",
+        "processingTime",
+        "categoryStats",
+        "area",
+        "stats",
+        "categories",
+        "overallSummary"
+      ],
+      "call_graph": {}
+    },
+    "src/modules/dashboard/dashboardService.js": {
+      "language": "javascript",
+      "parsed": true,
+      "imports": [
+        "../../shared/database",
+        "moment"
+      ],
+      "functions": {},
+      "classes": {
+        "DashboardService": {
+          "methods": {
+            "constructor": "()",
+            "getDashboardStats": {
+              "calls": [
+                "getCatalogStats",
+                "getDatabaseHealth",
+                "getLogsStats",
+                "getQuotesStats",
+                "getSalesStats",
+                "getTrendData",
+                "getUserStats"
+              ],
+              "signature": "async ()",
+              "called_by": [
+                "DashboardService.generateReportData"
+              ]
+            },
+            "getUserStats": {
+              "signature": "async ()",
+              "called_by": [
+                "DashboardService.getDashboardStats",
+                "UserManagementController.getUserStats"
+              ]
+            },
+            "getQuotesStats": {
+              "signature": "async ()",
+              "called_by": [
+                "DashboardService.getDashboardStats"
+              ]
+            },
+            "getLogsStats": {
+              "signature": "async ()",
+              "called_by": [
+                "DashboardService.getDashboardStats"
+              ]
+            },
+            "getCatalogStats": {
+              "signature": "async ()",
+              "called_by": [
+                "DashboardService.getDashboardStats"
+              ]
+            },
+            "getSalesStats": {
+              "calls": [
+                "getMySQLSalesStats",
+                "getOracleSalesStats"
+              ],
+              "signature": "async ()",
+              "called_by": [
+                "DashboardService.getDashboardStats"
+              ]
+            },
+            "getOracleSalesStats": {
+              "signature": "async ()",
+              "called_by": [
+                "DashboardService.getSalesStats"
+              ]
+            },
+            "getMySQLSalesStats": {
+              "signature": "async ()",
+              "called_by": [
+                "DashboardService.getSalesStats"
+              ]
+            },
+            "getDatabaseHealth": {
+              "signature": "async ()",
+              "called_by": [
+                "DashboardService.getSystemAlerts",
+                "DashboardService.getDashboardStats"
+              ]
+            },
+            "generateReportData": {
+              "calls": [
+                "getDashboardStats"
+              ],
+              "signature": "async (type, user)"
+            },
+            "getActionableInsights": "async (user)",
+            "getEnhancedActivityStream": "async (limit = 10, offset = 0, user)",
+            "getSystemAlerts": {
+              "calls": [
+                "getDatabaseHealth"
+              ],
+              "signature": "async (user)",
+              "called_by": [
+                "DashboardController.getSystemAlerts"
+              ]
+            },
+            "getTrendData": {
+              "signature": "async ()",
+              "called_by": [
+                "DashboardService.getDashboardStats"
+              ]
+            },
+            "getQuotesSparkline": "async ()",
+            "getSalesSparkline": "async ()",
+            "getUsersSparkline": "async ()",
+            "getProductsSparkline": "async ()",
+            "generateUserAvatar": "(username, fullName = null)",
+            "__init__": "()"
+          }
+        }
+      },
+      "variables": [
+        "moment",
+        "isOracleAvailable",
+        "health",
+        "now",
+        "stats",
+        "reportData",
+        "insights",
+        "totalValue",
+        "unhealthyDatabases",
+        "dbNames",
+        "memUsage",
+        "memPercentage",
+        "salesStats",
+        "monthlyAverage",
+        "performance",
+        "activities",
+        "initials",
+        "paginatedActivities",
+        "alerts",
+        "uptime",
+        "maintenanceTime",
+        "trends",
+        "current",
+        "previous",
+        "change",
+        "averageMonthly",
+        "sparklineData",
+        "i",
+        "hash",
+        "str",
+        "hue",
+        "saturation",
+        "lightness",
+        "backgroundColor",
+        "textColor"
+      ],
+      "call_graph": {}
+    },
+    "src/modules/dashboard/dashboardController.js": {
+      "language": "javascript",
+      "parsed": true,
+      "imports": [
+        "./dashboardService",
+        "../../shared/services/exportService"
+      ],
+      "functions": {},
+      "classes": {
+        "DashboardController": {
+          "methods": {
+            "constructor": "()",
+            "getStats": "async (req, res)",
+            "getOverview": "async (req, res)",
+            "exportReport": "async (req, res)",
+            "getInsights": "async (req, res)",
+            "getActivityStream": "async (req, res)",
+            "getSystemAlerts": {
+              "calls": [
+                "getSystemAlerts"
+              ],
+              "signature": "async (req, res)",
+              "called_by": [
+                "DashboardController.getSystemAlerts"
+              ]
+            },
+            "healthCheck": "async (req, res)",
+            "__init__": "()"
+          }
+        }
+      },
+      "variables": [
+        "stats",
+        "overview",
+        "validTypes",
+        "reportData",
+        "exportService",
+        "buffer",
+        "filename",
+        "insights",
+        "activities",
+        "alerts",
+        "health"
+      ],
+      "call_graph": {}
+    },
+    "src/modules/logs/database.js": {
+      "language": "javascript",
+      "parsed": true,
+      "imports": [
+        "mysql2/promise"
+      ],
+      "functions": {},
+      "classes": {
+        "Database": {
+          "methods": {
+            "constructor": "()",
+            "parseLogEntry": {
+              "signature": "(log)",
+              "called_by": [
+                "LogsService.getUserLogs",
+                "LogsService.getLogDetails"
+              ]
+            },
+            "getUserLogs": "async (filters = {})",
+            "getUserLogStats": "async ()",
+            "getLogDetails": {
+              "signature": "async (logId)",
+              "called_by": [
+                "LogsController.getLogDetails"
+              ]
+            },
+            "close": "async ()",
+            "__init__": "()"
+          }
+        }
+      },
+      "variables": [
+        "mysql",
+        "cleanLog",
+        "titleChangeMatch",
+        "combinedTitleSpecMatch",
+        "priceChangeMatch",
+        "query",
+        "params",
+        "queries",
+        "results"
+      ],
+      "call_graph": {}
+    },
+    "src/modules/logs/logsService.js": {
+      "language": "javascript",
+      "parsed": true,
+      "imports": [
+        "../../shared/database"
+      ],
+      "functions": {},
+      "classes": {
+        "LogsService": {
+          "methods": {
+            "constructor": "()",
+            "parseLogEntry": {
+              "signature": "(log)",
+              "called_by": [
+                "LogsService.getUserLogs",
+                "LogsService.getLogDetails"
+              ]
+            },
+            "getUserLogs": {
+              "calls": [
+                "parseLogEntry"
+              ],
+              "signature": "async (filters = {})"
+            },
+            "getUserLogStats": "async ()",
+            "getLogDetails": {
+              "calls": [
+                "parseLogEntry"
+              ],
+              "signature": "async (logId)",
+              "called_by": [
+                "LogsController.getLogDetails"
+              ]
+            },
+            "__init__": "()"
+          }
+        }
+      },
+      "variables": [
+        "cleanLog",
+        "titleChangeMatch",
+        "combinedTitleSpecMatch",
+        "priceChangeMatch",
+        "query",
+        "params",
+        "queries",
+        "results",
+        "log"
+      ],
+      "call_graph": {}
+    },
+    "src/modules/logs/exportController.js": {
+      "language": "javascript",
+      "parsed": true,
+      "imports": [
+        "./logsService",
+        "../../shared/services/exportService",
+        "moment",
+        "pdfkit"
+      ],
+      "functions": {},
+      "classes": {
+        "LogsExportController": {
+          "methods": {
+            "constructor": "()",
+            "exportLogsExcel": "async (req, res)",
+            "exportActivitySummaryPDF": "async (req, res)",
+            "exportUserPerformanceExcel": "async (req, res)",
+            "exportProductHistoryExcel": "async (req, res)",
+            "__init__": "()"
+          }
+        }
+      },
+      "variables": [
+        "exportService",
+        "moment",
+        "filters",
+        "logs",
+        "exportData",
+        "excelBuffer",
+        "doc",
+        "pdfBuffer",
+        "chunks",
+        "yPos",
+        "percentage",
+        "avgPerDay",
+        "insights",
+        "userPerformance",
+        "productHistory"
+      ],
+      "call_graph": {}
+    },
+    "src/modules/logs/logsController.js": {
+      "language": "javascript",
+      "parsed": true,
+      "imports": [
+        "./logsService"
+      ],
+      "functions": {},
+      "classes": {
+        "LogsController": {
+          "methods": {
+            "constructor": "()",
+            "getLogs": "async (req, res)",
+            "getStats": "async (req, res)",
+            "getLogDetails": {
+              "calls": [
+                "getLogDetails"
+              ],
+              "signature": "async (req, res)",
+              "called_by": [
+                "LogsController.getLogDetails"
+              ]
+            },
+            "healthCheck": "async (req, res)",
+            "__init__": "()"
+          }
+        }
+      },
+      "variables": [
+        "filters",
+        "logs",
+        "stats",
+        "logId",
+        "logDetails"
+      ],
+      "call_graph": {}
+    },
+    "src/modules/user-management/userManagementService.js": {
+      "language": "javascript",
+      "parsed": true,
+      "imports": [
+        "../../shared/database",
+        "bcrypt"
+      ],
+      "functions": {},
+      "classes": {
+        "UserManagementService": {
+          "methods": {
+            "constructor": "()",
+            "getUsers": {
+              "signature": "async (options = {})",
+              "called_by": [
+                "UserManagementController.exportUsersExcel",
+                "UserManagementController.exportUsersPDF",
+                "UserManagementController.getUsers"
+              ]
+            },
+            "getUserById": {
+              "signature": "async (id)",
+              "called_by": [
+                "UserManagementService.updateUser",
+                "UserManagementService.deleteUser",
+                "UserManagementService.toggleUserStatus",
+                "UserManagementController.getUserById"
+              ]
+            },
+            "createUser": {
+              "signature": "async (userData, createdBy)",
+              "called_by": [
+                "UserManagementController.createUser"
+              ]
+            },
+            "updateUser": {
+              "calls": [
+                "getUserById"
+              ],
+              "signature": "async (id, userData, updatedBy)",
+              "called_by": [
+                "UserManagementController.updateUser"
+              ]
+            },
+            "changePassword": {
+              "signature": "async (id, newPassword, changedBy)",
+              "called_by": [
+                "AuthController.changePassword",
+                "UserManagementController.changePassword",
+                "changePassword"
+              ]
+            },
+            "toggleUserStatus": {
+              "calls": [
+                "getUserById"
+              ],
+              "signature": "async (id, updatedBy)",
+              "called_by": [
+                "UserManagementController.toggleUserStatus"
+              ]
+            },
+            "deleteUser": {
+              "calls": [
+                "getUserById"
+              ],
+              "signature": "async (id, deletedBy)",
+              "called_by": [
+                "UserManagementController.deleteUser"
+              ]
+            },
+            "getUserStats": {
+              "signature": "async ()",
+              "called_by": [
+                "DashboardService.getDashboardStats",
+                "UserManagementController.getUserStats"
+              ]
+            },
+            "getRecentUserActivities": "async (limit = 10)",
+            "unlockUser": {
+              "signature": "async (id, unlockedBy)",
+              "called_by": [
+                "UserManagementController.unlockUser"
+              ]
+            },
+            "getRolePermissions": "(role)",
+            "hasPermission": "(userRole, permission)",
+            "__init__": "()"
+          }
+        }
+      },
+      "variables": [
+        "bcrypt",
+        "offset",
+        "whereClause",
+        "params",
+        "searchTerm",
+        "countQuery",
+        "total",
+        "validSortColumns",
+        "sortColumn",
+        "order",
+        "usersQuery",
+        "passwordHash",
+        "currentUser",
+        "updates",
+        "query",
+        "newStatus",
+        "user",
+        "permissions",
+        "userPermissions"
+      ],
+      "call_graph": {}
+    },
+    "src/modules/user-management/userManagementController.js": {
+      "language": "javascript",
+      "parsed": true,
+      "imports": [
+        "./userManagementService",
+        "../../shared/services/exportService",
+        "../../shared/services/exportService"
+      ],
+      "functions": {},
+      "classes": {
+        "UserManagementController": {
+          "methods": {
+            "constructor": "()",
+            "getUsers": {
+              "calls": [
+                "getUsers"
+              ],
+              "signature": "async (req, res)",
+              "called_by": [
+                "UserManagementController.exportUsersExcel",
+                "UserManagementController.exportUsersPDF",
+                "UserManagementController.getUsers"
+              ]
+            },
+            "getUserById": {
+              "calls": [
+                "getUserById"
+              ],
+              "signature": "async (req, res)",
+              "called_by": [
+                "UserManagementService.updateUser",
+                "UserManagementService.deleteUser",
+                "UserManagementService.toggleUserStatus",
+                "UserManagementController.getUserById"
+              ]
+            },
+            "createUser": {
+              "calls": [
+                "createUser"
+              ],
+              "signature": "async (req, res)",
+              "called_by": [
+                "UserManagementController.createUser"
+              ]
+            },
+            "updateUser": {
+              "calls": [
+                "updateUser"
+              ],
+              "signature": "async (req, res)",
+              "called_by": [
+                "UserManagementController.updateUser"
+              ]
+            },
+            "changePassword": {
+              "calls": [
+                "changePassword"
+              ],
+              "signature": "async (req, res)",
+              "called_by": [
+                "AuthController.changePassword",
+                "UserManagementController.changePassword",
+                "changePassword"
+              ]
+            },
+            "toggleUserStatus": {
+              "calls": [
+                "toggleUserStatus"
+              ],
+              "signature": "async (req, res)",
+              "called_by": [
+                "UserManagementController.toggleUserStatus"
+              ]
+            },
+            "deleteUser": {
+              "calls": [
+                "deleteUser"
+              ],
+              "signature": "async (req, res)",
+              "called_by": [
+                "UserManagementController.deleteUser"
+              ]
+            },
+            "getUserStats": {
+              "calls": [
+                "getUserStats"
+              ],
+              "signature": "async (req, res)",
+              "called_by": [
+                "DashboardService.getDashboardStats",
+                "UserManagementController.getUserStats"
+              ]
+            },
+            "getRecentActivities": "async (req, res)",
+            "unlockUser": {
+              "calls": [
+                "unlockUser"
+              ],
+              "signature": "async (req, res)",
+              "called_by": [
+                "UserManagementController.unlockUser"
+              ]
+            },
+            "getRoles": "async (req, res)",
+            "getUserPermissions": "async (req, res)",
+            "exportUsersExcel": {
+              "calls": [
+                "getUsers"
+              ],
+              "signature": "async (req, res)"
+            },
+            "exportUsersPDF": {
+              "calls": [
+                "getUsers"
+              ],
+              "signature": "async (req, res)"
+            },
+            "__init__": "()"
+          }
+        }
+      },
+      "variables": [
+        "options",
+        "result",
+        "user",
+        "statusCode",
+        "newStatus",
+        "stats",
+        "limit",
+        "activities",
+        "roles",
+        "filteredRoles",
+        "userRole",
+        "permissions",
+        "exportData",
+        "exportService",
+        "excelBuffer",
+        "columns",
+        "pdfBuffer"
+      ],
+      "call_graph": {}
+    },
+    "src/modules/quotes/routes/products.js": {
+      "language": "javascript",
+      "parsed": true,
+      "imports": [
+        "express",
+        "../config/database",
+        "../utils/cache",
+        "../../../shared/middleware/authMiddleware"
+      ],
+      "functions": {
+        "searchProductsInPIM": "async (search, category)"
+      },
+      "classes": {},
+      "variables": [
+        "express",
+        "cache",
+        "router",
+        "sampleProducts",
+        "cacheKey",
+        "cached",
+        "filtered",
+        "searchLower",
+        "baseQuery",
+        "params",
+        "searchTerm",
+        "skus",
+        "skuPlaceholders",
+        "promoMap",
+        "stockMap",
+        "formattedRows",
+        "basePrice",
+        "promoPrice",
+        "priceWithTax",
+        "typeTax",
+        "stockQuantity",
+        "finalBasePrice",
+        "itbis",
+        "products",
+        "product",
+        "row"
+      ],
+      "call_graph": {}
+    },
+    "src/modules/quotes/routes/emailAdmin.js": {
+      "language": "javascript",
+      "parsed": false
+    },
+    "src/modules/quotes/routes/auth.js": {
+      "language": "javascript",
+      "parsed": true,
+      "imports": [
+        "express",
+        "express-validator",
+        "../../../shared/auth/authService",
+        "../../../shared/middleware/authMiddleware"
+      ],
+      "functions": {
+        "handleValidationErrors": "(req, res, next)",
+        "getClientIP": "(req)"
+      },
+      "classes": {},
+      "variables": [
+        "express",
+        "authService",
+        "router",
+        "validateRegistration",
+        "validateLogin",
+        "validatePasswordChange",
+        "handleValidationErrors",
+        "errors",
+        "getClientIP",
+        "user",
+        "ipAddress",
+        "userAgent",
+        "result",
+        "tokens",
+        "updates",
+        "allowedFields",
+        "updatedUser"
+      ],
+      "call_graph": {}
+    },
+    "src/modules/quotes/routes/quoteWorkflow.js": {
+      "language": "javascript",
+      "parsed": false
+    },
+    "src/modules/quotes/routes/users.js": {
+      "language": "javascript",
+      "parsed": true,
+      "imports": [
+        "express",
+        "express-validator",
+        "../../../shared/auth/authService",
+        "../../../shared/middleware/authMiddleware",
+        "../config/database"
+      ],
+      "functions": {
+        "handleValidationErrors": "(req, res, next)"
+      },
+      "classes": {},
+      "variables": [
+        "express",
+        "authService",
+        "router",
+        "handleValidationErrors",
+        "errors",
+        "page",
+        "limit",
+        "offset",
+        "query",
+        "countQuery",
+        "params",
+        "countParams",
+        "searchTerm",
+        "total",
+        "totalPages",
+        "user",
+        "targetUserId",
+        "currentUserId",
+        "currentUserRole",
+        "updates",
+        "allowedFields",
+        "updatedUser",
+        "userId",
+        "passwordHash",
+        "sessionId",
+        "newUser"
+      ],
+      "call_graph": {}
+    },
+    "src/modules/quotes/routes/quotes.js": {
+      "language": "javascript",
+      "parsed": false
+    },
+    "src/modules/quotes/routes/inventory.js": {
+      "language": "javascript",
+      "parsed": false
+    },
+    "src/modules/quotes/routes/admin.js": {
+      "language": "javascript",
+      "parsed": false
+    },
+    "src/modules/quotes/routes/clients.js": {
+      "language": "javascript",
+      "parsed": false
+    },
+    "src/modules/quotes/routes/debug.js": {
+      "language": "javascript",
+      "parsed": false
+    },
+    "src/modules/quotes/services/pdfGenerator.js": {
+      "language": "javascript",
+      "parsed": true,
+      "imports": [
+        "pdfkit",
+        "path",
+        "../utils/cache"
+      ],
+      "functions": {
+        "generateQuotePDF": "async (quote)"
+      },
+      "classes": {},
+      "variables": [
+        "path",
+        "cache",
+        "cacheKey",
+        "cachedPDF",
+        "doc",
+        "buffers",
+        "pdfData",
+        "logoPath",
+        "rightColumn",
+        "tableTop",
+        "itemCodeX",
+        "descriptionX",
+        "qtyX",
+        "priceX",
+        "itbisX",
+        "totalX",
+        "yPosition",
+        "productName",
+        "disclaimerY"
+      ],
+      "call_graph": {}
+    },
+    "src/modules/quotes/services/inventoryService.js": {
+      "language": "javascript",
+      "parsed": true,
+      "imports": [
+        "../config/database",
+        "../utils/logger",
+        "../utils/cache",
+        "./emailQueueService"
+      ],
+      "functions": {},
+      "classes": {
+        "InventoryService": {
+          "methods": {
+            "constructor": "()",
+            "getProductStock": {
+              "signature": "async (sku)",
+              "called_by": [
+                "InventoryService.reserveStockForQuote"
+              ]
+            },
+            "getBulkProductStock": "async (skus)",
+            "checkQuoteStockAvailability": "async (quoteItems)",
+            "reserveStockForQuote": {
+              "calls": [
+                "getProductStock"
+              ],
+              "signature": "async (quoteId, quoteItems, reservationMinutes = 30)"
+            },
+            "releaseStockReservation": {
+              "signature": "async (quoteId, reason = 'manual_release')",
+              "called_by": [
+                "InventoryManager.init"
+              ]
+            },
+            "getLowStockProducts": {
+              "signature": "async (threshold = null)",
+              "called_by": [
+                "InventoryService.checkAndNotifyLowStock"
+              ]
+            },
+            "getStockMovementHistory": "async (sku, days = 30)",
+            "getStockStatistics": "async ()",
+            "getFallbackStock": "(sku)",
+            "getStockStatus": "(currentStock, requestedQty = 0)",
+            "startStockMonitoring": {
+              "calls": [
+                "checkAndNotifyLowStock"
+              ],
+              "signature": "()"
+            },
+            "checkAndNotifyLowStock": {
+              "calls": [
+                "getLowStockProducts",
+                "sendLowStockNotification"
+              ],
+              "signature": "async ()",
+              "called_by": [
+                "InventoryService.startStockMonitoring"
+              ]
+            },
+            "sendLowStockNotification": {
+              "signature": "async (lowStockData)",
+              "called_by": [
+                "InventoryService.checkAndNotifyLowStock"
+              ]
+            },
+            "cleanupExpiredReservations": "async ()",
+            "__init__": "()"
+          }
+        }
+      },
+      "variables": [
+        "logger",
+        "cache",
+        "emailQueueService",
+        "cacheKey",
+        "cached",
+        "stock",
+        "stockData",
+        "uncachedSkus",
+        "placeholders",
+        "stockMap",
+        "skus",
+        "availability",
+        "hasStockIssues",
+        "requestedQty",
+        "availableStock",
+        "itemAvailability",
+        "reservationExpiry",
+        "stockThreshold",
+        "lowStockProducts",
+        "result",
+        "stats",
+        "fallbackStocks",
+        "lowStockData",
+        "criticalProducts",
+        "highUrgencyProducts",
+        "emailData"
+      ],
+      "call_graph": {}
+    },
+    "src/modules/quotes/services/emailService.js": {
+      "language": "javascript",
+      "parsed": true,
+      "imports": [
+        "nodemailer",
+        "fs",
+        "path",
+        "./emailQueueService",
+        "./emailQueueService"
+      ],
+      "functions": {},
+      "classes": {
+        "EmailService": {
+          "methods": {
+            "constructor": "()",
+            "initializeTransporter": "()",
+            "verifyConnection": "async ()",
+            "isConfigured": "()",
+            "generateQuoteEmailHTML": "(quote, clientData, senderData)",
+            "generateQuoteEmailText": "(quote, clientData, senderData)",
+            "sendQuoteEmail": {
+              "signature": "async (quote, clientData, senderData, pdfBuffer, options = {}, useQueue = false)",
+              "called_by": [
+                "sendQuoteEmail"
+              ]
+            },
+            "sendTestEmail": {
+              "signature": "async (toEmail, fromName = null, useQueue = false)",
+              "called_by": [
+                "sendTestEmail"
+              ]
+            },
+            "sendEmail": "async (emailData)",
+            "__init__": "()"
+          }
+        }
+      },
+      "variables": [
+        "nodemailer",
+        "fs",
+        "path",
+        "config",
+        "companyName",
+        "companyPhone",
+        "companyAddress",
+        "text",
+        "emailQueueService",
+        "emailData",
+        "queueId",
+        "fromEmail",
+        "mailOptions",
+        "customMessageHTML",
+        "info"
+      ],
+      "call_graph": {}
+    },
+    "src/modules/quotes/services/quoteWorkflowService.js": {
+      "language": "javascript",
+      "parsed": true,
+      "imports": [
+        "../config/database",
+        "../utils/logger",
+        "./emailQueueService",
+        "crypto"
+      ],
+      "functions": {},
+      "classes": {
+        "QuoteWorkflowService": {
+          "methods": {
+            "constructor": "()",
+            "updateQuoteStatus": {
+              "signature": "async (quoteId, newStatus, userId, options = {})",
+              "called_by": [
+                "QuoteWorkflowService.recordClientAction",
+                "QuoteWorkflowService.processApproval"
+              ]
+            },
+            "isValidStatusTransition": "(currentStatus, newStatus)",
+            "requiresApproval": "async (quote, newStatus)",
+            "createApprovalRequest": "async (quoteId, requesterId, amount)",
+            "getRequiredApprovers": "async (amount)",
+            "processApproval": {
+              "calls": [
+                "updateQuoteStatus"
+              ],
+              "signature": "async (approvalId, approverId, decision, comments = '')",
+              "called_by": [
+                "QuoteWorkflowManager.setupEventListeners"
+              ]
+            },
+            "recordStatusChange": "async (quoteId, previousStatus, newStatus, userId, reason, notes, metadata)",
+            "handleStatusActions": {
+              "calls": [
+                "handleQuoteAccepted",
+                "handleQuoteExpired",
+                "handleQuoteRejected",
+                "handleQuoteSent"
+              ],
+              "signature": "async (quote, newStatus, userId, metadata)"
+            },
+            "handleQuoteSent": {
+              "signature": "async (quote, userId, metadata)",
+              "called_by": [
+                "QuoteWorkflowService.handleStatusActions"
+              ]
+            },
+            "handleQuoteExpired": {
+              "signature": "async (quote, userId)",
+              "called_by": [
+                "QuoteWorkflowService.handleStatusActions"
+              ]
+            },
+            "handleQuoteAccepted": {
+              "signature": "async (quote, userId, metadata)",
+              "called_by": [
+                "QuoteWorkflowService.handleStatusActions"
+              ]
+            },
+            "handleQuoteRejected": {
+              "signature": "async (quote, userId, metadata)",
+              "called_by": [
+                "QuoteWorkflowService.handleStatusActions"
+              ]
+            },
+            "sendClientNotification": "async (quote, action, clientEmail, accessToken = null)",
+            "sendInternalNotification": "async (quote, action, userId, comments = '')",
+            "sendApprovalNotifications": "async (quoteId, approvers)",
+            "getQuoteStatusHistory": "async (quoteId)",
+            "getPendingApprovals": "async (userId)",
+            "getWorkflowSettings": "async ()",
+            "updateWorkflowSettings": "async (settings, userId)",
+            "recordClientAction": {
+              "calls": [
+                "updateQuoteStatus"
+              ],
+              "signature": "async (accessToken, actionType, clientData = {})"
+            },
+            "__init__": "()"
+          }
+        }
+      },
+      "variables": [
+        "logger",
+        "emailQueueService",
+        "crypto",
+        "quote",
+        "previousStatus",
+        "approvers",
+        "approvalData",
+        "newQuoteStatus",
+        "accessToken",
+        "expiresAt",
+        "clientName",
+        "emailData",
+        "settingsObj",
+        "quoteId",
+        "newStatus"
+      ],
+      "call_graph": {}
+    },
+    "src/modules/quotes/services/emailQueueService.js": {
+      "language": "javascript",
+      "parsed": true,
+      "imports": [
+        "../config/database",
+        "./emailService"
+      ],
+      "functions": {},
+      "classes": {
+        "EmailQueueService": {
+          "methods": {
+            "constructor": "()",
+            "addToQueue": "async (emailData, priority = 0, scheduledAt = null)",
+            "getQueuedEmails": "async (limit = 10)",
+            "updateQueueStatus": {
+              "signature": "async (queueId, status, errorMessage = null)",
+              "called_by": [
+                "EmailQueueService.processQueueItem"
+              ]
+            },
+            "incrementAttempts": {
+              "signature": "async (queueId)",
+              "called_by": [
+                "EmailQueueService.processQueueItem"
+              ]
+            },
+            "scheduleRetry": "async (queueId, attempts)",
+            "logEmailSent": {
+              "signature": "async (emailData, messageId, status = 'sent')",
+              "called_by": [
+                "EmailQueueService.processQueueItem"
+              ]
+            },
+            "updateEmailLog": {
+              "signature": "async (logId, updates)",
+              "called_by": [
+                "EmailQueueService.handleDeliveryWebhook"
+              ]
+            },
+            "processQueue": {
+              "signature": "async ()",
+              "called_by": [
+                "EmailQueueService.startProcessing"
+              ]
+            },
+            "processQueueItem": {
+              "calls": [
+                "incrementAttempts",
+                "logEmailSent",
+                "updateQueueStatus"
+              ],
+              "signature": "async (queueItem)"
+            },
+            "startProcessing": {
+              "calls": [
+                "processQueue"
+              ],
+              "signature": "()"
+            },
+            "stopProcessing": "()",
+            "getQueueStats": "async ()",
+            "getEmailLogs": "async (limit = 50, filters = {})",
+            "handleDeliveryWebhook": {
+              "calls": [
+                "updateEmailLog"
+              ],
+              "signature": "async (data)"
+            },
+            "__init__": "()"
+          }
+        }
+      },
+      "variables": [
+        "emailService",
+        "scheduledTime",
+        "delayIndex",
+        "delay",
+        "nextAttempt",
+        "fields",
+        "values",
+        "queuedEmails",
+        "emailData",
+        "query",
+        "params",
+        "logId",
+        "updates"
+      ],
+      "call_graph": {}
+    },
+    "src/shared/middleware/authMiddleware.js": {
+      "language": "javascript",
+      "parsed": true,
+      "purpose": "Middleware",
+      "imports": [
+        "../auth/authService",
+        "express-rate-limit",
+        "helmet",
+        "../database"
+      ],
+      "functions": {},
+      "classes": {
+        "AuthMiddleware": {
+          "methods": {
+            "constructor": "()",
+            "authenticate": "()",
+            "authorize": "(roles = [])",
+            "optionalAuth": "()",
+            "requireAdmin": "()",
+            "requireManager": "()",
+            "authRateLimit": "()",
+            "apiRateLimit": "()",
+            "securityHeaders": "()",
+            "validateOwnership": "(resourceType)",
+            "__init__": "()"
+          }
+        }
+      },
+      "variables": [
+        "rateLimit",
+        "helmet",
+        "authHeader",
+        "token",
+        "decoded",
+        "resourceId",
+        "userId",
+        "userRole",
+        "db",
+        "resource"
+      ],
+      "call_graph": {}
+    },
+    "src/shared/middleware/auth.js": {
+      "language": "javascript",
+      "parsed": true,
+      "imports": [
+        "../services/authService",
+        "express-rate-limit",
+        "../config/database"
+      ],
+      "functions": {
+        "authenticate": "async (req, res, next)",
+        "authorize": "(roles = [])",
+        "optionalAuth": "async (req, res, next)",
+        "validateOwnership": "(resourceType)",
+        "securityHeaders": "(req, res, next)"
+      },
+      "classes": {},
+      "variables": [
+        "authService",
+        "rateLimit",
+        "authenticate",
+        "authHeader",
+        "token",
+        "decoded",
+        "session",
+        "authorize",
+        "optionalAuth",
+        "authRateLimit",
+        "apiRateLimit",
+        "validateOwnership",
+        "resourceId",
+        "userId",
+        "userRole",
+        "resource",
+        "securityHeaders"
+      ],
+      "call_graph": {}
+    },
+    "src/shared/middleware/errorHandler.js": {
+      "language": "javascript",
+      "parsed": true,
+      "imports": [
+        "../utils/logger"
+      ],
+      "functions": {
+        "globalErrorHandler": "(error, req, res, next)",
+        "notFoundHandler": "(req, res, next)",
+        "asyncHandler": "async (fn)",
+        "setupProcessErrorHandlers": "()",
+        "handleDatabaseError": "(error, operation = 'database operation')",
+        "handleEmailError": "(error, operation = 'email operation', recipient = null)",
+        "handleValidationError": "(errors, req = null)"
+      },
+      "classes": {},
+      "variables": [
+        "logger",
+        "statusCode",
+        "message",
+        "errorCode",
+        "logLevel",
+        "errorResponse",
+        "error",
+        "errorInfo",
+        "validationErrors"
+      ],
+      "call_graph": {}
+    },
+    "src/shared/middleware/loggingMiddleware.js": {
+      "language": "javascript",
+      "parsed": true,
+      "purpose": "Middleware",
+      "imports": [
+        "../services/loggingService"
+      ],
+      "functions": {
+        "requestLogger": "(req, res, next)",
+        "errorLogger": "(err, req, res, next)",
+        "rateLimitLogger": "(req, res, next)"
+      },
+      "classes": {},
+      "variables": [
+        "loggingService",
+        "requestLogger",
+        "startTime",
+        "originalUrl",
+        "method",
+        "originalEnd",
+        "endTime",
+        "responseTime",
+        "errorLogger",
+        "errorInfo",
+        "authLogger",
+        "dbLogger",
+        "result",
+        "duration",
+        "systemMonitor",
+        "memory",
+        "metrics",
+        "rateLimitLogger"
+      ],
+      "call_graph": {}
+    },
+    "src/shared/middleware/validation.js": {
+      "language": "javascript",
+      "parsed": true,
+      "imports": [
+        "express-validator"
+      ],
+      "functions": {
+        "handleValidationErrors": "(req, res, next)"
+      },
+      "classes": {},
+      "variables": [
+        "handleValidationErrors",
+        "errors",
+        "validateLogin",
+        "validateRegistration",
+        "validateQuote",
+        "validateClient",
+        "validateId",
+        "validatePagination",
+        "validateSearch"
+      ],
+      "call_graph": {}
+    },
+    "src/shared/database/index.js": {
+      "language": "javascript",
+      "parsed": true,
+      "purpose": "Application entry point",
+      "imports": [
+        "mysql2/promise",
+        "oracledb",
+        "path",
+        "fs",
+        "./connectionPool",
+        "better-sqlite3",
+        "crypto",
+        "bcrypt",
+        "sqlite3"
+      ],
+      "functions": {
+        "initializeOracle": {
+          "signature": "async ()",
+          "called_by": [
+            "testConnections"
+          ]
+        },
+        "createDefaultAdminUser": {
+          "signature": "async ()",
+          "called_by": [
+            "initializeSQLiteDatabase"
+          ]
+        },
+        "initializeSQLiteDatabase": {
+          "calls": [
+            "createDefaultAdminUser"
+          ],
+          "signature": "async ()",
+          "called_by": [
+            "testConnections"
+          ]
+        },
+        "testConnections": {
+          "calls": [
+            "execute",
+            "getConnection",
+            "initializeOracle",
+            "initializeSQLiteDatabase",
+            "release"
+          ],
+          "signature": "async ()"
+        }
+      },
+      "classes": {},
+      "variables": [
+        "mysql",
+        "oracledb",
+        "path",
+        "fs",
+        "oracleClientPath",
+        "dbPath",
+        "dataDir",
+        "sqlitePool",
+        "mysqlPool",
+        "mysqlConfig",
+        "oraclePool",
+        "oracleConfig",
+        "database",
+        "transaction",
+        "result",
+        "db",
+        "userCount",
+        "crypto",
+        "bcrypt",
+        "defaultPassword",
+        "passwordHash",
+        "insertUser",
+        "schema",
+        "sqlite3",
+        "connection"
+      ],
+      "call_graph": {}
+    },
+    "src/shared/database/connectionPool.js": {
+      "language": "javascript",
+      "parsed": true,
+      "imports": [
+        "sqlite3",
+        "path",
+        "fs"
+      ],
+      "functions": {},
+      "classes": {
+        "SQLiteConnectionPool": {
+          "methods": {
+            "constructor": "(dbPath, options = {})",
+            "initializePool": "async ()",
+            "createConnection": {
+              "calls": [
+                "optimizeConnection"
+              ],
+              "signature": "async ()"
+            },
+            "optimizeConnection": {
+              "signature": "(db)",
+              "called_by": [
+                "SQLiteConnectionPool.createConnection"
+              ]
+            },
+            "getConnection": {
+              "signature": "async ()",
+              "called_by": [
+                "testConnections"
+              ]
+            },
+            "releaseConnection": {
+              "signature": "(connection)",
+              "called_by": [
+                "SQLiteConnectionPool.commitTransaction",
+                "SQLiteConnectionPool.rollbackTransaction"
+              ]
+            },
+            "execute": {
+              "signature": "async (sql, params = [])",
+              "called_by": [
+                "testConnections"
+              ]
+            },
+            "beginTransaction": "async ()",
+            "executeInTransaction": {
+              "calls": [
+                "run"
+              ],
+              "signature": "async (connection, sql, params = [])"
+            },
+            "commitTransaction": {
+              "calls": [
+                "releaseConnection",
+                "run"
+              ],
+              "signature": "async (connection)"
+            },
+            "rollbackTransaction": {
+              "calls": [
+                "releaseConnection",
+                "run"
+              ],
+              "signature": "async (connection)"
+            },
+            "cleanupIdleConnections": "()",
+            "getStats": "()",
+            "close": "async ()",
+            "__init__": "(dbPath, options = {})"
+          }
+        }
+      },
+      "variables": [
+        "sqlite3",
+        "path",
+        "fs",
+        "minConnections",
+        "i",
+        "db",
+        "connectionWrapper",
+        "pragmas",
+        "connection",
+        "timeout",
+        "index",
+        "waiter",
+        "startTime",
+        "isSelect",
+        "queryTime",
+        "now",
+        "idleConnections"
+      ],
+      "call_graph": {}
+    },
+    "src/shared/auth/authService.js": {
+      "language": "javascript",
+      "parsed": true,
+      "imports": [
+        "bcrypt",
+        "jsonwebtoken",
+        "../database",
+        "node-cache",
+        "crypto",
+        "crypto"
+      ],
+      "functions": {},
+      "classes": {
+        "AuthService": {
+          "methods": {
+            "constructor": "()",
+            "register": {
+              "signature": "async (userData)",
+              "called_by": [
+                "AuthController.register"
+              ]
+            },
+            "login": {
+              "calls": [
+                "generateTokens",
+                "incrementFailedAttempts",
+                "resetFailedAttempts"
+              ],
+              "signature": "async (username, password, ipAddress = null, userAgent = null)",
+              "called_by": [
+                "login",
+                "AuthController.login"
+              ]
+            },
+            "generateTokens": {
+              "signature": "async (user, ipAddress = null, userAgent = null)",
+              "called_by": [
+                "AuthService.login",
+                "AuthService.refreshToken"
+              ]
+            },
+            "refreshToken": {
+              "calls": [
+                "generateTokens"
+              ],
+              "signature": "async (refreshToken)",
+              "called_by": [
+                "AuthController.refreshToken"
+              ]
+            },
+            "logout": {
+              "signature": "async (tokenId)",
+              "called_by": [
+                "logout",
+                "AuthManager.attemptTokenRefresh",
+                "AuthController.logout"
+              ]
+            },
+            "verifyToken": "async (token)",
+            "getUserById": {
+              "signature": "async (userId)",
+              "called_by": [
+                "UserManagementService.updateUser",
+                "UserManagementService.deleteUser",
+                "UserManagementService.toggleUserStatus",
+                "UserManagementController.getUserById"
+              ]
+            },
+            "updateLastLogin": "async (userId)",
+            "incrementFailedAttempts": {
+              "signature": "async (userId)",
+              "called_by": [
+                "AuthService.login"
+              ]
+            },
+            "resetFailedAttempts": {
+              "signature": "async (userId)",
+              "called_by": [
+                "AuthService.login"
+              ]
+            },
+            "changePassword": {
+              "signature": "async (userId, currentPassword, newPassword)",
+              "called_by": [
+                "AuthController.changePassword",
+                "UserManagementController.changePassword",
+                "changePassword"
+              ]
+            },
+            "clearCaches": "()",
+            "getCacheStats": "()",
+            "__init__": "()"
+          }
+        }
+      },
+      "variables": [
+        "bcrypt",
+        "jwt",
+        "existingResult",
+        "existingUsers",
+        "passwordHash",
+        "result",
+        "users",
+        "user",
+        "isValid",
+        "tokens",
+        "tokenId",
+        "refreshToken",
+        "accessToken",
+        "expiresAt",
+        "refreshExpiresAt",
+        "session",
+        "cacheKey",
+        "cachedResult",
+        "decoded",
+        "sessionKey",
+        "sessionValid",
+        "attempts",
+        "lockUntil",
+        "newPasswordHash"
+      ],
+      "call_graph": {}
+    },
+    "src/shared/auth/authController.js": {
+      "language": "javascript",
+      "parsed": true,
+      "imports": [
+        "./authService"
+      ],
+      "functions": {},
+      "classes": {
+        "AuthController": {
+          "methods": {
+            "constructor": "()",
+            "register": {
+              "calls": [
+                "register"
+              ],
+              "signature": "async (req, res)",
+              "called_by": [
+                "AuthController.register"
+              ]
+            },
+            "login": {
+              "calls": [
+                "login"
+              ],
+              "signature": "async (req, res)",
+              "called_by": [
+                "login",
+                "AuthController.login"
+              ]
+            },
+            "refreshToken": {
+              "calls": [
+                "refreshToken"
+              ],
+              "signature": "async (req, res)",
+              "called_by": [
+                "AuthController.refreshToken"
+              ]
+            },
+            "logout": {
+              "calls": [
+                "logout"
+              ],
+              "signature": "async (req, res)",
+              "called_by": [
+                "logout",
+                "AuthManager.attemptTokenRefresh",
+                "AuthController.logout"
+              ]
+            },
+            "getProfile": {
+              "signature": "async (req, res)",
+              "called_by": [
+                "loadProfileData"
+              ]
+            },
+            "changePassword": {
+              "calls": [
+                "changePassword"
+              ],
+              "signature": "async (req, res)",
+              "called_by": [
+                "AuthController.changePassword",
+                "UserManagementController.changePassword",
+                "changePassword"
+              ]
+            },
+            "__init__": "()"
+          }
+        }
+      },
+      "variables": [
+        "user",
+        "ipAddress",
+        "userAgent",
+        "result",
+        "tokens",
+        "tokenId",
+        "userId"
+      ],
+      "call_graph": {}
+    },
+    "src/shared/utils/logger.js": {
+      "language": "javascript",
+      "parsed": true,
+      "imports": [
+        "fs",
+        "path"
+      ],
+      "functions": {},
+      "classes": {
+        "Logger": {
+          "methods": {
+            "constructor": "()",
+            "ensureLogDirectory": "()",
+            "shouldLog": "(level)",
+            "formatMessage": "(level, message, meta = {})",
+            "log": {
+              "signature": "(level, message, meta = {})",
+              "called_by": [
+                "Logger.requestLogger"
+              ]
+            },
+            "rotateLogFile": "()",
+            "error": "(message, meta = {})",
+            "warn": "(message, meta = {})",
+            "info": {
+              "signature": "(message, meta = {})",
+              "called_by": [
+                "Logger.requestLogger"
+              ]
+            },
+            "debug": "(message, meta = {})",
+            "trace": "(message, meta = {})",
+            "requestLogger": {
+              "calls": [
+                "info",
+                "log"
+              ],
+              "signature": "()"
+            },
+            "queryLogger": "(query, params = [], duration = 0, error = null)",
+            "emailLogger": "(type, data, error = null)",
+            "authLogger": "(type, username, success = true, error = null, req = null)",
+            "performanceLogger": "(operation, duration, metadata = {})",
+            "healthLogger": "(component, status, details = {})",
+            "getRecentLogs": {
+              "signature": "(lines = 100)",
+              "called_by": [
+                "Logger.getLogStats"
+              ]
+            },
+            "getLogStats": {
+              "calls": [
+                "getRecentLogs"
+              ],
+              "signature": "()"
+            },
+            "__init__": "()"
+          }
+        }
+      },
+      "variables": [
+        "fs",
+        "path",
+        "logDir",
+        "timestamp",
+        "pid",
+        "logObj",
+        "color",
+        "consoleMessage",
+        "logLine",
+        "stats",
+        "i",
+        "oldFile",
+        "newFile",
+        "start",
+        "originalEnd",
+        "duration",
+        "level",
+        "message",
+        "data",
+        "logLines",
+        "logs",
+        "now",
+        "oneHourAgo",
+        "recentLogs",
+        "logger"
+      ],
+      "call_graph": {}
+    },
+    "src/shared/utils/cache.js": {
+      "language": "javascript",
+      "parsed": true,
+      "functions": {},
+      "classes": {
+        "MemoryCache": {
+          "methods": {
+            "constructor": {
+              "calls": [
+                "set"
+              ],
+              "signature": "()"
+            },
+            "delete": {
+              "calls": [
+                "clear"
+              ],
+              "signature": "(key)",
+              "called_by": [
+                "MemoryCache.cleanup",
+                "MemoryCache.size"
+              ]
+            },
+            "clear": {
+              "signature": "()",
+              "called_by": [
+                "MemoryCache.delete"
+              ]
+            },
+            "size": {
+              "calls": [
+                "delete"
+              ],
+              "signature": "()"
+            },
+            "cleanup": {
+              "calls": [
+                "delete"
+              ],
+              "signature": "()"
+            },
+            "__init__": {
+              "calls": [
+                "set"
+              ],
+              "signature": "()"
+            }
+          }
+        }
+      },
+      "variables": [
+        "now",
+        "cache"
+      ],
+      "call_graph": {}
+    },
+    "src/shared/utils/batchProcessor.js": {
+      "language": "javascript",
+      "parsed": true,
+      "imports": [
+        "./cache",
+        "../config/database",
+        "../config/database"
+      ],
+      "functions": {},
+      "classes": {
+        "BatchProcessor": {
+          "methods": {
+            "constructor": "(options = {})",
+            "addToBatch": {
+              "calls": [
+                "flushBatch"
+              ],
+              "signature": "(batchKey, operation)"
+            },
+            "flushBatch": {
+              "signature": "async (batchKey)",
+              "called_by": [
+                "BatchProcessor.addToBatch"
+              ]
+            },
+            "processBatch": {
+              "calls": [
+                "processAnalytics",
+                "processAuditLog",
+                "processCacheInvalidation"
+              ],
+              "signature": "async (batchKey, operations)"
+            },
+            "processCacheInvalidation": {
+              "signature": "async (operations)",
+              "called_by": [
+                "BatchProcessor.processBatch"
+              ]
+            },
+            "processAuditLog": {
+              "signature": "async (operations)",
+              "called_by": [
+                "BatchProcessor.processBatch"
+              ]
+            },
+            "processAnalytics": {
+              "signature": "async (operations)",
+              "called_by": [
+                "BatchProcessor.processBatch"
+              ]
+            },
+            "aggregateEvents": {
+              "calls": [
+                "forEach"
+              ],
+              "signature": "(events)"
+            },
+            "getMostCommon": "(arr)",
+            "flushAll": "async ()",
+            "cleanup": "()",
+            "getStats": "()",
+            "__init__": "(options = {})"
+          }
+        }
+      },
+      "variables": [
+        "timer",
+        "batch",
+        "i",
+        "cache",
+        "uniqueKeys",
+        "values",
+        "placeholders",
+        "flatValues",
+        "grouped",
+        "aggregated",
+        "count",
+        "metadata",
+        "frequency",
+        "batchKeys",
+        "batchProcessor"
+      ],
+      "call_graph": {}
+    },
+    "src/shared/controllers/monitoringController.js": {
+      "language": "javascript",
+      "parsed": true,
+      "imports": [
+        "../services/loggingService",
+        "../database"
+      ],
+      "functions": {},
+      "classes": {
+        "MonitoringController": {
+          "methods": {
+            "getSystemHealth": {
+              "calls": [
+                "checkDatabaseConnections",
+                "getMetrics",
+                "memoryUsage"
+              ],
+              "signature": "async (req, res)"
+            },
+            "getMetrics": {
+              "calls": [
+                "getMetrics",
+                "memoryUsage"
+              ],
+              "signature": "async (req, res)",
+              "called_by": [
+                "MonitoringController.getMetrics",
+                "MonitoringController.getAlerts",
+                "MonitoringController.getSystemHealth"
+              ]
+            },
+            "getLogs": "async (req, res)",
+            "getAlerts": {
+              "calls": [
+                "checkDatabaseConnections",
+                "getMetrics",
+                "memoryUsage"
+              ],
+              "signature": "async (req, res)"
+            },
+            "getDatabaseStatus": {
+              "calls": [
+                "checkDatabaseConnections"
+              ],
+              "signature": "async (req, res)"
+            },
+            "checkDatabaseConnections": {
+              "signature": "async ()",
+              "called_by": [
+                "MonitoringController.getDatabaseStatus",
+                "MonitoringController.getAlerts",
+                "MonitoringController.getSystemHealth"
+              ]
+            },
+            "clearLogs": "async (req, res)"
+          }
+        }
+      },
+      "variables": [
+        "loggingService",
+        "health",
+        "dbHealthy",
+        "memoryUsage",
+        "metrics",
+        "enhancedMetrics",
+        "logs",
+        "filteredLogs",
+        "alerts",
+        "errorRate",
+        "dbHealth",
+        "dbStatus",
+        "results"
+      ],
+      "call_graph": {}
+    },
+    "src/shared/services/scheduledTasks.js": {
+      "language": "javascript",
+      "parsed": true,
+      "imports": [
+        "node-cron",
+        "./loggingService"
+      ],
+      "functions": {},
+      "classes": {
+        "ScheduledTasks": {
+          "methods": {
+            "constructor": "()",
+            "setupTasks": "()",
+            "startAll": "()",
+            "stopAll": "()",
+            "getStatus": "()",
+            "__init__": "()"
+          }
+        }
+      },
+      "variables": [
+        "cron",
+        "loggingService",
+        "logCleanupTask",
+        "metricsTask",
+        "metrics",
+        "scheduledTasks"
+      ],
+      "call_graph": {}
+    },
+    "src/shared/services/loggingService.js": {
+      "language": "javascript",
+      "parsed": true,
+      "imports": [
+        "winston",
+        "path",
+        "fs",
+        "child_process"
+      ],
+      "functions": {},
+      "classes": {
+        "LoggingService": {
+          "methods": {
+            "constructor": "()",
+            "createLogsDirectory": "()",
+            "initializeLoggers": "()",
+            "startMetricsCollection": "()",
+            "info": {
+              "signature": "(message, meta = {})",
+              "called_by": [
+                "Logger.requestLogger"
+              ]
+            },
+            "warn": "(message, meta = {})",
+            "error": "(message, error = null, meta = {})",
+            "debug": "(message, meta = {})",
+            "logRequest": "(req, res, responseTime)",
+            "logPerformance": "(operation, duration, meta = {})",
+            "logDatabaseQuery": "(query, duration, params = {})",
+            "logDatabaseError": "(error, query = '', params = {})",
+            "logSystemEvent": "(event, data = {})",
+            "logAuthEvent": "(event, userId, ip, details = {})",
+            "getMetrics": {
+              "signature": "()",
+              "called_by": [
+                "MonitoringController.getMetrics",
+                "MonitoringController.getAlerts",
+                "MonitoringController.getSystemHealth"
+              ]
+            },
+            "getRecentLogs": {
+              "signature": "async (lines = 100, logType = 'combined')",
+              "called_by": [
+                "Logger.getLogStats"
+              ]
+            },
+            "cleanupLogs": "()",
+            "__init__": "()"
+          }
+        }
+      },
+      "variables": [
+        "winston",
+        "path",
+        "fs",
+        "log",
+        "errorMeta",
+        "logData",
+        "perfData",
+        "queryData",
+        "errorData",
+        "authData",
+        "logFile",
+        "spawn",
+        "tail",
+        "output",
+        "logs",
+        "match",
+        "maxAge",
+        "now",
+        "files",
+        "filePath",
+        "stats",
+        "loggingService"
+      ],
+      "call_graph": {}
+    },
+    "src/shared/services/exportService.js": {
+      "language": "javascript",
+      "parsed": true,
+      "imports": [
+        "pdfkit",
+        "xlsx",
+        "moment",
+        "fs",
+        "path"
+      ],
+      "functions": {},
+      "classes": {
+        "ExportService": {
+          "methods": {
+            "constructor": "()",
+            "ensureTempDir": "()",
+            "generatePDF": "async (options)",
+            "generateExcel": "(options)",
+            "addPDFHeader": "(doc, title, metadata)",
+            "addPDFTable": "(doc, data, columns, customizations = {})",
+            "addPDFFooter": "(doc, metadata)",
+            "generateQuotePDF": "async (quote, client, items)",
+            "cleanup": "()",
+            "__init__": "()"
+          }
+        }
+      },
+      "constants": {
+        "XLSX": "value"
+      },
+      "variables": [
+        "moment",
+        "fs",
+        "path",
+        "doc",
+        "chunks",
+        "workbook",
+        "worksheetData",
+        "headers",
+        "rowData",
+        "value",
+        "worksheet",
+        "columnWidths",
+        "cellLength",
+        "yPosition",
+        "pageHeight",
+        "rowHeight",
+        "headerHeight",
+        "tableWidth",
+        "columnWidth",
+        "xPosition",
+        "pageCount",
+        "i",
+        "yPos",
+        "subtotal",
+        "itemTotal",
+        "itbis",
+        "total",
+        "oneHourAgo",
+        "files",
+        "filePath",
+        "stats"
+      ],
+      "call_graph": {}
+    },
+    "public/logs-content/index.html": {
+      "language": "html",
+      "parsed": false,
+      "purpose": "Application entry point"
+    },
+    "public/logs-content/styles.css": {
+      "language": "css",
+      "parsed": false
+    },
+    "public/logs-content/script.js": {
+      "language": "javascript",
+      "parsed": true,
+      "functions": {
+        "applyFilters": {
+          "calls": [
+            "loadLogs"
+          ],
+          "signature": "()"
+        },
+        "clearFilters": {
+          "calls": [
+            "loadLogs"
+          ],
+          "signature": "()"
+        },
+        "refreshLogs": {
+          "calls": [
+            "loadLogs",
+            "loadStats"
+          ],
+          "signature": "()"
+        },
+        "exportUserLogs": "async (format)",
+        "exportActivitySummary": "async (format)",
+        "exportUserPerformance": "async (format)",
+        "exportProductHistory": "async (format)"
+      },
+      "classes": {
+        "LogAnalyzer": {
+          "methods": {
+            "constructor": "()",
+            "init": "async ()",
+            "loadStats": {
+              "calls": [
+                "renderStats"
+              ],
+              "signature": "async ()",
+              "called_by": [
+                "refreshLogs"
+              ]
+            },
+            "renderStats": {
+              "signature": "(stats)",
+              "called_by": [
+                "LogAnalyzer.loadStats"
+              ]
+            },
+            "loadLogTypes": "async ()",
+            "loadLogs": {
+              "calls": [
+                "renderLogs",
+                "renderPagination"
+              ],
+              "signature": "async ()",
+              "called_by": [
+                "clearFilters",
+                "refreshLogs",
+                "applyFilters"
+              ]
+            },
+            "renderLogs": {
+              "signature": "(logs)",
+              "called_by": [
+                "LogAnalyzer.loadLogs"
+              ]
+            },
+            "getActionBadgeClass": "(action)",
+            "renderPagination": {
+              "signature": "()",
+              "called_by": [
+                "UserManager.loadUsers",
+                "LogAnalyzer.loadLogs"
+              ]
+            },
+            "viewDetails": {
+              "calls": [
+                "escapeHtml"
+              ],
+              "signature": "async (logId)"
+            },
+            "changePage": "(page)",
+            "escapeHtml": {
+              "signature": "(text)",
+              "called_by": [
+                "LogAnalyzer.viewDetails"
+              ]
+            },
+            "__init__": "()"
+          }
+        }
+      },
+      "variables": [
+        "token",
+        "response",
+        "result",
+        "stats",
+        "statsContainer",
+        "todayStats",
+        "weekStats",
+        "topUser",
+        "topAction",
+        "typeFilter",
+        "option",
+        "params",
+        "logs",
+        "tbody",
+        "parsed",
+        "pagination",
+        "totalPages",
+        "paginationHtml",
+        "startPage",
+        "endPage",
+        "i",
+        "log",
+        "modalBody",
+        "modal",
+        "div",
+        "filters",
+        "blob",
+        "url",
+        "a"
+      ],
+      "call_graph": {}
+    },
+    "public/sales/index.html": {
+      "language": "html",
+      "parsed": false,
+      "purpose": "Application entry point"
+    },
+    "public/css/login.css": {
+      "language": "css",
+      "parsed": false
+    },
+    "public/quotes/index.html": {
+      "language": "html",
+      "parsed": false,
+      "purpose": "Application entry point"
+    },
+    "public/quotes-content/index.html": {
+      "language": "html",
+      "parsed": false,
+      "purpose": "Application entry point"
+    },
+    "public/quotes-content/styles.css": {
+      "language": "css",
+      "parsed": false
+    },
+    "public/quotes-content/adminPanel.js": {
+      "language": "javascript",
+      "parsed": true,
+      "functions": {},
+      "classes": {
+        "AdminPanel": {
+          "methods": {
+            "constructor": "()",
+            "loadDashboard": {
+              "calls": [
+                "renderDashboard",
+                "startAutoRefresh"
+              ],
+              "signature": "async ()"
+            },
+            "renderDashboard": {
+              "signature": "()",
+              "called_by": [
+                "AdminPanel.loadDashboard"
+              ]
+            },
+            "renderSystemStats": "()",
+            "renderRecentActivity": "()",
+            "renderSystemHealth": "()",
+            "renderQuickActions": "()",
+            "performCleanup": "async ()",
+            "viewPerformanceMetrics": {
+              "calls": [
+                "showPerformanceModal"
+              ],
+              "signature": "async ()"
+            },
+            "showPerformanceModal": {
+              "signature": "()",
+              "called_by": [
+                "AdminPanel.viewPerformanceMetrics"
+              ]
+            },
+            "loadSystemConfig": {
+              "calls": [
+                "showConfigModal"
+              ],
+              "signature": "async ()"
+            },
+            "showConfigModal": {
+              "signature": "()",
+              "called_by": [
+                "AdminPanel.loadSystemConfig"
+              ]
+            },
+            "startAutoRefresh": {
+              "signature": "()",
+              "called_by": [
+                "AdminPanel.loadDashboard",
+                "AdminPanel.toggleAutoRefresh"
+              ]
+            },
+            "toggleAutoRefresh": {
+              "calls": [
+                "showSuccess",
+                "startAutoRefresh"
+              ],
+              "signature": "()"
+            },
+            "updateAutoRefreshButton": "()",
+            "refreshDashboard": "()",
+            "closePerformanceModal": "()",
+            "closeConfigModal": "()",
+            "getPerformanceStatus": "(database)",
+            "formatBytes": "(bytes)",
+            "formatUptime": "(seconds)",
+            "formatDate": "(dateString)",
+            "formatFeatureName": "(featureName)",
+            "capitalizeFirst": "(str)",
+            "showSuccess": {
+              "signature": "(message)",
+              "called_by": [
+                "AdminPanel.toggleAutoRefresh",
+                "UserManager.revokeSession"
+              ]
+            },
+            "showError": "(message)",
+            "cleanup": "()",
+            "__init__": "()"
+          }
+        }
+      },
+      "variables": [
+        "response",
+        "data",
+        "container",
+        "health",
+        "memoryUsage",
+        "memoryPercent",
+        "modal",
+        "button",
+        "avgQueryTime",
+        "slowQueries",
+        "k",
+        "sizes",
+        "i",
+        "days",
+        "hours",
+        "minutes",
+        "adminPanel"
+      ],
+      "call_graph": {}
+    },
+    "public/quotes-content/auth.js": {
+      "language": "javascript",
+      "parsed": true,
+      "functions": {
+        "showLoading": "(show)",
+        "openLoginModal": "()",
+        "closeLoginModal": {
+          "signature": "()",
+          "called_by": [
+            "AuthManager.login"
+          ]
+        },
+        "toggleUserMenu": "()",
+        "togglePasswordVisibility": "(inputId)",
+        "login": {
+          "calls": [
+            "login"
+          ],
+          "signature": "async ()",
+          "called_by": [
+            "AuthController.login",
+            "login"
+          ]
+        },
+        "logout": {
+          "calls": [
+            "logout"
+          ],
+          "signature": "async ()",
+          "called_by": [
+            "AuthController.logout",
+            "logout",
+            "AuthManager.attemptTokenRefresh"
+          ]
+        },
+        "openProfileModal": {
+          "calls": [
+            "loadProfileData"
+          ],
+          "signature": "()"
+        },
+        "closeProfileModal": {
+          "signature": "()",
+          "called_by": [
+            "loadProfileData",
+            "saveProfile"
+          ]
+        },
+        "loadProfileData": {
+          "calls": [
+            "closeProfileModal",
+            "getProfile",
+            "showAlert"
+          ],
+          "signature": "async ()",
+          "called_by": [
+            "openProfileModal"
+          ]
+        },
+        "saveProfile": {
+          "calls": [
+            "closeProfileModal",
+            "showAlert",
+            "updateProfile"
+          ],
+          "signature": "async ()"
+        },
+        "openChangePasswordModal": "()",
+        "closeChangePasswordModal": {
+          "signature": "()",
+          "called_by": [
+            "changePassword"
+          ]
+        },
+        "changePassword": {
+          "calls": [
+            "changePassword",
+            "closeChangePasswordModal"
+          ],
+          "signature": "async ()",
+          "called_by": [
+            "UserManagementController.changePassword",
+            "AuthController.changePassword",
+            "changePassword"
+          ]
+        },
+        "openUserManagementModal": "()",
+        "closeUserManagementModal": "()",
+        "openAdminPanel": "()",
+        "closeAdminPanelModal": "()",
+        "openInventoryManagementModal": "()",
+        "closeInventoryManagementModal": "()"
+      },
+      "classes": {
+        "AuthManager": {
+          "methods": {
+            "constructor": "()",
+            "init": "async ()",
+            "verifyToken": "async ()",
+            "attemptTokenRefresh": {
+              "calls": [
+                "logout"
+              ],
+              "signature": "async ()"
+            },
+            "setTokens": {
+              "signature": "(accessToken, refreshToken)",
+              "called_by": [
+                "AuthManager.login"
+              ]
+            },
+            "clearTokens": "()",
+            "setupAutoRefresh": {
+              "signature": "()",
+              "called_by": [
+                "AuthManager.login"
+              ]
+            },
+            "login": {
+              "calls": [
+                "closeLoginModal",
+                "setTokens",
+                "setupAutoRefresh",
+                "showAlert",
+                "updateUI"
+              ],
+              "signature": "async (username, password)",
+              "called_by": [
+                "login",
+                "AuthController.login"
+              ]
+            },
+            "logout": {
+              "signature": "async ()",
+              "called_by": [
+                "logout",
+                "AuthManager.attemptTokenRefresh",
+                "AuthController.logout"
+              ]
+            },
+            "getProfile": {
+              "signature": "async ()",
+              "called_by": [
+                "loadProfileData"
+              ]
+            },
+            "updateProfile": {
+              "signature": "async (profileData)",
+              "called_by": [
+                "saveProfile"
+              ]
+            },
+            "changePassword": {
+              "signature": "async (currentPassword, newPassword)",
+              "called_by": [
+                "AuthController.changePassword",
+                "UserManagementController.changePassword",
+                "changePassword"
+              ]
+            },
+            "makeAuthenticatedRequest": "async (url, options = {})",
+            "updateUI": {
+              "signature": "()",
+              "called_by": [
+                "AuthManager.login"
+              ]
+            },
+            "updateRoleBasedVisibility": "()",
+            "isAuthenticated": "()",
+            "hasRole": "(role)",
+            "hasAnyRole": "(roles)",
+            "showAlert": {
+              "signature": "(message, type = 'info')",
+              "called_by": [
+                "QuoteGenerator.selectClient",
+                "saveProfile",
+                "QuoteGenerator.sendQuoteEmail",
+                "AuthManager.login",
+                "loadProfileData"
+              ]
+            },
+            "__init__": "()"
+          }
+        }
+      },
+      "variables": [
+        "response",
+        "data",
+        "headers",
+        "navUser",
+        "navAuth",
+        "authRequired",
+        "mainContainer",
+        "adminElements",
+        "managerElements",
+        "userElements",
+        "alert",
+        "iconMap",
+        "colorMap",
+        "authManager",
+        "overlay",
+        "modal",
+        "usernameField",
+        "dropdown",
+        "input",
+        "button",
+        "icon",
+        "username",
+        "password",
+        "errorDiv",
+        "loginBtn",
+        "user",
+        "firstName",
+        "lastName",
+        "email",
+        "saveBtn",
+        "currentPassword",
+        "newPassword",
+        "confirmPassword",
+        "changeBtn",
+        "passwordRegex",
+        "userDropdown",
+        "userAvatar",
+        "activeModal",
+        "modalId"
+      ],
+      "call_graph": {}
+    },
+    "public/quotes-content/quoteWorkflow.js": {
+      "language": "javascript",
+      "parsed": true,
+      "functions": {},
+      "classes": {
+        "QuoteWorkflowManager": {
+          "methods": {
+            "constructor": "()",
+            "init": "async ()",
+            "setupEventListeners": {
+              "calls": [
+                "processApproval",
+                "showStatusHistoryModal",
+                "showStatusUpdateModal"
+              ],
+              "signature": "()",
+              "called_by": [
+                "QuoteGenerator.init"
+              ]
+            },
+            "loadWorkflowSettings": "async ()",
+            "showStatusUpdateModal": {
+              "signature": "(quoteId, newStatus)",
+              "called_by": [
+                "QuoteWorkflowManager.setupEventListeners"
+              ]
+            },
+            "handleStatusUpdate": "async ()",
+            "showStatusHistoryModal": {
+              "calls": [
+                "renderStatusHistory",
+                "showErrorMessage"
+              ],
+              "signature": "async (quoteId)",
+              "called_by": [
+                "QuoteWorkflowManager.setupEventListeners"
+              ]
+            },
+            "renderStatusHistory": {
+              "signature": "(history)",
+              "called_by": [
+                "QuoteWorkflowManager.showStatusHistoryModal"
+              ]
+            },
+            "loadPendingApprovals": {
+              "calls": [
+                "displayPendingApprovals"
+              ],
+              "signature": "async ()"
+            },
+            "displayPendingApprovals": {
+              "signature": "(approvals)",
+              "called_by": [
+                "QuoteWorkflowManager.loadPendingApprovals"
+              ]
+            },
+            "processApproval": {
+              "signature": "async (approvalId, decision)",
+              "called_by": [
+                "QuoteWorkflowManager.setupEventListeners"
+              ]
+            },
+            "loadWorkflowStatistics": {
+              "calls": [
+                "displayWorkflowStatistics"
+              ],
+              "signature": "async (timeframe = 30)"
+            },
+            "displayWorkflowStatistics": {
+              "signature": "(statistics)",
+              "called_by": [
+                "QuoteWorkflowManager.loadWorkflowStatistics"
+              ]
+            },
+            "enhanceQuoteCards": "()",
+            "showSuccessMessage": {
+              "calls": [
+                "showToast"
+              ],
+              "signature": "(message)"
+            },
+            "showErrorMessage": {
+              "calls": [
+                "showToast"
+              ],
+              "signature": "(message)",
+              "called_by": [
+                "InventoryManager.showLowStockModal",
+                "QuoteWorkflowManager.showStatusHistoryModal",
+                "InventoryManager.checkSingleProductStock"
+              ]
+            },
+            "showInfoMessage": "(message)",
+            "showToast": {
+              "signature": "(message, type = 'info')",
+              "called_by": [
+                "QuoteWorkflowManager.showErrorMessage",
+                "QuoteWorkflowManager.showSuccessMessage",
+                "InventoryManager.showErrorMessage",
+                "InventoryManager.showSuccessMessage"
+              ]
+            },
+            "__init__": "()"
+          }
+        }
+      },
+      "variables": [
+        "newStatus",
+        "quoteId",
+        "approvalId",
+        "response",
+        "data",
+        "modal",
+        "form",
+        "formData",
+        "updateData",
+        "result",
+        "isFirst",
+        "previousStatus",
+        "container",
+        "comments",
+        "quoteCards",
+        "status",
+        "statusBadge",
+        "actionsContainer",
+        "toast"
+      ],
+      "call_graph": {}
+    },
+    "public/quotes-content/inventoryManagement.js": {
+      "language": "javascript",
+      "parsed": true,
+      "functions": {},
+      "classes": {
+        "InventoryManager": {
+          "methods": {
+            "constructor": "()",
+            "init": {
+              "calls": [
+                "checkSingleProductStock",
+                "handleStockReservation",
+                "refreshInventoryData",
+                "releaseStockReservation",
+                "showLowStockModal",
+                "showStockReservationModal"
+              ],
+              "signature": "async ()"
+            },
+            "setupEventListeners": {
+              "signature": "()",
+              "called_by": [
+                "QuoteGenerator.init"
+              ]
+            },
+            "checkSingleProductStock": {
+              "calls": [
+                "displayProductStock",
+                "showErrorMessage"
+              ],
+              "signature": "async (productId)",
+              "called_by": [
+                "InventoryManager.init"
+              ]
+            },
+            "checkBulkStock": {
+              "signature": "async (productIds)",
+              "called_by": [
+                "InventoryManager.enhanceQuoteItemsWithStock"
+              ]
+            },
+            "checkQuoteStockAvailability": "async (quoteItems)",
+            "displayProductStock": {
+              "signature": "(productId, stock)",
+              "called_by": [
+                "InventoryManager.checkSingleProductStock"
+              ]
+            },
+            "enhanceQuoteItemsWithStock": {
+              "calls": [
+                "addStockIndicatorToQuoteItem",
+                "checkBulkStock",
+                "forEach"
+              ],
+              "signature": "async (quoteItems)"
+            },
+            "addStockIndicatorToQuoteItem": {
+              "signature": "(item, stock)",
+              "called_by": [
+                "InventoryManager.enhanceQuoteItemsWithStock"
+              ]
+            },
+            "showStockReservationModal": {
+              "signature": "(quoteId)",
+              "called_by": [
+                "InventoryManager.init"
+              ]
+            },
+            "handleStockReservation": {
+              "signature": "async ()",
+              "called_by": [
+                "InventoryManager.init"
+              ]
+            },
+            "releaseStockReservation": {
+              "signature": "async (quoteId, reason = 'manual_release')",
+              "called_by": [
+                "InventoryManager.init"
+              ]
+            },
+            "showLowStockModal": {
+              "calls": [
+                "renderLowStockProducts",
+                "showErrorMessage"
+              ],
+              "signature": "async (threshold = null)",
+              "called_by": [
+                "InventoryManager.init"
+              ]
+            },
+            "renderLowStockProducts": {
+              "signature": "(products)",
+              "called_by": [
+                "InventoryManager.showLowStockModal"
+              ]
+            },
+            "loadInventoryDashboard": "async ()",
+            "renderInventoryDashboard": "(container, dashboard)",
+            "refreshInventoryData": {
+              "signature": "async ()",
+              "called_by": [
+                "InventoryManager.init"
+              ]
+            },
+            "getStockStatusClass": "(currentStock, requestedQty = 0)",
+            "showSuccessMessage": {
+              "calls": [
+                "showToast"
+              ],
+              "signature": "(message)"
+            },
+            "showErrorMessage": {
+              "calls": [
+                "showToast"
+              ],
+              "signature": "(message)",
+              "called_by": [
+                "InventoryManager.showLowStockModal",
+                "QuoteWorkflowManager.showStatusHistoryModal",
+                "InventoryManager.checkSingleProductStock"
+              ]
+            },
+            "showInfoMessage": "(message)",
+            "showToast": {
+              "signature": "(message, type = 'info')",
+              "called_by": [
+                "QuoteWorkflowManager.showErrorMessage",
+                "QuoteWorkflowManager.showSuccessMessage",
+                "InventoryManager.showErrorMessage",
+                "InventoryManager.showSuccessMessage"
+              ]
+            },
+            "__init__": "()"
+          }
+        }
+      },
+      "variables": [
+        "productId",
+        "quoteId",
+        "response",
+        "data",
+        "cacheKey",
+        "cached",
+        "stockElement",
+        "stockStatus",
+        "productIds",
+        "stockData",
+        "stock",
+        "itemElement",
+        "stockIndicator",
+        "modal",
+        "form",
+        "formData",
+        "reservationMinutes",
+        "quoteResponse",
+        "quoteData",
+        "result",
+        "container",
+        "toast"
+      ],
+      "call_graph": {}
+    },
+    "public/quotes-content/emailManagement.js": {
+      "language": "javascript",
+      "parsed": true,
+      "functions": {
+        "openEmailManagementModal": {
+          "calls": [
+            "openEmailManagementModal"
+          ],
+          "signature": "()",
+          "called_by": [
+            "openEmailManagementModal"
+          ]
+        },
+        "closeEmailManagementModal": {
+          "calls": [
+            "closeEmailManagementModal"
+          ],
+          "signature": "()",
+          "called_by": [
+            "closeEmailManagementModal"
+          ]
+        },
+        "switchEmailTab": {
+          "calls": [
+            "switchEmailTab"
+          ],
+          "signature": "(tabName)",
+          "called_by": [
+            "switchEmailTab"
+          ]
+        },
+        "refreshEmailQueue": {
+          "calls": [
+            "refreshEmailQueue"
+          ],
+          "signature": "()",
+          "called_by": [
+            "refreshEmailQueue",
+            "EmailManagement.retryEmail"
+          ]
+        },
+        "refreshEmailLogs": {
+          "calls": [
+            "refreshEmailLogs"
+          ],
+          "signature": "()",
+          "called_by": [
+            "refreshEmailLogs"
+          ]
+        },
+        "sendTestEmail": {
+          "calls": [
+            "sendTestEmail"
+          ],
+          "signature": "()",
+          "called_by": [
+            "sendTestEmail"
+          ]
+        }
+      },
+      "classes": {
+        "EmailManagement": {
+          "methods": {
+            "constructor": "()",
+            "openEmailManagementModal": {
+              "signature": "async ()",
+              "called_by": [
+                "openEmailManagementModal"
+              ]
+            },
+            "closeEmailManagementModal": {
+              "signature": "()",
+              "called_by": [
+                "closeEmailManagementModal"
+              ]
+            },
+            "switchEmailTab": {
+              "signature": "(tabName)",
+              "called_by": [
+                "switchEmailTab"
+              ]
+            },
+            "loadEmailStats": {
+              "calls": [
+                "loadEmailAnalytics"
+              ],
+              "signature": "async ()"
+            },
+            "loadEmailAnalytics": {
+              "calls": [
+                "renderAnalyticsChart"
+              ],
+              "signature": "async ()",
+              "called_by": [
+                "EmailManagement.loadEmailStats"
+              ]
+            },
+            "renderAnalyticsChart": {
+              "signature": "(dailyData)",
+              "called_by": [
+                "EmailManagement.loadEmailAnalytics"
+              ]
+            },
+            "refreshEmailQueue": {
+              "calls": [
+                "renderEmailQueue"
+              ],
+              "signature": "async ()",
+              "called_by": [
+                "EmailManagement.retryEmail",
+                "refreshEmailQueue"
+              ]
+            },
+            "renderEmailQueue": {
+              "signature": "(queueItems)",
+              "called_by": [
+                "EmailManagement.refreshEmailQueue"
+              ]
+            },
+            "refreshEmailLogs": {
+              "calls": [
+                "renderEmailLogs"
+              ],
+              "signature": "async ()",
+              "called_by": [
+                "refreshEmailLogs"
+              ]
+            },
+            "renderEmailLogs": {
+              "signature": "(logs)",
+              "called_by": [
+                "EmailManagement.refreshEmailLogs"
+              ]
+            },
+            "loadEmailConfig": {
+              "calls": [
+                "renderEmailConfig"
+              ],
+              "signature": "async ()"
+            },
+            "renderEmailConfig": {
+              "signature": "(config)",
+              "called_by": [
+                "EmailManagement.loadEmailConfig"
+              ]
+            },
+            "retryEmail": {
+              "calls": [
+                "refreshEmailQueue"
+              ],
+              "signature": "async (queueId)"
+            },
+            "deleteQueueItem": "async (queueId)",
+            "sendTestEmail": {
+              "signature": "async ()",
+              "called_by": [
+                "sendTestEmail"
+              ]
+            },
+            "getStatusClass": "(status)",
+            "startAutoRefresh": {
+              "signature": "()",
+              "called_by": [
+                "AdminPanel.loadDashboard",
+                "AdminPanel.toggleAutoRefresh"
+              ]
+            },
+            "stopAutoRefresh": "()",
+            "__init__": "()"
+          }
+        }
+      },
+      "variables": [
+        "response",
+        "stats",
+        "analytics",
+        "chartContainer",
+        "chartHTML",
+        "maxHeight",
+        "maxEmails",
+        "height",
+        "statusFilter",
+        "endpoint",
+        "queueItems",
+        "container",
+        "html",
+        "scheduledAt",
+        "statusClass",
+        "recipientFilter",
+        "logs",
+        "sentAt",
+        "openedAt",
+        "config",
+        "statusIcon",
+        "statusText",
+        "testEmailAddress",
+        "useQueue",
+        "errorData",
+        "result",
+        "emailManager"
+      ],
+      "call_graph": {}
+    },
+    "public/quotes-content/userManagement.js": {
+      "language": "javascript",
+      "parsed": true,
+      "functions": {},
+      "classes": {
+        "UserManager": {
+          "methods": {
+            "constructor": "()",
+            "loadUsers": {
+              "calls": [
+                "renderPagination",
+                "renderUserList"
+              ],
+              "signature": "async (page = 1)"
+            },
+            "renderUserList": {
+              "signature": "()",
+              "called_by": [
+                "UserManager.loadUsers"
+              ]
+            },
+            "renderPagination": {
+              "signature": "()",
+              "called_by": [
+                "UserManager.loadUsers",
+                "LogAnalyzer.loadLogs"
+              ]
+            },
+            "createUser": {
+              "signature": "async ()",
+              "called_by": [
+                "UserManagementController.createUser"
+              ]
+            },
+            "editUser": {
+              "calls": [
+                "openEditUserModal"
+              ],
+              "signature": "async (userId)"
+            },
+            "saveUserChanges": "async ()",
+            "toggleUserStatus": {
+              "signature": "async (userId, currentStatus)",
+              "called_by": [
+                "UserManagementController.toggleUserStatus"
+              ]
+            },
+            "resetPassword": "async (userId)",
+            "viewSessions": {
+              "calls": [
+                "showSessionsModal"
+              ],
+              "signature": "async (userId)",
+              "called_by": [
+                "UserManager.revokeSession"
+              ]
+            },
+            "openCreateUserModal": "()",
+            "closeCreateUserModal": "()",
+            "openEditUserModal": {
+              "signature": "()",
+              "called_by": [
+                "UserManager.editUser"
+              ]
+            },
+            "closeEditUserModal": "()",
+            "showSessionsModal": {
+              "signature": "(userId, sessions)",
+              "called_by": [
+                "UserManager.viewSessions"
+              ]
+            },
+            "closeSessionsModal": "()",
+            "revokeSession": {
+              "calls": [
+                "showSuccess",
+                "viewSessions"
+              ],
+              "signature": "async (userId, sessionId)"
+            },
+            "handleSearch": "()",
+            "handleRoleFilter": "()",
+            "handleStatusFilter": "()",
+            "clearFilters": "()",
+            "getRoleIcon": "(role)",
+            "capitalizeFirst": "(str)",
+            "formatDate": "(dateString)",
+            "getDeviceInfo": "(userAgent)",
+            "showSuccess": {
+              "signature": "(message)",
+              "called_by": [
+                "AdminPanel.toggleAutoRefresh",
+                "UserManager.revokeSession"
+              ]
+            },
+            "showError": "(message)",
+            "__init__": "()"
+          }
+        }
+      },
+      "variables": [
+        "params",
+        "response",
+        "data",
+        "container",
+        "buttons",
+        "startPage",
+        "endPage",
+        "i",
+        "form",
+        "formData",
+        "userData",
+        "action",
+        "confirmMessage",
+        "newPassword",
+        "passwordRegex",
+        "modal",
+        "tbody",
+        "searchInput",
+        "roleSelect",
+        "statusSelect",
+        "icons",
+        "userManager"
+      ],
+      "call_graph": {}
+    },
+    "public/quotes-content/app.js": {
+      "language": "javascript",
+      "parsed": true,
+      "purpose": "Application entry point",
+      "functions": {
+        "openClientModal": {
+          "calls": [
+            "openClientModal"
+          ],
+          "signature": "()",
+          "called_by": [
+            "openClientModal"
+          ]
+        },
+        "closeClientModal": {
+          "calls": [
+            "closeClientModal"
+          ],
+          "signature": "()",
+          "called_by": [
+            "closeClientModal"
+          ]
+        },
+        "closeEmailModal": {
+          "calls": [
+            "closeEmailModal"
+          ],
+          "signature": "()",
+          "called_by": [
+            "closeEmailModal"
+          ]
+        },
+        "toggleEmailPreview": {
+          "calls": [
+            "toggleEmailPreview"
+          ],
+          "signature": "()",
+          "called_by": [
+            "toggleEmailPreview"
+          ]
+        },
+        "sendQuoteEmail": {
+          "calls": [
+            "sendQuoteEmail"
+          ],
+          "signature": "()",
+          "called_by": [
+            "sendQuoteEmail"
+          ]
+        }
+      },
+      "classes": {
+        "QuoteGenerator": {
+          "methods": {
+            "constructor": "()",
+            "init": {
+              "calls": [
+                "loadInitialData",
+                "setupAuthListeners",
+                "setupEventListeners"
+              ],
+              "signature": "async ()"
+            },
+            "loadInitialData": {
+              "signature": "async ()",
+              "called_by": [
+                "QuoteGenerator.init"
+              ]
+            },
+            "setupAuthListeners": {
+              "signature": "()",
+              "called_by": [
+                "QuoteGenerator.init"
+              ]
+            },
+            "setupEventListeners": {
+              "signature": "()",
+              "called_by": [
+                "QuoteGenerator.init"
+              ]
+            },
+            "debouncedSearch": "(searchTerm)",
+            "performSearch": {
+              "calls": [
+                "displaySearchResults"
+              ],
+              "signature": "async (searchTerm)"
+            },
+            "loadClients": "async ()",
+            "loadQuotes": {
+              "calls": [
+                "populateQuotesTable"
+              ],
+              "signature": "async ()"
+            },
+            "debouncedClientSearch": "(searchTerm)",
+            "performClientSearch": {
+              "calls": [
+                "displayClientSearchResults"
+              ],
+              "signature": "async (searchTerm)"
+            },
+            "displayClientSearchResults": {
+              "signature": "(clients)",
+              "called_by": [
+                "QuoteGenerator.performClientSearch"
+              ]
+            },
+            "selectClient": {
+              "calls": [
+                "showAlert"
+              ],
+              "signature": "(clientId)"
+            },
+            "displaySelectedClientInfo": "(client)",
+            "clearClientSelection": "()",
+            "searchClients": "async ()",
+            "populateQuotesTable": {
+              "signature": "()",
+              "called_by": [
+                "QuoteGenerator.loadQuotes"
+              ]
+            },
+            "searchProducts": "async ()",
+            "displaySearchResults": {
+              "signature": "(products)",
+              "called_by": [
+                "QuoteGenerator.performSearch"
+              ]
+            },
+            "addProduct": "(id, ean, name, description, price, itbis, priceWithTax)",
+            "removeProduct": {
+              "signature": "(index)",
+              "called_by": [
+                "QuoteGenerator.updateQuantity"
+              ]
+            },
+            "updateQuantity": {
+              "calls": [
+                "removeProduct"
+              ],
+              "signature": "(index, quantity)"
+            },
+            "updateSelectedProductsTable": "()",
+            "saveClient": "async ()",
+            "handleQuoteSubmit": "async (e)",
+            "downloadPDF": "async (quoteId)",
+            "viewQuote": "async (quoteId)",
+            "openClientModal": {
+              "signature": "()",
+              "called_by": [
+                "openClientModal"
+              ]
+            },
+            "closeClientModal": {
+              "signature": "()",
+              "called_by": [
+                "closeClientModal"
+              ]
+            },
+            "showAlert": {
+              "signature": "(message, type = 'info')",
+              "called_by": [
+                "QuoteGenerator.selectClient",
+                "saveProfile",
+                "QuoteGenerator.sendQuoteEmail",
+                "AuthManager.login",
+                "loadProfileData"
+              ]
+            },
+            "openEmailModal": {
+              "calls": [
+                "updateEmailPreview"
+              ],
+              "signature": "async (quoteId)"
+            },
+            "closeEmailModal": {
+              "signature": "()",
+              "called_by": [
+                "closeEmailModal"
+              ]
+            },
+            "updateEmailPreview": {
+              "signature": "()",
+              "called_by": [
+                "QuoteGenerator.openEmailModal"
+              ]
+            },
+            "toggleEmailPreview": {
+              "signature": "()",
+              "called_by": [
+                "toggleEmailPreview"
+              ]
+            },
+            "sendQuoteEmail": {
+              "calls": [
+                "showAlert"
+              ],
+              "signature": "async ()",
+              "called_by": [
+                "sendQuoteEmail"
+              ]
+            },
+            "showEmailError": "(message)",
+            "__init__": "()"
+          }
+        }
+      },
+      "variables": [
+        "validUntilDate",
+        "recipientEmailInput",
+        "emailSubjectInput",
+        "customMessageInput",
+        "response",
+        "result",
+        "products",
+        "uniqueProducts",
+        "filteredClients",
+        "resultsDiv",
+        "resultsBody",
+        "client",
+        "selectedInfo",
+        "selectedData",
+        "searchTerm",
+        "tbody",
+        "row",
+        "price",
+        "itbis",
+        "priceWithTax",
+        "existingIndex",
+        "subtotal",
+        "totalItbis",
+        "itemTotal",
+        "itemItbis",
+        "clientData",
+        "newClient",
+        "errorData",
+        "clientId",
+        "validUntil",
+        "notes",
+        "quoteData",
+        "blob",
+        "url",
+        "a",
+        "quote",
+        "modal",
+        "alert",
+        "iconMap",
+        "colorMap",
+        "recipientEmail",
+        "errorDiv",
+        "previewContent",
+        "chevron",
+        "emailSubject",
+        "customMessage",
+        "customMessageDiv",
+        "customTextDiv",
+        "emailRegex",
+        "sendButton",
+        "originalContent",
+        "emailData"
+      ],
+      "call_graph": {}
+    },
+    "public/js/login.js": {
+      "language": "javascript",
+      "parsed": false
+    },
+    "public/catalog/index.html": {
+      "language": "html",
+      "parsed": false,
+      "purpose": "Application entry point"
+    },
+    "public/shared/theme.css": {
+      "language": "css",
+      "parsed": false
+    },
+    "public/dashboard/index.html": {
+      "language": "html",
+      "parsed": false,
+      "purpose": "Application entry point"
+    },
+    "public/logs/index.html": {
+      "language": "html",
+      "parsed": false,
+      "purpose": "Application entry point"
+    },
+    "public/user-management/index.html": {
+      "language": "html",
+      "parsed": false,
+      "purpose": "Application entry point"
+    },
+    "public/monitoring/index.html": {
+      "language": "html",
+      "parsed": false,
+      "purpose": "Application entry point"
+    }
+  },
+  "dependency_graph": {
+    "test-api.js": [
+      "axios"
+    ],
+    "test_login_flow.js": [
+      "puppeteer"
+    ],
+    "src/app.js": [
+      "express",
+      "cors",
+      "body-parser",
+      "path",
+      "express-rate-limit",
+      "src/shared/middleware/authMiddleware.js",
+      "src/shared/middleware/loggingMiddleware.js",
+      "src/shared/services/loggingService.js",
+      "src/shared/services/scheduledTasks.js",
+      "fs"
+    ],
+    "src/modules/sales/salesService.js": [
+      "moment",
+      "src/modules/sales/models.js"
+    ],
+    "src/modules/sales/exportController.js": [
+      "src/modules/sales/salesService.js",
+      "src/shared/services/exportService.js",
+      "moment",
+      "xlsx",
+      "pdfkit"
+    ],
+    "src/modules/sales/salesController.js": [
+      "src/modules/sales/salesService.js",
+      "src/modules/sales/models.js"
+    ],
+    "src/modules/quotes/exportController.js": [
+      "src/shared/services/exportService.js",
+      "moment"
+    ],
+    "src/modules/quotes/quotesController.js": [
+      "src/modules/quotes/services/emailService.js",
+      "src/shared/services/loggingService.js"
+    ],
+    "src/modules/catalog/catalogController.js": [
+      "src/modules/catalog/catalogService.js"
+    ],
+    "src/modules/catalog/exportController.js": [
+      "src/modules/catalog/catalogService.js",
+      "src/shared/services/exportService.js",
+      "moment",
+      "xlsx",
+      "xlsx",
+      "pdfkit",
+      "xlsx"
+    ],
+    "src/modules/catalog/catalogService.js": [
+      "src/modules/catalog/models.js"
+    ],
+    "src/modules/dashboard/dashboardService.js": [
+      "moment"
+    ],
+    "src/modules/dashboard/dashboardController.js": [
+      "src/modules/dashboard/dashboardService.js",
+      "src/shared/services/exportService.js"
+    ],
+    "src/modules/logs/database.js": [
+      "mysql2/promise"
+    ],
+    "src/modules/logs/exportController.js": [
+      "src/modules/logs/logsService.js",
+      "src/shared/services/exportService.js",
+      "moment",
+      "pdfkit"
+    ],
+    "src/modules/logs/logsController.js": [
+      "src/modules/logs/logsService.js"
+    ],
+    "src/modules/user-management/userManagementService.js": [
+      "bcrypt"
+    ],
+    "src/modules/user-management/userManagementController.js": [
+      "src/modules/user-management/userManagementService.js",
+      "src/shared/services/exportService.js",
+      "src/shared/services/exportService.js"
+    ],
+    "src/modules/quotes/routes/products.js": [
+      "express",
+      "src/shared/middleware/authMiddleware.js"
+    ],
+    "src/modules/quotes/routes/auth.js": [
+      "express",
+      "express-validator",
+      "src/shared/auth/authService.js",
+      "src/shared/middleware/authMiddleware.js"
+    ],
+    "src/modules/quotes/routes/users.js": [
+      "express",
+      "express-validator",
+      "src/shared/auth/authService.js",
+      "src/shared/middleware/authMiddleware.js"
+    ],
+    "src/modules/quotes/services/pdfGenerator.js": [
+      "pdfkit",
+      "path"
+    ],
+    "src/modules/quotes/services/inventoryService.js": [
+      "src/modules/quotes/services/emailQueueService.js"
+    ],
+    "src/modules/quotes/services/emailService.js": [
+      "nodemailer",
+      "fs",
+      "path",
+      "src/modules/quotes/services/emailQueueService.js",
+      "src/modules/quotes/services/emailQueueService.js"
+    ],
+    "src/modules/quotes/services/quoteWorkflowService.js": [
+      "src/modules/quotes/services/emailQueueService.js",
+      "crypto"
+    ],
+    "src/modules/quotes/services/emailQueueService.js": [
+      "src/modules/quotes/services/emailService.js"
+    ],
+    "src/shared/middleware/authMiddleware.js": [
+      "src/shared/auth/authService.js",
+      "express-rate-limit",
+      "helmet"
+    ],
+    "src/shared/middleware/auth.js": [
+      "express-rate-limit"
+    ],
+    "src/shared/middleware/errorHandler.js": [
+      "src/shared/utils/logger.js"
+    ],
+    "src/shared/middleware/loggingMiddleware.js": [
+      "src/shared/services/loggingService.js"
+    ],
+    "src/shared/middleware/validation.js": [
+      "express-validator"
+    ],
+    "src/shared/database/index.js": [
+      "mysql2/promise",
+      "oracledb",
+      "path",
+      "fs",
+      "src/shared/database/connectionPool.js",
+      "better-sqlite3",
+      "crypto",
+      "bcrypt",
+      "sqlite3"
+    ],
+    "src/shared/database/connectionPool.js": [
+      "sqlite3",
+      "path",
+      "fs"
+    ],
+    "src/shared/auth/authService.js": [
+      "bcrypt",
+      "jsonwebtoken",
+      "node-cache",
+      "crypto",
+      "crypto"
+    ],
+    "src/shared/auth/authController.js": [
+      "src/shared/auth/authService.js"
+    ],
+    "src/shared/utils/logger.js": [
+      "fs",
+      "path"
+    ],
+    "src/shared/utils/batchProcessor.js": [
+      "src/shared/utils/cache.js"
+    ],
+    "src/shared/controllers/monitoringController.js": [
+      "src/shared/services/loggingService.js"
+    ],
+    "src/shared/services/scheduledTasks.js": [
+      "node-cron",
+      "src/shared/services/loggingService.js"
+    ],
+    "src/shared/services/loggingService.js": [
+      "winston",
+      "path",
+      "fs",
+      "child_process"
+    ],
+    "src/shared/services/exportService.js": [
+      "pdfkit",
+      "xlsx",
+      "moment",
+      "fs",
+      "path"
+    ]
+  },
+  "staleness_check": 1755135322.290928
+}
