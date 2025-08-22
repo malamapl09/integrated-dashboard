@@ -67,8 +67,18 @@
         <main id="main-content" class="container" role="main">
             <!-- Welcome Section -->
             <div class="mb-8">
-                <h2 class="text-2xl font-bold text-gray-900 mb-4">Welcome to the Integrated Management System</h2>
-                <p class="text-gray-600 text-lg">Monitor performance, track activities, and access business modules from your central hub.</p>
+                <h2 class="text-3xl font-bold text-gray-900 mb-4">Welcome to the Integrated Management System</h2>
+                <p class="text-gray-600 text-lg leading-relaxed">Monitor performance, track activities, and access business modules from your central hub.</p>
+                
+                <!-- System Status Bar -->
+                <div class="mt-6 flex items-center gap-4 flex-wrap">
+                    <div class="status-indicator status-online">
+                        System Online
+                    </div>
+                    <div class="text-sm text-gray-600">
+                        All services operational • Last sync: <span x-text="lastUpdated"></span>
+                    </div>
+                </div>
             </div>
 
             <!-- Quick Actions -->

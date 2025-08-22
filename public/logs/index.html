@@ -3,49 +3,464 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="User Activity Logs - Monitor and audit user actions and system changes">
     <title>User Activity Logs - Plaza Lama</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="../shared/theme.css" rel="stylesheet">
 </head>
-<body class="bg-gray-100">
-    <!-- Header -->
-    <header class="bg-white shadow-sm">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between items-center py-4">
-                <div class="flex items-center">
-                    <a href="/" class="text-blue-600 hover:text-blue-800 mr-4">
-                        <i class="fas fa-arrow-left"></i> Back to Dashboard
+<body>
+    <!-- Skip Link for Screen Readers -->
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+    
+    <div x-data="logsApp()">
+        <!-- Header -->
+        <header class="unified-header logs-header" role="banner">
+            <div class="header-content">
+                <div class="header-title">
+                    <a href="/dashboard/" class="back-button" aria-label="Back to dashboard">
+                        <i class="fas fa-arrow-left" aria-hidden="true"></i>
+                        Back to Dashboard
                     </a>
-                    <h1 class="text-2xl font-bold text-gray-900">
-                        <i class="fas fa-user-edit text-pink-600 mr-2"></i>
-                        User Activity Logs
-                    </h1>
+                    <i class="fas fa-user-edit header-icon" aria-hidden="true"></i>
+                    <span>User Activity Logs</span>
+                </div>
+                
+                <div class="flex items-center gap-4">
+                    <div class="status-indicator" :class="monitoringStatus === 'active' ? 'status-online' : 'status-offline'">
+                        <span x-text="monitoringStatus === 'active' ? 'Monitoring Active' : 'Monitoring Offline'">Monitoring Active</span>
+                    </div>
+                    <div class="text-sm text-gray-600">
+                        <span x-text="stats.todayLogs.toLocaleString()">247</span> actions today
+                    </div>
+                    <button 
+                        @click="navigateToFullModule()"
+                        class="btn btn-logs"
+                        aria-label="Access full activity monitoring system"
+                    >
+                        <i class="fas fa-external-link-alt" aria-hidden="true"></i>
+                        Full System
+                    </button>
                 </div>
             </div>
-        </div>
-    </header>
+        </header>
 
-    <!-- Content -->
-    <main class="max-w-7xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
-        <div class="bg-white rounded-lg shadow-sm p-8 text-center">
-            <i class="fas fa-user-edit text-6xl text-pink-600 mb-4"></i>
-            <h2 class="text-2xl font-bold text-gray-900 mb-4">User Activity Monitoring</h2>
-            <p class="text-gray-600 mb-8">Monitor and audit user actions and system changes.</p>
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <div class="bg-pink-50 p-6 rounded-lg">
-                    <h3 class="font-semibold text-gray-900 mb-2">Activity Logs</h3>
-                    <p class="text-gray-600 text-sm">View detailed user action history</p>
-                </div>
-                <div class="bg-red-50 p-6 rounded-lg">
-                    <h3 class="font-semibold text-gray-900 mb-2">Analytics</h3>
-                    <p class="text-gray-600 text-sm">User behavior analysis</p>
-                </div>
-                <div class="bg-purple-50 p-6 rounded-lg">
-                    <h3 class="font-semibold text-gray-900 mb-2">Audit Trail</h3>
-                    <p class="text-gray-600 text-sm">Complete system audit capabilities</p>
+        <!-- Main Content -->
+        <main id="main-content" class="container" role="main">
+            <!-- Module Overview -->
+            <div class="mb-8">
+                <div class="feature-card logs">
+                    <i class="feature-icon fas fa-user-edit" aria-hidden="true"></i>
+                    <h1 class="feature-title">User Activity Monitoring System</h1>
+                    <p class="feature-description">
+                        Comprehensive audit trail and user behavior analysis platform. Monitor system changes, 
+                        track user actions, and maintain security compliance with detailed logging capabilities.
+                    </p>
+                    
+                    <div class="feature-stats">
+                        <div class="stat-item">
+                            <div class="stat-value" x-text="stats.totalLogs.toLocaleString()" aria-live="polite">15,028</div>
+                            <div class="stat-label">Total Logs</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value" x-text="stats.activeUsers" aria-live="polite">12</div>
+                            <div class="stat-label">Active Users</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value" x-text="stats.securityEvents" aria-live="polite">3</div>
+                            <div class="stat-label">Security Events</div>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div>
-    </main>
+
+            <!-- Feature Grid -->
+            <section aria-labelledby="features-heading">
+                <h2 id="features-heading" class="text-2xl font-bold text-gray-900 mb-6">Monitoring Features</h2>
+                <div class="feature-grid">
+                    <!-- Activity Logs Feature -->
+                    <div class="feature-card logs" 
+                         role="button" 
+                         tabindex="0"
+                         @click="viewActivityLogs()"
+                         @keydown.enter="viewActivityLogs()"
+                         @keydown.space.prevent="viewActivityLogs()"
+                         aria-describedby="activity-logs-desc">
+                        <i class="feature-icon fas fa-list-ul" aria-hidden="true"></i>
+                        <h3 class="feature-title">Activity Logs</h3>
+                        <p id="activity-logs-desc" class="feature-description">
+                            View detailed user action history with timestamps, IP addresses, and contextual information.
+                        </p>
+                        <div class="mt-6">
+                            <div class="btn btn-logs">
+                                <i class="fas fa-eye" aria-hidden="true"></i>
+                                View Logs
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- User Analytics Feature -->
+                    <div class="feature-card logs" 
+                         role="button" 
+                         tabindex="0"
+                         @click="viewAnalytics()"
+                         @keydown.enter="viewAnalytics()"
+                         @keydown.space.prevent="viewAnalytics()"
+                         aria-describedby="analytics-desc">
+                        <i class="feature-icon fas fa-chart-pie" aria-hidden="true"></i>
+                        <h3 class="feature-title">User Analytics</h3>
+                        <p id="analytics-desc" class="feature-description">
+                            Analyze user behavior patterns, session durations, and feature usage statistics.
+                        </p>
+                        <div class="mt-6">
+                            <div class="btn btn-logs">
+                                <i class="fas fa-analytics" aria-hidden="true"></i>
+                                View Analytics
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Security Audit Feature -->
+                    <div class="feature-card logs" 
+                         role="button" 
+                         tabindex="0"
+                         @click="securityAudit()"
+                         @keydown.enter="securityAudit()"
+                         @keydown.space.prevent="securityAudit()"
+                         aria-describedby="security-desc">
+                        <i class="feature-icon fas fa-shield-alt" aria-hidden="true"></i>
+                        <h3 class="feature-title">Security Audit</h3>
+                        <p id="security-desc" class="feature-description">
+                            Monitor failed login attempts, permission changes, and suspicious activity patterns.
+                        </p>
+                        <div class="mt-6">
+                            <div class="btn btn-logs">
+                                <i class="fas fa-shield-alt" aria-hidden="true"></i>
+                                Security Center
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Real-time Monitoring Feature -->
+                    <div class="feature-card logs" 
+                         role="button" 
+                         tabindex="0"
+                         @click="realtimeMonitoring()"
+                         @keydown.enter="realtimeMonitoring()"
+                         @keydown.space.prevent="realtimeMonitoring()"
+                         aria-describedby="realtime-desc">
+                        <i class="feature-icon fas fa-broadcast-tower" aria-hidden="true"></i>
+                        <h3 class="feature-title">Real-time Monitoring</h3>
+                        <p id="realtime-desc" class="feature-description">
+                            Live activity feed with instant notifications for critical events and system changes.
+                        </p>
+                        <div class="mt-6">
+                            <div class="btn btn-logs">
+                                <i class="fas fa-satellite-dish" aria-hidden="true"></i>
+                                Live Monitor
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Data Export Feature -->
+                    <div class="feature-card logs" 
+                         role="button" 
+                         tabindex="0"
+                         @click="exportLogs()"
+                         @keydown.enter="exportLogs()"
+                         @keydown.space.prevent="exportLogs()"
+                         aria-describedby="export-desc">
+                        <i class="feature-icon fas fa-download" aria-hidden="true"></i>
+                        <h3 class="feature-title">Data Export</h3>
+                        <p id="export-desc" class="feature-description">
+                            Export activity logs in various formats for compliance reporting and external analysis.
+                        </p>
+                        <div class="mt-6">
+                            <div class="btn btn-logs">
+                                <i class="fas fa-file-export" aria-hidden="true"></i>
+                                Export Data
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Compliance Reports Feature -->
+                    <div class="feature-card logs" 
+                         role="button" 
+                         tabindex="0"
+                         @click="complianceReports()"
+                         @keydown.enter="complianceReports()"
+                         @keydown.space.prevent="complianceReports()"
+                         aria-describedby="compliance-desc">
+                        <i class="feature-icon fas fa-file-contract" aria-hidden="true"></i>
+                        <h3 class="feature-title">Compliance Reports</h3>
+                        <p id="compliance-desc" class="feature-description">
+                            Generate automated compliance reports for regulatory requirements and audit purposes.
+                        </p>
+                        <div class="mt-6">
+                            <div class="btn btn-logs">
+                                <i class="fas fa-file-alt" aria-hidden="true"></i>
+                                Generate Reports
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Recent Activity Preview -->
+            <section class="mt-12" aria-labelledby="recent-activity-heading">
+                <h2 id="recent-activity-heading" class="text-xl font-semibold text-gray-900 mb-6">Recent Activity</h2>
+                <div class="card">
+                    <div class="card-body">
+                        <div class="space-y-4">
+                            <template x-for="activity in recentActivity" :key="activity.id">
+                                <div class="flex items-start gap-4 p-4 bg-gray-50 rounded-lg">
+                                    <div class="flex-shrink-0">
+                                        <div class="w-10 h-10 rounded-full flex items-center justify-center" 
+                                             :class="getActivityTypeClass(activity.type)">
+                                            <i :class="getActivityIcon(activity.type)" aria-hidden="true"></i>
+                                        </div>
+                                    </div>
+                                    <div class="flex-1 min-w-0">
+                                        <p class="text-sm font-medium text-gray-900" x-text="activity.description"></p>
+                                        <div class="flex items-center gap-4 mt-1 text-xs text-gray-500">
+                                            <span x-text="activity.user">Admin User</span>
+                                            <span x-text="activity.timestamp">2 minutes ago</span>
+                                            <span x-text="activity.ip" x-show="activity.ip">192.168.1.100</span>
+                                        </div>
+                                    </div>
+                                    <div class="flex-shrink-0">
+                                        <span class="px-2 py-1 text-xs rounded-full" 
+                                              :class="getSeverityClass(activity.severity)"
+                                              x-text="activity.severity">info</span>
+                                    </div>
+                                </div>
+                            </template>
+                        </div>
+                        <div class="mt-6 text-center">
+                            <button @click="viewAllLogs()" class="btn btn-secondary">
+                                <i class="fas fa-list" aria-hidden="true"></i>
+                                View All Logs
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Quick Actions -->
+            <section class="mt-12" aria-labelledby="quick-actions-heading">
+                <h2 id="quick-actions-heading" class="text-xl font-semibold text-gray-900 mb-6">Quick Actions</h2>
+                <div class="quick-actions">
+                    <button @click="searchLogs()" class="quick-action" aria-label="Search activity logs">
+                        <i class="quick-action-icon fas fa-search" aria-hidden="true"></i>
+                        <span class="quick-action-text">Search</span>
+                    </button>
+                    
+                    <button @click="filterByUser()" class="quick-action" aria-label="Filter logs by user">
+                        <i class="quick-action-icon fas fa-filter" aria-hidden="true"></i>
+                        <span class="quick-action-text">Filter</span>
+                    </button>
+                    
+                    <button @click="exportTodayLogs()" class="quick-action" aria-label="Export today's logs">
+                        <i class="quick-action-icon fas fa-download" aria-hidden="true"></i>
+                        <span class="quick-action-text">Export</span>
+                    </button>
+                    
+                    <button @click="viewAlerts()" class="quick-action" aria-label="View security alerts">
+                        <i class="quick-action-icon fas fa-exclamation-triangle" aria-hidden="true"></i>
+                        <span class="quick-action-text">Alerts</span>
+                    </button>
+                    
+                    <button @click="generateReport()" class="quick-action" aria-label="Generate compliance report">
+                        <i class="quick-action-icon fas fa-file-alt" aria-hidden="true"></i>
+                        <span class="quick-action-text">Report</span>
+                    </button>
+                </div>
+            </section>
+        </main>
+        
+        <!-- Live Region for Announcements -->
+        <div aria-live="assertive" aria-atomic="true" class="sr-only" x-text="announcement"></div>
+    </div>
+
+    <script>
+        function logsApp() {
+            return {
+                stats: {
+                    totalLogs: 15028,
+                    todayLogs: 247,
+                    activeUsers: 12,
+                    securityEvents: 3
+                },
+                monitoringStatus: 'active',
+                announcement: '',
+                recentActivity: [
+                    {
+                        id: 1,
+                        type: 'login',
+                        description: 'User logged in successfully',
+                        user: 'john.doe@plazalama.com',
+                        timestamp: '2 minutes ago',
+                        ip: '192.168.1.100',
+                        severity: 'info'
+                    },
+                    {
+                        id: 2,
+                        type: 'security',
+                        description: 'Failed login attempt detected',
+                        user: 'unknown@external.com',
+                        timestamp: '5 minutes ago',
+                        ip: '203.45.67.89',
+                        severity: 'warning'
+                    },
+                    {
+                        id: 3,
+                        type: 'data',
+                        description: 'Quote #2024-156 created',
+                        user: 'maria.rodriguez@plazalama.com',
+                        timestamp: '8 minutes ago',
+                        ip: '192.168.1.105',
+                        severity: 'info'
+                    },
+                    {
+                        id: 4,
+                        type: 'system',
+                        description: 'Database backup completed',
+                        user: 'system',
+                        timestamp: '15 minutes ago',
+                        ip: 'localhost',
+                        severity: 'success'
+                    }
+                ],
+                
+                async init() {
+                    try {
+                        await this.loadStats();
+                        console.log('Logs module initialized');
+                    } catch (error) {
+                        console.error('Error initializing logs module:', error);
+                        this.monitoringStatus = 'offline';
+                    }
+                },
+                
+                async loadStats() {
+                    try {
+                        const token = localStorage.getItem('token') || sessionStorage.getItem('token');
+                        if (!token) {
+                            window.location.href = '/login.html';
+                            return;
+                        }
+
+                        const response = await fetch('/api/logs/stats', {
+                            headers: {
+                                'Authorization': `Bearer ${token}`,
+                                'Content-Type': 'application/json'
+                            }
+                        });
+
+                        if (response.ok) {
+                            const result = await response.json();
+                            if (result.success) {
+                                this.stats = { ...this.stats, ...result.data };
+                            }
+                        }
+                    } catch (error) {
+                        console.error('Error loading logs stats:', error);
+                    }
+                },
+                
+                getActivityTypeClass(type) {
+                    const classes = {
+                        login: 'bg-blue-100 text-blue-600',
+                        security: 'bg-red-100 text-red-600',
+                        data: 'bg-green-100 text-green-600',
+                        system: 'bg-gray-100 text-gray-600'
+                    };
+                    return classes[type] || classes.system;
+                },
+                
+                getActivityIcon(type) {
+                    const icons = {
+                        login: 'fas fa-sign-in-alt',
+                        security: 'fas fa-shield-alt',
+                        data: 'fas fa-database',
+                        system: 'fas fa-cog'
+                    };
+                    return icons[type] || icons.system;
+                },
+                
+                getSeverityClass(severity) {
+                    const classes = {
+                        info: 'bg-blue-100 text-blue-800',
+                        warning: 'bg-yellow-100 text-yellow-800',
+                        error: 'bg-red-100 text-red-800',
+                        success: 'bg-green-100 text-green-800'
+                    };
+                    return classes[severity] || classes.info;
+                },
+                
+                navigateToFullModule() {
+                    window.location.href = '/logs-content/';
+                },
+                
+                viewActivityLogs() {
+                    this.announcement = 'Opening activity logs viewer';
+                    window.location.href = '/logs-content/?view=logs';
+                },
+                
+                viewAnalytics() {
+                    this.announcement = 'Opening user analytics';
+                    window.location.href = '/logs-content/?view=analytics';
+                },
+                
+                securityAudit() {
+                    this.announcement = 'Opening security audit center';
+                    window.location.href = '/logs-content/?view=security';
+                },
+                
+                realtimeMonitoring() {
+                    this.announcement = 'Opening real-time monitoring';
+                    window.location.href = '/logs-content/?view=realtime';
+                },
+                
+                exportLogs() {
+                    this.announcement = 'Opening data export tools';
+                    window.location.href = '/logs-content/?view=export';
+                },
+                
+                complianceReports() {
+                    this.announcement = 'Opening compliance report generator';
+                    window.location.href = '/logs-content/?view=compliance';
+                },
+                
+                viewAllLogs() {
+                    window.location.href = '/logs-content/';
+                },
+                
+                searchLogs() {
+                    window.location.href = '/logs-content/?action=search';
+                },
+                
+                filterByUser() {
+                    window.location.href = '/logs-content/?filter=user';
+                },
+                
+                exportTodayLogs() {
+                    this.announcement = 'Exporting today\'s activity logs';
+                    // Implementation would go here
+                    alert('Export functionality will be implemented in the full module');
+                },
+                
+                viewAlerts() {
+                    window.location.href = '/logs-content/?view=alerts';
+                },
+                
+                generateReport() {
+                    this.announcement = 'Generating compliance report';
+                    window.location.href = '/logs-content/?action=report';
+                }
+            };
+        }
+    </script>
 </body>
 </html>

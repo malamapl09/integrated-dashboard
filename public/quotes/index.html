@@ -3,49 +3,350 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Quote Management Module - Create, manage, and track customer quotes and invoices">
     <title>Quote Management - Plaza Lama</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="../shared/theme.css" rel="stylesheet">
 </head>
-<body class="bg-gray-100">
-    <!-- Header -->
-    <header class="bg-white shadow-sm">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between items-center py-4">
-                <div class="flex items-center">
-                    <a href="/" class="text-blue-600 hover:text-blue-800 mr-4">
-                        <i class="fas fa-arrow-left"></i> Back to Dashboard
+<body>
+    <!-- Skip Link for Screen Readers -->
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+    
+    <div x-data="quotesApp()">
+        <!-- Header -->
+        <header class="unified-header quotes-header" role="banner">
+            <div class="header-content">
+                <div class="header-title">
+                    <a href="/dashboard/" class="back-button" aria-label="Back to dashboard">
+                        <i class="fas fa-arrow-left" aria-hidden="true"></i>
+                        Back to Dashboard
                     </a>
-                    <h1 class="text-2xl font-bold text-gray-900">
-                        <i class="fas fa-file-invoice-dollar text-blue-600 mr-2"></i>
-                        Quote Management
-                    </h1>
+                    <i class="fas fa-file-invoice-dollar header-icon" aria-hidden="true"></i>
+                    <span>Quote Management</span>
+                </div>
+                
+                <div class="flex items-center gap-4">
+                    <div class="status-indicator" :class="connectionStatus === 'online' ? 'status-online' : 'status-offline'">
+                        <span x-text="connectionStatus === 'online' ? 'Connected' : 'Offline'">Connected</span>
+                    </div>
+                    <button 
+                        @click="navigateToFullModule()"
+                        class="btn btn-quotes"
+                        aria-label="Access full quote management system"
+                    >
+                        <i class="fas fa-external-link-alt" aria-hidden="true"></i>
+                        Full System
+                    </button>
                 </div>
             </div>
-        </div>
-    </header>
+        </header>
 
-    <!-- Content -->
-    <main class="max-w-7xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
-        <div class="bg-white rounded-lg shadow-sm p-8 text-center">
-            <i class="fas fa-file-invoice-dollar text-6xl text-blue-600 mb-4"></i>
-            <h2 class="text-2xl font-bold text-gray-900 mb-4">Quote Management Module</h2>
-            <p class="text-gray-600 mb-8">Create, manage, and track customer quotes and invoices.</p>
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <div class="bg-blue-50 p-6 rounded-lg">
-                    <h3 class="font-semibold text-gray-900 mb-2">Create Quote</h3>
-                    <p class="text-gray-600 text-sm">Generate new customer quotes</p>
-                </div>
-                <div class="bg-green-50 p-6 rounded-lg">
-                    <h3 class="font-semibold text-gray-900 mb-2">Manage Clients</h3>
-                    <p class="text-gray-600 text-sm">Customer information management</p>
-                </div>
-                <div class="bg-purple-50 p-6 rounded-lg">
-                    <h3 class="font-semibold text-gray-900 mb-2">PDF Generation</h3>
-                    <p class="text-gray-600 text-sm">Professional quote documents</p>
+        <!-- Main Content -->
+        <main id="main-content" class="container" role="main">
+            <!-- Module Overview -->
+            <div class="mb-8">
+                <div class="feature-card quotes">
+                    <i class="feature-icon fas fa-file-invoice-dollar" aria-hidden="true"></i>
+                    <h1 class="feature-title">Quote Management System</h1>
+                    <p class="feature-description">
+                        Comprehensive solution for creating, managing, and tracking customer quotes and invoices. 
+                        Generate professional PDFs, manage client relationships, and streamline your sales process.
+                    </p>
+                    
+                    <div class="feature-stats">
+                        <div class="stat-item">
+                            <div class="stat-value" x-text="stats.totalQuotes" aria-live="polite">156</div>
+                            <div class="stat-label">Total Quotes</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value" x-text="stats.activeClients" aria-live="polite">89</div>
+                            <div class="stat-label">Active Clients</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value" x-text="formatCurrency(stats.monthlyValue)" aria-live="polite">$245,780</div>
+                            <div class="stat-label">Monthly Value</div>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div>
-    </main>
+
+            <!-- Feature Grid -->
+            <section aria-labelledby="features-heading">
+                <h2 id="features-heading" class="text-2xl font-bold text-gray-900 mb-6">Core Features</h2>
+                <div class="feature-grid">
+                    <!-- Create Quote Feature -->
+                    <div class="feature-card quotes" 
+                         role="button" 
+                         tabindex="0"
+                         @click="createNewQuote()"
+                         @keydown.enter="createNewQuote()"
+                         @keydown.space.prevent="createNewQuote()"
+                         aria-describedby="create-quote-desc">
+                        <i class="feature-icon fas fa-plus-circle" aria-hidden="true"></i>
+                        <h3 class="feature-title">Create Quote</h3>
+                        <p id="create-quote-desc" class="feature-description">
+                            Generate new customer quotes with itemized pricing, terms, and professional formatting.
+                        </p>
+                        <div class="mt-6">
+                            <div class="btn btn-quotes">
+                                <i class="fas fa-plus" aria-hidden="true"></i>
+                                Start New Quote
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Client Management Feature -->
+                    <div class="feature-card quotes" 
+                         role="button" 
+                         tabindex="0"
+                         @click="manageClients()"
+                         @keydown.enter="manageClients()"
+                         @keydown.space.prevent="manageClients()"
+                         aria-describedby="client-mgmt-desc">
+                        <i class="feature-icon fas fa-users" aria-hidden="true"></i>
+                        <h3 class="feature-title">Manage Clients</h3>
+                        <p id="client-mgmt-desc" class="feature-description">
+                            Comprehensive customer information management with contact details, history, and preferences.
+                        </p>
+                        <div class="mt-6">
+                            <div class="btn btn-quotes">
+                                <i class="fas fa-address-book" aria-hidden="true"></i>
+                                View Clients
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- PDF Generation Feature -->
+                    <div class="feature-card quotes" 
+                         role="button" 
+                         tabindex="0"
+                         @click="generateReports()"
+                         @keydown.enter="generateReports()"
+                         @keydown.space.prevent="generateReports()"
+                         aria-describedby="pdf-gen-desc">
+                        <i class="feature-icon fas fa-file-pdf" aria-hidden="true"></i>
+                        <h3 class="feature-title">PDF Generation</h3>
+                        <p id="pdf-gen-desc" class="feature-description">
+                            Professional quote documents with company branding, terms, and digital signature capabilities.
+                        </p>
+                        <div class="mt-6">
+                            <div class="btn btn-quotes">
+                                <i class="fas fa-download" aria-hidden="true"></i>
+                                Generate PDF
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Quote Tracking Feature -->
+                    <div class="feature-card quotes" 
+                         role="button" 
+                         tabindex="0"
+                         @click="trackQuotes()"
+                         @keydown.enter="trackQuotes()"
+                         @keydown.space.prevent="trackQuotes()"
+                         aria-describedby="tracking-desc">
+                        <i class="feature-icon fas fa-chart-line" aria-hidden="true"></i>
+                        <h3 class="feature-title">Quote Tracking</h3>
+                        <p id="tracking-desc" class="feature-description">
+                            Monitor quote status, follow-up dates, conversion rates, and sales pipeline analytics.
+                        </p>
+                        <div class="mt-6">
+                            <div class="btn btn-quotes">
+                                <i class="fas fa-analytics" aria-hidden="true"></i>
+                                View Analytics
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Invoice Management Feature -->
+                    <div class="feature-card quotes" 
+                         role="button" 
+                         tabindex="0"
+                         @click="manageInvoices()"
+                         @keydown.enter="manageInvoices()"
+                         @keydown.space.prevent="manageInvoices()"
+                         aria-describedby="invoice-mgmt-desc">
+                        <i class="feature-icon fas fa-receipt" aria-hidden="true"></i>
+                        <h3 class="feature-title">Invoice Management</h3>
+                        <p id="invoice-mgmt-desc" class="feature-description">
+                            Convert quotes to invoices, track payments, and manage billing cycles efficiently.
+                        </p>
+                        <div class="mt-6">
+                            <div class="btn btn-quotes">
+                                <i class="fas fa-file-invoice" aria-hidden="true"></i>
+                                View Invoices
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Email Integration Feature -->
+                    <div class="feature-card quotes" 
+                         role="button" 
+                         tabindex="0"
+                         @click="emailIntegration()"
+                         @keydown.enter="emailIntegration()"
+                         @keydown.space.prevent="emailIntegration()"
+                         aria-describedby="email-desc">
+                        <i class="feature-icon fas fa-envelope" aria-hidden="true"></i>
+                        <h3 class="feature-title">Email Integration</h3>
+                        <p id="email-desc" class="feature-description">
+                            Send quotes directly via email with tracking, templates, and automated follow-up reminders.
+                        </p>
+                        <div class="mt-6">
+                            <div class="btn btn-quotes">
+                                <i class="fas fa-paper-plane" aria-hidden="true"></i>
+                                Email Center
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Quick Actions -->
+            <section class="mt-12" aria-labelledby="quick-actions-heading">
+                <h2 id="quick-actions-heading" class="text-xl font-semibold text-gray-900 mb-6">Quick Actions</h2>
+                <div class="quick-actions">
+                    <button @click="createNewQuote()" class="quick-action" aria-label="Create new quote">
+                        <i class="quick-action-icon fas fa-plus" aria-hidden="true"></i>
+                        <span class="quick-action-text">New Quote</span>
+                    </button>
+                    
+                    <button @click="viewRecentQuotes()" class="quick-action" aria-label="View recent quotes">
+                        <i class="quick-action-icon fas fa-clock" aria-hidden="true"></i>
+                        <span class="quick-action-text">Recent</span>
+                    </button>
+                    
+                    <button @click="searchQuotes()" class="quick-action" aria-label="Search quotes">
+                        <i class="quick-action-icon fas fa-search" aria-hidden="true"></i>
+                        <span class="quick-action-text">Search</span>
+                    </button>
+                    
+                    <button @click="exportData()" class="quick-action" aria-label="Export quote data">
+                        <i class="quick-action-icon fas fa-download" aria-hidden="true"></i>
+                        <span class="quick-action-text">Export</span>
+                    </button>
+                    
+                    <button @click="viewReports()" class="quick-action" aria-label="View reports">
+                        <i class="quick-action-icon fas fa-chart-bar" aria-hidden="true"></i>
+                        <span class="quick-action-text">Reports</span>
+                    </button>
+                </div>
+            </section>
+        </main>
+        
+        <!-- Live Region for Announcements -->
+        <div aria-live="assertive" aria-atomic="true" class="sr-only" x-text="announcement"></div>
+    </div>
+
+    <script>
+        function quotesApp() {
+            return {
+                stats: {
+                    totalQuotes: 156,
+                    activeClients: 89,
+                    monthlyValue: 245780
+                },
+                connectionStatus: 'online',
+                announcement: '',
+                
+                async init() {
+                    try {
+                        await this.loadStats();
+                        console.log('Quotes module initialized');
+                    } catch (error) {
+                        console.error('Error initializing quotes module:', error);
+                        this.connectionStatus = 'offline';
+                    }
+                },
+                
+                async loadStats() {
+                    try {
+                        const token = localStorage.getItem('token') || sessionStorage.getItem('token');
+                        if (!token) {
+                            window.location.href = '/login.html';
+                            return;
+                        }
+
+                        const response = await fetch('/api/quotes/stats', {
+                            headers: {
+                                'Authorization': `Bearer ${token}`,
+                                'Content-Type': 'application/json'
+                            }
+                        });
+
+                        if (response.ok) {
+                            const result = await response.json();
+                            if (result.success) {
+                                this.stats = { ...this.stats, ...result.data };
+                            }
+                        }
+                    } catch (error) {
+                        console.error('Error loading quote stats:', error);
+                    }
+                },
+                
+                formatCurrency(amount) {
+                    return new Intl.NumberFormat('es-DO', {
+                        style: 'currency',
+                        currency: 'DOP'
+                    }).format(amount || 0);
+                },
+                
+                navigateToFullModule() {
+                    window.location.href = '/quotes-content/';
+                },
+                
+                createNewQuote() {
+                    this.announcement = 'Navigating to create new quote';
+                    window.location.href = '/quotes-content/?action=new';
+                },
+                
+                manageClients() {
+                    this.announcement = 'Opening client management';
+                    window.location.href = '/quotes-content/?view=clients';
+                },
+                
+                generateReports() {
+                    this.announcement = 'Opening PDF generation tools';
+                    window.location.href = '/quotes-content/?view=reports';
+                },
+                
+                trackQuotes() {
+                    this.announcement = 'Opening quote analytics';
+                    window.location.href = '/quotes-content/?view=analytics';
+                },
+                
+                manageInvoices() {
+                    this.announcement = 'Opening invoice management';
+                    window.location.href = '/quotes-content/?view=invoices';
+                },
+                
+                emailIntegration() {
+                    this.announcement = 'Opening email center';
+                    window.location.href = '/quotes-content/?view=email';
+                },
+                
+                viewRecentQuotes() {
+                    window.location.href = '/quotes-content/?filter=recent';
+                },
+                
+                searchQuotes() {
+                    window.location.href = '/quotes-content/?action=search';
+                },
+                
+                exportData() {
+                    this.announcement = 'Preparing data export';
+                    // Implementation would go here
+                    alert('Export functionality will be implemented in the full module');
+                },
+                
+                viewReports() {
+                    window.location.href = '/quotes-content/?view=reports';
+                }
+            };
+        }
+    </script>
 </body>
 </html>

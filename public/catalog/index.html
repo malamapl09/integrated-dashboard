@@ -65,76 +65,168 @@
 
         <!-- Content -->
         <main class="main-content">
-            <!-- Stats Cards -->
-            <div class="content-grid grid-4 mb-8">
-                <div class="theme-card">
-                    <div class="text-center">
-                        <i class="fas fa-boxes text-3xl mb-3" style="color: var(--catalog-text);"></i>
-                        <div class="text-2xl font-bold mb-1" x-text="stats.totalProducts.toLocaleString()">-</div>
-                        <div class="text-sm text-gray-600">Total Products</div>
-                    </div>
-                </div>
-                <div class="theme-card">
-                    <div class="text-center">
-                        <i class="fas fa-layer-group text-3xl mb-3" style="color: var(--catalog-text);"></i>
-                        <div class="text-2xl font-bold mb-1" x-text="stats.categories">-</div>
-                        <div class="text-sm text-gray-600">Categories</div>
-                    </div>
-                </div>
-                <div class="theme-card">
-                    <div class="text-center">
-                        <i class="fas fa-plus-circle text-3xl mb-3 text-green-500"></i>
-                        <div class="text-2xl font-bold mb-1" x-text="stats.newProducts">-</div>
-                        <div class="text-sm text-gray-600">New Products</div>
-                    </div>
-                </div>
-                <div class="theme-card">
-                    <div class="text-center">
-                        <i class="fas fa-exclamation-triangle text-3xl mb-3 text-orange-500"></i>
-                        <div class="text-2xl font-bold mb-1" x-text="stats.obsoleteProducts">-</div>
-                        <div class="text-sm text-gray-600">Obsolete Products</div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Main Feature Cards -->
-            <div class="content-grid grid-3 mb-8">
-                <div class="gradient-card catalog">
-                    <div class="text-center">
-                        <i class="fas fa-sync-alt text-4xl mb-4"></i>
-                        <h3 class="text-xl font-bold mb-3">ERP Synchronization</h3>
-                        <p class="text-sm opacity-90 mb-6">Synchronize product data with ERP system</p>
-                        <button @click="syncERP()" class="btn-secondary">
-                            <i class="fas fa-sync-alt"></i>
-                            Start Sync
-                        </button>
-                    </div>
-                </div>
-
-                <div class="gradient-card catalog">
-                    <div class="text-center">
-                        <i class="fas fa-search text-4xl mb-4"></i>
-                        <h3 class="text-xl font-bold mb-3">Product Analysis</h3>
-                        <p class="text-sm opacity-90 mb-6">Identify new and obsolete products</p>
-                        <button @click="runAnalysis()" class="btn-secondary">
-                            <i class="fas fa-chart-line"></i>
-                            Run Analysis
-                        </button>
-                    </div>
-                </div>
-
-                <div class="gradient-card catalog">
-                    <div class="text-center">
-                        <i class="fas fa-layer-group text-4xl mb-4"></i>
-                        <h3 class="text-xl font-bold mb-3">Category Management</h3>
-                        <p class="text-sm opacity-90 mb-6">Organize products by categories</p>
-                        <button @click="manageCategories()" class="btn-secondary">
-                            <i class="fas fa-cogs"></i>
-                            Manage
-                        </button>
+            <!-- Module Overview -->
+            <div class="mb-8">
+                <div class="feature-card catalog">
+                    <i class="feature-icon fas fa-boxes" aria-hidden="true"></i>
+                    <h1 class="feature-title">Catalog Management System</h1>
+                    <p class="feature-description">
+                        Automated product catalog synchronization and management platform. Compare ERP vs PIM data, 
+                        analyze inventory levels, and maintain product information consistency across all systems.
+                    </p>
+                    
+                    <div class="feature-stats">
+                        <div class="stat-item">
+                            <div class="stat-value" x-text="stats.totalProducts.toLocaleString()" aria-live="polite">42,111</div>
+                            <div class="stat-label">Total Products</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value" x-text="stats.categories" aria-live="polite">156</div>
+                            <div class="stat-label">Categories</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value" x-text="stats.newProducts" aria-live="polite">24</div>
+                            <div class="stat-label">New Products</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value" x-text="stats.obsoleteProducts" aria-live="polite">7</div>
+                            <div class="stat-label">Obsolete Products</div>
+                        </div>
                     </div>
                 </div>
             </div>
+
+            <!-- Feature Grid -->
+            <section aria-labelledby="features-heading">
+                <h2 id="features-heading" class="text-2xl font-bold text-gray-900 mb-6">Catalog Features</h2>
+                <div class="feature-grid">
+                    <!-- ERP Synchronization Feature -->
+                    <div class="feature-card catalog" 
+                         role="button" 
+                         tabindex="0"
+                         @click="syncERP()"
+                         @keydown.enter="syncERP()"
+                         @keydown.space.prevent="syncERP()"
+                         aria-describedby="erp-sync-desc">
+                        <i class="feature-icon fas fa-sync-alt" aria-hidden="true"></i>
+                        <h3 class="feature-title">ERP Synchronization</h3>
+                        <p id="erp-sync-desc" class="feature-description">
+                            Synchronize product data with ERP system automatically or on-demand with conflict resolution.
+                        </p>
+                        <div class="mt-6">
+                            <div class="btn btn-catalog">
+                                <i class="fas fa-sync-alt" aria-hidden="true"></i>
+                                Start Sync
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Product Analysis Feature -->
+                    <div class="feature-card catalog" 
+                         role="button" 
+                         tabindex="0"
+                         @click="runAnalysis()"
+                         @keydown.enter="runAnalysis()"
+                         @keydown.space.prevent="runAnalysis()"
+                         aria-describedby="analysis-desc">
+                        <i class="feature-icon fas fa-search" aria-hidden="true"></i>
+                        <h3 class="feature-title">Product Analysis</h3>
+                        <p id="analysis-desc" class="feature-description">
+                            Identify new and obsolete products through AI-powered analysis and market intelligence.
+                        </p>
+                        <div class="mt-6">
+                            <div class="btn btn-catalog">
+                                <i class="fas fa-chart-line" aria-hidden="true"></i>
+                                Run Analysis
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Category Management Feature -->
+                    <div class="feature-card catalog" 
+                         role="button" 
+                         tabindex="0"
+                         @click="manageCategories()"
+                         @keydown.enter="manageCategories()"
+                         @keydown.space.prevent="manageCategories()"
+                         aria-describedby="category-desc">
+                        <i class="feature-icon fas fa-layer-group" aria-hidden="true"></i>
+                        <h3 class="feature-title">Category Management</h3>
+                        <p id="category-desc" class="feature-description">
+                            Organize products by categories with hierarchical structure and automated classification.
+                        </p>
+                        <div class="mt-6">
+                            <div class="btn btn-catalog">
+                                <i class="fas fa-cogs" aria-hidden="true"></i>
+                                Manage Categories
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Inventory Tracking Feature -->
+                    <div class="feature-card catalog" 
+                         role="button" 
+                         tabindex="0"
+                         @click="trackInventory()"
+                         @keydown.enter="trackInventory()"
+                         @keydown.space.prevent="trackInventory()"
+                         aria-describedby="inventory-desc">
+                        <i class="feature-icon fas fa-warehouse" aria-hidden="true"></i>
+                        <h3 class="feature-title">Inventory Tracking</h3>
+                        <p id="inventory-desc" class="feature-description">
+                            Monitor stock levels, set reorder points, and track inventory movements across locations.
+                        </p>
+                        <div class="mt-6">
+                            <div class="btn btn-catalog">
+                                <i class="fas fa-boxes" aria-hidden="true"></i>
+                                View Inventory
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Price Management Feature -->
+                    <div class="feature-card catalog" 
+                         role="button" 
+                         tabindex="0"
+                         @click="managePrices()"
+                         @keydown.enter="managePrices()"
+                         @keydown.space.prevent="managePrices()"
+                         aria-describedby="price-desc">
+                        <i class="feature-icon fas fa-dollar-sign" aria-hidden="true"></i>
+                        <h3 class="feature-title">Price Management</h3>
+                        <p id="price-desc" class="feature-description">
+                            Manage pricing strategies, bulk price updates, and competitive pricing analysis.
+                        </p>
+                        <div class="mt-6">
+                            <div class="btn btn-catalog">
+                                <i class="fas fa-tag" aria-hidden="true"></i>
+                                Manage Pricing
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Data Quality Feature -->
+                    <div class="feature-card catalog" 
+                         role="button" 
+                         tabindex="0"
+                         @click="checkDataQuality()"
+                         @keydown.enter="checkDataQuality()"
+                         @keydown.space.prevent="checkDataQuality()"
+                         aria-describedby="quality-desc">
+                        <i class="feature-icon fas fa-check-circle" aria-hidden="true"></i>
+                        <h3 class="feature-title">Data Quality</h3>
+                        <p id="quality-desc" class="feature-description">
+                            Validate product data integrity, detect duplicates, and ensure catalog consistency.
+                        </p>
+                        <div class="mt-6">
+                            <div class="btn btn-catalog">
+                                <i class="fas fa-clipboard-check" aria-hidden="true"></i>
+                                Quality Check
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
 
             <!-- Recent Activity -->
             <div class="theme-card" x-show="recentActivity.length > 0">
@@ -227,6 +319,18 @@
 
                 async manageCategories() {
                     alert('Category management will be implemented');
+                },
+                
+                async trackInventory() {
+                    alert('Inventory tracking will be implemented');
+                },
+                
+                async managePrices() {
+                    alert('Price management will be implemented');
+                },
+                
+                async checkDataQuality() {
+                    alert('Data quality check will be implemented');
                 },
 
                 async exportCatalogStatus(format) {
