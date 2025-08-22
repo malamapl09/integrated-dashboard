@@ -7,7 +7,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <link href="../shared/theme.css" rel="stylesheet">
+    <link href="../shared/theme.css?v=2.1" rel="stylesheet">
 </head>
 <body>
     <div x-data="salesApp()">
@@ -76,12 +76,19 @@
             <!-- Module Overview -->
             <div class="mb-8">
                 <div class="feature-card sales">
-                    <i class="feature-icon fas fa-chart-line" aria-hidden="true"></i>
-                    <h1 class="feature-title">Sales Analytics Platform</h1>
-                    <p class="feature-description">
-                        Real-time sales metrics and performance analysis system. Track revenue, monitor store performance, 
-                        analyze customer insights, and generate comprehensive business intelligence reports.
-                    </p>
+                    <div class="feature-header">
+                        <div class="feature-icon sales">
+                            <i class="fas fa-chart-line" aria-hidden="true"></i>
+                        </div>
+                        <div class="feature-badge">Analytics</div>
+                    </div>
+                    <div class="feature-content">
+                        <h1 class="feature-title">Sales Analytics Platform</h1>
+                        <p class="feature-description">
+                            Real-time sales metrics and performance analysis system. Track revenue, monitor store performance, 
+                            analyze customer insights, and generate comprehensive business intelligence reports.
+                        </p>
+                    </div>
                     
                     <div class="feature-stats">
                         <div class="stat-item">
@@ -116,16 +123,21 @@
                          @keydown.enter="viewRevenue()"
                          @keydown.space.prevent="viewRevenue()"
                          aria-describedby="revenue-desc">
-                        <i class="feature-icon fas fa-chart-bar" aria-hidden="true"></i>
-                        <h3 class="feature-title">Revenue Tracking</h3>
-                        <p id="revenue-desc" class="feature-description">
-                            Monitor daily and monthly sales performance with trend analysis and forecasting capabilities.
-                        </p>
-                        <div class="mt-6">
-                            <div class="btn btn-sales">
-                                <i class="fas fa-chart-line" aria-hidden="true"></i>
-                                View Revenue
+                        <div class="feature-header">
+                            <div class="feature-icon sales">
+                                <i class="fas fa-chart-bar" aria-hidden="true"></i>
                             </div>
+                            <div class="feature-badge">Real-time</div>
+                        </div>
+                        <div class="feature-content">
+                            <h3 class="feature-title">Revenue Tracking</h3>
+                            <p id="revenue-desc" class="feature-description">
+                                Monitor daily and monthly sales performance with trend analysis and forecasting capabilities.
+                            </p>
+                        </div>
+                        <div class="feature-action">
+                            <span>View Revenue</span>
+                            <i class="fas fa-arrow-right" aria-hidden="true"></i>
                         </div>
                     </div>
 
@@ -137,16 +149,21 @@
                          @keydown.enter="viewStores()"
                          @keydown.space.prevent="viewStores()"
                          aria-describedby="stores-desc">
-                        <i class="feature-icon fas fa-building" aria-hidden="true"></i>
-                        <h3 class="feature-title">Store Analytics</h3>
-                        <p id="stores-desc" class="feature-description">
-                            Compare performance across multiple stores with location-based metrics and benchmarking.
-                        </p>
-                        <div class="mt-6">
-                            <div class="btn btn-sales">
-                                <i class="fas fa-store" aria-hidden="true"></i>
-                                View Stores
+                        <div class="feature-header">
+                            <div class="feature-icon sales">
+                                <i class="fas fa-building" aria-hidden="true"></i>
                             </div>
+                            <div class="feature-badge">Multi-Store</div>
+                        </div>
+                        <div class="feature-content">
+                            <h3 class="feature-title">Store Analytics</h3>
+                            <p id="stores-desc" class="feature-description">
+                                Compare performance across multiple stores with location-based metrics and benchmarking.
+                            </p>
+                        </div>
+                        <div class="feature-action">
+                            <span>View Stores</span>
+                            <i class="fas fa-arrow-right" aria-hidden="true"></i>
                         </div>
                     </div>
 
@@ -158,16 +175,21 @@
                          @keydown.enter="viewProducts()"
                          @keydown.space.prevent="viewProducts()"
                          aria-describedby="products-desc">
-                        <i class="feature-icon fas fa-boxes" aria-hidden="true"></i>
-                        <h3 class="feature-title">Product Insights</h3>
-                        <p id="products-desc" class="feature-description">
-                            Analyze top-selling products, seasonal trends, and inventory performance metrics.
-                        </p>
-                        <div class="mt-6">
-                            <div class="btn btn-sales">
-                                <i class="fas fa-chart-pie" aria-hidden="true"></i>
-                                View Products
+                        <div class="feature-header">
+                            <div class="feature-icon sales">
+                                <i class="fas fa-boxes" aria-hidden="true"></i>
                             </div>
+                            <div class="feature-badge">Trending</div>
+                        </div>
+                        <div class="feature-content">
+                            <h3 class="feature-title">Product Insights</h3>
+                            <p id="products-desc" class="feature-description">
+                                Analyze top-selling products, seasonal trends, and inventory performance metrics.
+                            </p>
+                        </div>
+                        <div class="feature-action">
+                            <span>View Products</span>
+                            <i class="fas fa-arrow-right" aria-hidden="true"></i>
                         </div>
                     </div>
 
@@ -179,16 +201,21 @@
                          @keydown.enter="viewCustomers()"
                          @keydown.space.prevent="viewCustomers()"
                          aria-describedby="customers-desc">
-                        <i class="feature-icon fas fa-users" aria-hidden="true"></i>
-                        <h3 class="feature-title">Customer Analytics</h3>
-                        <p id="customers-desc" class="feature-description">
-                            Understand customer behavior, purchase patterns, and lifetime value analysis.
-                        </p>
-                        <div class="mt-6">
-                            <div class="btn btn-sales">
-                                <i class="fas fa-user-friends" aria-hidden="true"></i>
-                                View Customers
+                        <div class="feature-header">
+                            <div class="feature-icon sales">
+                                <i class="fas fa-users" aria-hidden="true"></i>
                             </div>
+                            <div class="feature-badge">Behavioral</div>
+                        </div>
+                        <div class="feature-content">
+                            <h3 class="feature-title">Customer Analytics</h3>
+                            <p id="customers-desc" class="feature-description">
+                                Understand customer behavior, purchase patterns, and lifetime value analysis.
+                            </p>
+                        </div>
+                        <div class="feature-action">
+                            <span>View Customers</span>
+                            <i class="fas fa-arrow-right" aria-hidden="true"></i>
                         </div>
                     </div>
 
@@ -200,16 +227,21 @@
                          @keydown.enter="generateReports()"
                          @keydown.space.prevent="generateReports()"
                          aria-describedby="reports-desc">
-                        <i class="feature-icon fas fa-file-chart-line" aria-hidden="true"></i>
-                        <h3 class="feature-title">Sales Reports</h3>
-                        <p id="reports-desc" class="feature-description">
-                            Generate comprehensive sales reports with custom date ranges and detailed breakdowns.
-                        </p>
-                        <div class="mt-6">
-                            <div class="btn btn-sales">
-                                <i class="fas fa-file-alt" aria-hidden="true"></i>
-                                Generate Reports
+                        <div class="feature-header">
+                            <div class="feature-icon sales">
+                                <i class="fas fa-file-chart-line" aria-hidden="true"></i>
                             </div>
+                            <div class="feature-badge">Custom</div>
+                        </div>
+                        <div class="feature-content">
+                            <h3 class="feature-title">Sales Reports</h3>
+                            <p id="reports-desc" class="feature-description">
+                                Generate comprehensive sales reports with custom date ranges and detailed breakdowns.
+                            </p>
+                        </div>
+                        <div class="feature-action">
+                            <span>Generate Reports</span>
+                            <i class="fas fa-arrow-right" aria-hidden="true"></i>
                         </div>
                     </div>
 
@@ -221,16 +253,21 @@
                          @keydown.enter="viewMetrics()"
                          @keydown.space.prevent="viewMetrics()"
                          aria-describedby="metrics-desc">
-                        <i class="feature-icon fas fa-tachometer-alt" aria-hidden="true"></i>
-                        <h3 class="feature-title">Performance Metrics</h3>
-                        <p id="metrics-desc" class="feature-description">
-                            Track KPIs, conversion rates, and performance indicators with real-time dashboards.
-                        </p>
-                        <div class="mt-6">
-                            <div class="btn btn-sales">
-                                <i class="fas fa-chart-area" aria-hidden="true"></i>
-                                View Metrics
+                        <div class="feature-header">
+                            <div class="feature-icon sales">
+                                <i class="fas fa-tachometer-alt" aria-hidden="true"></i>
                             </div>
+                            <div class="feature-badge">KPIs</div>
+                        </div>
+                        <div class="feature-content">
+                            <h3 class="feature-title">Performance Metrics</h3>
+                            <p id="metrics-desc" class="feature-description">
+                                Track KPIs, conversion rates, and performance indicators with real-time dashboards.
+                            </p>
+                        </div>
+                        <div class="feature-action">
+                            <span>View Metrics</span>
+                            <i class="fas fa-arrow-right" aria-hidden="true"></i>
                         </div>
                     </div>
                 </div>

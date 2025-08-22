@@ -7,7 +7,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <link href="../shared/theme.css" rel="stylesheet">
+    <link href="../shared/theme.css?v=2.1" rel="stylesheet">
 </head>
 <body>
     <div x-data="catalogApp()">
@@ -65,15 +65,22 @@
 
         <!-- Content -->
         <main class="main-content">
-            <!-- Module Overview -->
+                    <!-- Module Overview -->
             <div class="mb-8">
                 <div class="feature-card catalog">
-                    <i class="feature-icon fas fa-boxes" aria-hidden="true"></i>
-                    <h1 class="feature-title">Catalog Management System</h1>
-                    <p class="feature-description">
-                        Automated product catalog synchronization and management platform. Compare ERP vs PIM data, 
-                        analyze inventory levels, and maintain product information consistency across all systems.
-                    </p>
+                    <div class="feature-header">
+                        <div class="feature-icon catalog">
+                            <i class="fas fa-database" aria-hidden="true"></i>
+                        </div>
+                        <div class="feature-badge">Data Sync</div>
+                    </div>
+                    <div class="feature-content">
+                        <h1 class="feature-title">Catalog Management System</h1>
+                        <p class="feature-description">
+                            Automated product catalog synchronization and management platform. Compare ERP vs PIM data, 
+                            analyze inventory levels, and maintain product information consistency across all systems.
+                        </p>
+                    </div>
                     
                     <div class="feature-stats">
                         <div class="stat-item">
@@ -108,16 +115,21 @@
                          @keydown.enter="syncERP()"
                          @keydown.space.prevent="syncERP()"
                          aria-describedby="erp-sync-desc">
-                        <i class="feature-icon fas fa-sync-alt" aria-hidden="true"></i>
-                        <h3 class="feature-title">ERP Synchronization</h3>
-                        <p id="erp-sync-desc" class="feature-description">
-                            Synchronize product data with ERP system automatically or on-demand with conflict resolution.
-                        </p>
-                        <div class="mt-6">
-                            <div class="btn btn-catalog">
+                        <div class="feature-header">
+                            <div class="feature-icon catalog">
                                 <i class="fas fa-sync-alt" aria-hidden="true"></i>
-                                Start Sync
                             </div>
+                            <div class="feature-badge">Auto</div>
+                        </div>
+                        <div class="feature-content">
+                            <h3 class="feature-title">ERP Synchronization</h3>
+                            <p id="erp-sync-desc" class="feature-description">
+                                Synchronize product data with ERP system automatically or on-demand with conflict resolution.
+                            </p>
+                        </div>
+                        <div class="feature-action">
+                            <span>Start Sync</span>
+                            <i class="fas fa-arrow-right" aria-hidden="true"></i>
                         </div>
                     </div>
 
@@ -129,16 +141,21 @@
                          @keydown.enter="runAnalysis()"
                          @keydown.space.prevent="runAnalysis()"
                          aria-describedby="analysis-desc">
-                        <i class="feature-icon fas fa-search" aria-hidden="true"></i>
-                        <h3 class="feature-title">Product Analysis</h3>
-                        <p id="analysis-desc" class="feature-description">
-                            Identify new and obsolete products through AI-powered analysis and market intelligence.
-                        </p>
-                        <div class="mt-6">
-                            <div class="btn btn-catalog">
-                                <i class="fas fa-chart-line" aria-hidden="true"></i>
-                                Run Analysis
+                        <div class="feature-header">
+                            <div class="feature-icon catalog">
+                                <i class="fas fa-search" aria-hidden="true"></i>
                             </div>
+                            <div class="feature-badge">AI-Powered</div>
+                        </div>
+                        <div class="feature-content">
+                            <h3 class="feature-title">Product Analysis</h3>
+                            <p id="analysis-desc" class="feature-description">
+                                Identify new and obsolete products through AI-powered analysis and market intelligence.
+                            </p>
+                        </div>
+                        <div class="feature-action">
+                            <span>Run Analysis</span>
+                            <i class="fas fa-arrow-right" aria-hidden="true"></i>
                         </div>
                     </div>
 
@@ -150,16 +167,21 @@
                          @keydown.enter="manageCategories()"
                          @keydown.space.prevent="manageCategories()"
                          aria-describedby="category-desc">
-                        <i class="feature-icon fas fa-layer-group" aria-hidden="true"></i>
-                        <h3 class="feature-title">Category Management</h3>
-                        <p id="category-desc" class="feature-description">
-                            Organize products by categories with hierarchical structure and automated classification.
-                        </p>
-                        <div class="mt-6">
-                            <div class="btn btn-catalog">
-                                <i class="fas fa-cogs" aria-hidden="true"></i>
-                                Manage Categories
+                        <div class="feature-header">
+                            <div class="feature-icon catalog">
+                                <i class="fas fa-layer-group" aria-hidden="true"></i>
                             </div>
+                            <div class="feature-badge">Hierarchical</div>
+                        </div>
+                        <div class="feature-content">
+                            <h3 class="feature-title">Category Management</h3>
+                            <p id="category-desc" class="feature-description">
+                                Organize products by categories with hierarchical structure and automated classification.
+                            </p>
+                        </div>
+                        <div class="feature-action">
+                            <span>Manage Categories</span>
+                            <i class="fas fa-arrow-right" aria-hidden="true"></i>
                         </div>
                     </div>
 
@@ -171,16 +193,21 @@
                          @keydown.enter="trackInventory()"
                          @keydown.space.prevent="trackInventory()"
                          aria-describedby="inventory-desc">
-                        <i class="feature-icon fas fa-warehouse" aria-hidden="true"></i>
-                        <h3 class="feature-title">Inventory Tracking</h3>
-                        <p id="inventory-desc" class="feature-description">
-                            Monitor stock levels, set reorder points, and track inventory movements across locations.
-                        </p>
-                        <div class="mt-6">
-                            <div class="btn btn-catalog">
-                                <i class="fas fa-boxes" aria-hidden="true"></i>
-                                View Inventory
+                        <div class="feature-header">
+                            <div class="feature-icon catalog">
+                                <i class="fas fa-warehouse" aria-hidden="true"></i>
                             </div>
+                            <div class="feature-badge">Real-time</div>
+                        </div>
+                        <div class="feature-content">
+                            <h3 class="feature-title">Inventory Tracking</h3>
+                            <p id="inventory-desc" class="feature-description">
+                                Monitor stock levels, set reorder points, and track inventory movements across locations.
+                            </p>
+                        </div>
+                        <div class="feature-action">
+                            <span>View Inventory</span>
+                            <i class="fas fa-arrow-right" aria-hidden="true"></i>
                         </div>
                     </div>
 
@@ -192,16 +219,21 @@
                          @keydown.enter="managePrices()"
                          @keydown.space.prevent="managePrices()"
                          aria-describedby="price-desc">
-                        <i class="feature-icon fas fa-dollar-sign" aria-hidden="true"></i>
-                        <h3 class="feature-title">Price Management</h3>
-                        <p id="price-desc" class="feature-description">
-                            Manage pricing strategies, bulk price updates, and competitive pricing analysis.
-                        </p>
-                        <div class="mt-6">
-                            <div class="btn btn-catalog">
-                                <i class="fas fa-tag" aria-hidden="true"></i>
-                                Manage Pricing
+                        <div class="feature-header">
+                            <div class="feature-icon catalog">
+                                <i class="fas fa-dollar-sign" aria-hidden="true"></i>
                             </div>
+                            <div class="feature-badge">Competitive</div>
+                        </div>
+                        <div class="feature-content">
+                            <h3 class="feature-title">Price Management</h3>
+                            <p id="price-desc" class="feature-description">
+                                Manage pricing strategies, bulk price updates, and competitive pricing analysis.
+                            </p>
+                        </div>
+                        <div class="feature-action">
+                            <span>Manage Pricing</span>
+                            <i class="fas fa-arrow-right" aria-hidden="true"></i>
                         </div>
                     </div>
 
@@ -213,16 +245,21 @@
                          @keydown.enter="checkDataQuality()"
                          @keydown.space.prevent="checkDataQuality()"
                          aria-describedby="quality-desc">
-                        <i class="feature-icon fas fa-check-circle" aria-hidden="true"></i>
-                        <h3 class="feature-title">Data Quality</h3>
-                        <p id="quality-desc" class="feature-description">
-                            Validate product data integrity, detect duplicates, and ensure catalog consistency.
-                        </p>
-                        <div class="mt-6">
-                            <div class="btn btn-catalog">
-                                <i class="fas fa-clipboard-check" aria-hidden="true"></i>
-                                Quality Check
+                        <div class="feature-header">
+                            <div class="feature-icon catalog">
+                                <i class="fas fa-check-circle" aria-hidden="true"></i>
                             </div>
+                            <div class="feature-badge">Validation</div>
+                        </div>
+                        <div class="feature-content">
+                            <h3 class="feature-title">Data Quality</h3>
+                            <p id="quality-desc" class="feature-description">
+                                Validate product data integrity, detect duplicates, and ensure catalog consistency.
+                            </p>
+                        </div>
+                        <div class="feature-action">
+                            <span>Quality Check</span>
+                            <i class="fas fa-arrow-right" aria-hidden="true"></i>
                         </div>
                     </div>
                 </div>

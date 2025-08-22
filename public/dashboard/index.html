@@ -8,7 +8,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <link href="../shared/theme.css" rel="stylesheet">
+    <link href="../shared/theme.css?v=2.1" rel="stylesheet">
 </head>
 <body>
     <!-- Skip Link for Screen Readers -->
@@ -65,18 +65,42 @@
 
         <!-- Main Content -->
         <main id="main-content" class="container" role="main">
-            <!-- Welcome Section -->
-            <div class="mb-8">
-                <h2 class="text-3xl font-bold text-gray-900 mb-4">Welcome to the Integrated Management System</h2>
-                <p class="text-gray-600 text-lg leading-relaxed">Monitor performance, track activities, and access business modules from your central hub.</p>
+            <!-- Enhanced Welcome Section -->
+            <div class="welcome-section mb-8">
+                <div class="welcome-header">
+                    <h2 class="welcome-title">Plaza Lama Integrated Dashboard</h2>
+                    <p class="welcome-subtitle">Your unified command center for comprehensive business management and analytics</p>
+                </div>
                 
-                <!-- System Status Bar -->
-                <div class="mt-6 flex items-center gap-4 flex-wrap">
-                    <div class="status-indicator status-online">
-                        System Online
+                <!-- Enhanced System Status Bar -->
+                <div class="system-status-bar">
+                    <div class="status-indicators">
+                        <div class="status-indicator status-online">
+                            <i class="fas fa-check-circle" aria-hidden="true"></i>
+                            <span>All Systems Operational</span>
+                        </div>
+                        <div class="status-detail">
+                            <i class="fas fa-database text-green-500" aria-hidden="true"></i>
+                            <span>Databases Connected</span>
+                        </div>
+                        <div class="status-detail">
+                            <i class="fas fa-sync text-blue-500" aria-hidden="true"></i>
+                            <span>Last sync: <span x-text="lastUpdated"></span></span>
+                        </div>
                     </div>
-                    <div class="text-sm text-gray-600">
-                        All services operational • Last sync: <span x-text="lastUpdated"></span>
+                    <div class="system-metrics">
+                        <div class="metric">
+                            <span class="metric-value" x-text="(stats.quotes || 0)">0</span>
+                            <span class="metric-label">Active Quotes</span>
+                        </div>
+                        <div class="metric">
+                            <span class="metric-value" x-text="(stats.userActions || 0)">0</span>
+                            <span class="metric-label">User Actions</span>
+                        </div>
+                        <div class="metric">
+                            <span class="metric-value" x-text="(stats.products || 0).toLocaleString()">0</span>
+                            <span class="metric-label">Products</span>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -303,13 +327,16 @@
                 </div>
             </div>
 
-            <!-- Module Navigation -->
-            <section aria-labelledby="modules-heading">
-                <h2 id="modules-heading" class="text-2xl font-bold text-gray-900 mb-6">Business Modules</h2>
-                <div class="grid grid-2 md:grid-3 lg:grid-4 xl:grid-5 gap-6 mb-12">
-                    <!-- Quotes Module -->
+            <!-- Enhanced Module Navigation -->
+            <section aria-labelledby="modules-heading" class="module-section">
+                <div class="section-header">
+                    <h2 id="modules-heading" class="section-title">Business Modules</h2>
+                    <p class="section-subtitle">Access integrated tools for comprehensive business management</p>
+                </div>
+                <div class="content-grid grid-4 gap-6 mb-12">
+                    <!-- Enhanced Quotes Module -->
                     <a href="/quotes/" 
-                       class="module-card quotes"
+                       class="feature-card quotes"
                        x-show="canAccessModule('quotes')"
                        role="button"
                        tabindex="0"
@@ -317,20 +344,37 @@
                        @click.prevent="navigateToModule('quotes')"
                        @keydown.enter.prevent="navigateToModule('quotes')"
                        @keydown.space.prevent="navigateToModule('quotes')">
-                        <i class="module-icon fas fa-file-invoice-dollar" aria-hidden="true"></i>
-                        <h3 class="module-title">Quote Management</h3>
-                        <p id="quotes-description" class="module-description">
-                            Create, manage, and track customer quotes and invoices. Generate PDFs and manage client relationships.
-                        </p>
-                        <div class="mt-4 p-3 bg-gray-100 rounded-lg">
-                            <div class="text-sm text-gray-600">Active Quotes</div>
-                            <div class="text-xl font-bold text-gray-900" x-text="stats.quotes" aria-live="polite"></div>
+                        <div class="feature-header">
+                            <div class="feature-icon quotes">
+                                <i class="fas fa-file-invoice-dollar" aria-hidden="true"></i>
+                            </div>
+                            <div class="feature-badge">Professional</div>
+                        </div>
+                        <div class="feature-content">
+                            <h3 class="feature-title">Quote Management</h3>
+                            <p id="quotes-description" class="feature-description">
+                                Professional quote and invoice management with PDF generation and client relationship tools
+                            </p>
+                        </div>
+                        <div class="feature-stats">
+                            <div class="stat-item">
+                                <span class="stat-value" x-text="stats.quotes || '0'">0</span>
+                                <span class="stat-label">Active Quotes</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-value">PDFs</span>
+                                <span class="stat-label">Generated</span>
+                            </div>
+                        </div>
+                        <div class="feature-action">
+                            <span>Manage Quotes</span>
+                            <i class="fas fa-arrow-right" aria-hidden="true"></i>
                         </div>
                     </a>
 
-                    <!-- User Logs Module -->
+                    <!-- Enhanced Logs Module -->
                     <a href="/logs/" 
-                       class="module-card logs"
+                       class="feature-card logs"
                        x-show="canAccessModule('logs')"
                        role="button"
                        tabindex="0"
@@ -338,20 +382,37 @@
                        @click.prevent="navigateToModule('logs')"
                        @keydown.enter.prevent="navigateToModule('logs')"
                        @keydown.space.prevent="navigateToModule('logs')">
-                        <i class="module-icon fas fa-user-edit" aria-hidden="true"></i>
-                        <h3 class="module-title">User Activity Logs</h3>
-                        <p id="logs-description" class="module-description">
-                            Monitor and audit user actions and system changes. Track security events and user behavior.
-                        </p>
-                        <div class="mt-4 p-3 bg-gray-100 rounded-lg">
-                            <div class="text-sm text-gray-600">Recent Actions</div>
-                            <div class="text-xl font-bold text-gray-900" x-text="stats.userActions" aria-live="polite"></div>
+                        <div class="feature-header">
+                            <div class="feature-icon logs">
+                                <i class="fas fa-shield-alt" aria-hidden="true"></i>
+                            </div>
+                            <div class="feature-badge">Security</div>
+                        </div>
+                        <div class="feature-content">
+                            <h3 class="feature-title">Activity Monitoring</h3>
+                            <p id="logs-description" class="feature-description">
+                                Real-time user activity tracking and security audit with comprehensive behavior analysis
+                            </p>
+                        </div>
+                        <div class="feature-stats">
+                            <div class="stat-item">
+                                <span class="stat-value" x-text="stats.userActions || '0'">0</span>
+                                <span class="stat-label">User Actions</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-value">Live</span>
+                                <span class="stat-label">Monitoring</span>
+                            </div>
+                        </div>
+                        <div class="feature-action">
+                            <span>View Logs</span>
+                            <i class="fas fa-arrow-right" aria-hidden="true"></i>
                         </div>
                     </a>
 
-                    <!-- Catalog Module -->
+                    <!-- Enhanced Catalog Module -->
                     <a href="/catalog/" 
-                       class="module-card catalog"
+                       class="feature-card catalog"
                        x-show="canAccessModule('catalog')"
                        role="button"
                        tabindex="0"
@@ -359,20 +420,37 @@
                        @click.prevent="navigateToModule('catalog')"
                        @keydown.enter.prevent="navigateToModule('catalog')"
                        @keydown.space.prevent="navigateToModule('catalog')">
-                        <i class="module-icon fas fa-boxes" aria-hidden="true"></i>
-                        <h3 class="module-title">Catalog Management</h3>
-                        <p id="catalog-description" class="module-description">
-                            Automated product catalog sync and management. Compare ERP vs PIM data and analyze inventory.
-                        </p>
-                        <div class="mt-4 p-3 bg-gray-100 rounded-lg">
-                            <div class="text-sm text-gray-600">Total Products</div>
-                            <div class="text-xl font-bold text-gray-900" x-text="stats.products.toLocaleString()" aria-live="polite"></div>
+                        <div class="feature-header">
+                            <div class="feature-icon catalog">
+                                <i class="fas fa-database" aria-hidden="true"></i>
+                            </div>
+                            <div class="feature-badge">Data Sync</div>
+                        </div>
+                        <div class="feature-content">
+                            <h3 class="feature-title">Catalog Management</h3>
+                            <p id="catalog-description" class="feature-description">
+                                Automated ERP-PIM synchronization with intelligent product analysis and inventory optimization
+                            </p>
+                        </div>
+                        <div class="feature-stats">
+                            <div class="stat-item">
+                                <span class="stat-value" x-text="(stats.products || 0).toLocaleString()">0</span>
+                                <span class="stat-label">Products</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-value">Auto</span>
+                                <span class="stat-label">Sync</span>
+                            </div>
+                        </div>
+                        <div class="feature-action">
+                            <span>Manage Catalog</span>
+                            <i class="fas fa-arrow-right" aria-hidden="true"></i>
                         </div>
                     </a>
 
-                    <!-- Sales Analytics Module -->
+                    <!-- Enhanced Sales Module -->
                     <a href="/sales/" 
-                       class="module-card sales"
+                       class="feature-card sales"
                        x-show="canAccessModule('sales')"
                        role="button"
                        tabindex="0"
@@ -380,14 +458,31 @@
                        @click.prevent="navigateToModule('sales')"
                        @keydown.enter.prevent="navigateToModule('sales')"
                        @keydown.space.prevent="navigateToModule('sales')">
-                        <i class="module-icon fas fa-chart-line" aria-hidden="true"></i>
-                        <h3 class="module-title">Sales Analytics</h3>
-                        <p id="sales-description" class="module-description">
-                            Real-time sales metrics and performance analysis. Track revenue, orders, and customer insights.
-                        </p>
-                        <div class="mt-4 p-3 bg-gray-100 rounded-lg">
-                            <div class="text-sm text-gray-600">Monthly Revenue</div>
-                            <div class="text-xl font-bold text-gray-900" x-text="formatCurrency(stats.salesRevenue)" aria-live="polite"></div>
+                        <div class="feature-header">
+                            <div class="feature-icon sales">
+                                <i class="fas fa-chart-line" aria-hidden="true"></i>
+                            </div>
+                            <div class="feature-badge">Analytics</div>
+                        </div>
+                        <div class="feature-content">
+                            <h3 class="feature-title">Sales Analytics</h3>
+                            <p id="sales-description" class="feature-description">
+                                Advanced sales performance tracking with real-time revenue insights and customer analytics
+                            </p>
+                        </div>
+                        <div class="feature-stats">
+                            <div class="stat-item">
+                                <span class="stat-value" x-text="formatCurrency(stats.salesRevenue || 0)">$0</span>
+                                <span class="stat-label">Revenue</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-value">Live</span>
+                                <span class="stat-label">Tracking</span>
+                            </div>
+                        </div>
+                        <div class="feature-action">
+                            <span>View Analytics</span>
+                            <i class="fas fa-arrow-right" aria-hidden="true"></i>
                         </div>
                     </a>
 
