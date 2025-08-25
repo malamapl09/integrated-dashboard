@@ -8,7 +8,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <link href="../shared/theme.css?v=2.1" rel="stylesheet">
+    <link href="../shared/theme.css?v=2.3" rel="stylesheet">
 </head>
 <body>
     <!-- Skip Link for Screen Readers -->
@@ -51,12 +51,19 @@
             <!-- Module Overview -->
             <div class="mb-8">
                 <div class="feature-card logs">
-                    <i class="feature-icon fas fa-user-edit" aria-hidden="true"></i>
-                    <h1 class="feature-title">User Activity Monitoring System</h1>
-                    <p class="feature-description">
-                        Comprehensive audit trail and user behavior analysis platform. Monitor system changes, 
-                        track user actions, and maintain security compliance with detailed logging capabilities.
-                    </p>
+                    <div class="feature-header">
+                        <div class="feature-icon logs">
+                            <i class="fas fa-user-edit" aria-hidden="true"></i>
+                        </div>
+                        <div class="feature-badge">Security</div>
+                    </div>
+                    <div class="feature-content">
+                        <h1 class="feature-title">User Activity Monitoring System</h1>
+                        <p class="feature-description">
+                            Comprehensive audit trail and user behavior analysis platform. Monitor system changes, 
+                            track user actions, and maintain security compliance with detailed logging capabilities.
+                        </p>
+                    </div>
                     
                     <div class="feature-stats">
                         <div class="stat-item">
@@ -87,17 +94,17 @@
                          @keydown.enter="viewActivityLogs()"
                          @keydown.space.prevent="viewActivityLogs()"
                          aria-describedby="activity-logs-desc">
-                        <i class="feature-icon fas fa-list-ul" aria-hidden="true"></i>
+                        <div class="feature-icon logs">
+                            <i class="fas fa-list-ul" aria-hidden="true"></i>
+                        </div>
                         <h3 class="feature-title">Activity Logs</h3>
                         <p id="activity-logs-desc" class="feature-description">
                             View detailed user action history with timestamps, IP addresses, and contextual information.
                         </p>
-                        <div class="mt-6">
-                            <div class="btn btn-logs">
-                                <i class="fas fa-eye" aria-hidden="true"></i>
-                                View Logs
-                            </div>
-                        </div>
+                        <button class="btn btn-logs">
+                            <i class="fas fa-eye" aria-hidden="true"></i>
+                            View Logs
+                        </button>
                     </div>
 
                     <!-- User Analytics Feature -->
@@ -108,17 +115,17 @@
                          @keydown.enter="viewAnalytics()"
                          @keydown.space.prevent="viewAnalytics()"
                          aria-describedby="analytics-desc">
-                        <i class="feature-icon fas fa-chart-pie" aria-hidden="true"></i>
+                        <div class="feature-icon logs">
+                            <i class="fas fa-chart-pie" aria-hidden="true"></i>
+                        </div>
                         <h3 class="feature-title">User Analytics</h3>
                         <p id="analytics-desc" class="feature-description">
                             Analyze user behavior patterns, session durations, and feature usage statistics.
                         </p>
-                        <div class="mt-6">
-                            <div class="btn btn-logs">
-                                <i class="fas fa-analytics" aria-hidden="true"></i>
-                                View Analytics
-                            </div>
-                        </div>
+                        <button class="btn btn-logs">
+                            <i class="fas fa-analytics" aria-hidden="true"></i>
+                            View Analytics
+                        </button>
                     </div>
 
                     <!-- Security Audit Feature -->
@@ -129,17 +136,17 @@
                          @keydown.enter="securityAudit()"
                          @keydown.space.prevent="securityAudit()"
                          aria-describedby="security-desc">
-                        <i class="feature-icon fas fa-shield-alt" aria-hidden="true"></i>
+                        <div class="feature-icon logs">
+                            <i class="fas fa-shield-alt" aria-hidden="true"></i>
+                        </div>
                         <h3 class="feature-title">Security Audit</h3>
                         <p id="security-desc" class="feature-description">
                             Monitor failed login attempts, permission changes, and suspicious activity patterns.
                         </p>
-                        <div class="mt-6">
-                            <div class="btn btn-logs">
-                                <i class="fas fa-shield-alt" aria-hidden="true"></i>
-                                Security Center
-                            </div>
-                        </div>
+                        <button class="btn btn-logs">
+                            <i class="fas fa-shield-alt" aria-hidden="true"></i>
+                            Security Center
+                        </button>
                     </div>
 
                     <!-- Real-time Monitoring Feature -->
@@ -150,17 +157,17 @@
                          @keydown.enter="realtimeMonitoring()"
                          @keydown.space.prevent="realtimeMonitoring()"
                          aria-describedby="realtime-desc">
-                        <i class="feature-icon fas fa-broadcast-tower" aria-hidden="true"></i>
+                        <div class="feature-icon logs">
+                            <i class="fas fa-broadcast-tower" aria-hidden="true"></i>
+                        </div>
                         <h3 class="feature-title">Real-time Monitoring</h3>
                         <p id="realtime-desc" class="feature-description">
                             Live activity feed with instant notifications for critical events and system changes.
                         </p>
-                        <div class="mt-6">
-                            <div class="btn btn-logs">
-                                <i class="fas fa-satellite-dish" aria-hidden="true"></i>
-                                Live Monitor
-                            </div>
-                        </div>
+                        <button class="btn btn-logs">
+                            <i class="fas fa-satellite-dish" aria-hidden="true"></i>
+                            Live Monitor
+                        </button>
                     </div>
 
                     <!-- Data Export Feature -->
@@ -171,17 +178,17 @@
                          @keydown.enter="exportLogs()"
                          @keydown.space.prevent="exportLogs()"
                          aria-describedby="export-desc">
-                        <i class="feature-icon fas fa-download" aria-hidden="true"></i>
+                        <div class="feature-icon logs">
+                            <i class="fas fa-download" aria-hidden="true"></i>
+                        </div>
                         <h3 class="feature-title">Data Export</h3>
                         <p id="export-desc" class="feature-description">
                             Export activity logs in various formats for compliance reporting and external analysis.
                         </p>
-                        <div class="mt-6">
-                            <div class="btn btn-logs">
-                                <i class="fas fa-file-export" aria-hidden="true"></i>
-                                Export Data
-                            </div>
-                        </div>
+                        <button class="btn btn-logs">
+                            <i class="fas fa-file-export" aria-hidden="true"></i>
+                            Export Data
+                        </button>
                     </div>
 
                     <!-- Compliance Reports Feature -->
@@ -192,17 +199,17 @@
                          @keydown.enter="complianceReports()"
                          @keydown.space.prevent="complianceReports()"
                          aria-describedby="compliance-desc">
-                        <i class="feature-icon fas fa-file-contract" aria-hidden="true"></i>
+                        <div class="feature-icon logs">
+                            <i class="fas fa-file-contract" aria-hidden="true"></i>
+                        </div>
                         <h3 class="feature-title">Compliance Reports</h3>
                         <p id="compliance-desc" class="feature-description">
                             Generate automated compliance reports for regulatory requirements and audit purposes.
                         </p>
-                        <div class="mt-6">
-                            <div class="btn btn-logs">
-                                <i class="fas fa-file-alt" aria-hidden="true"></i>
-                                Generate Reports
-                            </div>
-                        </div>
+                        <button class="btn btn-logs">
+                            <i class="fas fa-file-alt" aria-hidden="true"></i>
+                            Generate Reports
+                        </button>
                     </div>
                 </div>
             </section>
@@ -400,49 +407,49 @@
                 },
                 
                 navigateToFullModule() {
-                    window.location.href = '/logs-content/';
+                    window.location.href = '/logs/';
                 },
                 
                 viewActivityLogs() {
                     this.announcement = 'Opening activity logs viewer';
-                    window.location.href = '/logs-content/?view=logs';
+                    window.location.href = '/logs/?view=logs';
                 },
                 
                 viewAnalytics() {
                     this.announcement = 'Opening user analytics';
-                    window.location.href = '/logs-content/?view=analytics';
+                    window.location.href = '/logs/?view=analytics';
                 },
                 
                 securityAudit() {
                     this.announcement = 'Opening security audit center';
-                    window.location.href = '/logs-content/?view=security';
+                    window.location.href = '/logs/?view=security';
                 },
                 
                 realtimeMonitoring() {
                     this.announcement = 'Opening real-time monitoring';
-                    window.location.href = '/logs-content/?view=realtime';
+                    window.location.href = '/logs/?view=realtime';
                 },
                 
                 exportLogs() {
                     this.announcement = 'Opening data export tools';
-                    window.location.href = '/logs-content/?view=export';
+                    window.location.href = '/logs/?view=export';
                 },
                 
                 complianceReports() {
                     this.announcement = 'Opening compliance report generator';
-                    window.location.href = '/logs-content/?view=compliance';
+                    window.location.href = '/logs/?view=compliance';
                 },
                 
                 viewAllLogs() {
-                    window.location.href = '/logs-content/';
+                    window.location.href = '/logs/';
                 },
                 
                 searchLogs() {
-                    window.location.href = '/logs-content/?action=search';
+                    window.location.href = '/logs/?action=search';
                 },
                 
                 filterByUser() {
-                    window.location.href = '/logs-content/?filter=user';
+                    window.location.href = '/logs/?filter=user';
                 },
                 
                 exportTodayLogs() {
@@ -452,12 +459,12 @@
                 },
                 
                 viewAlerts() {
-                    window.location.href = '/logs-content/?view=alerts';
+                    window.location.href = '/logs/?view=alerts';
                 },
                 
                 generateReport() {
                     this.announcement = 'Generating compliance report';
-                    window.location.href = '/logs-content/?action=report';
+                    window.location.href = '/logs/?action=report';
                 }
             };
         }

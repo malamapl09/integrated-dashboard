@@ -775,10 +775,10 @@
                     let url;
                     switch (module) {
                         case 'quotes':
-                            window.location.href = '/quotes-content/';
+                            window.location.href = '/quotes/';
                             break;
                         case 'logs':
-                            window.location.href = '/logs-content/';
+                            window.location.href = '/logs/';
                             break;
                         case 'catalog':
                             window.location.href = '/catalog/';
@@ -795,10 +795,10 @@
                 quickAction(action) {
                     switch (action) {
                         case 'new-quote':
-                            window.location.href = '/quotes-content/?action=new';
+                            window.location.href = '/quotes/?action=new';
                             break;
                         case 'recent-logs':
-                            window.location.href = '/logs-content/?filter=recent';
+                            window.location.href = '/logs/?filter=recent';
                             break;
                         case 'catalog-sync':
                             window.location.href = '/catalog/?action=sync';

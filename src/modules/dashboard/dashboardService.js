@@ -468,7 +468,7 @@ class DashboardService {
             {
               label: 'Review Expiring Quotes',
               action: 'navigate',
-              target: '/quotes-content/?filter=expiring'
+              target: '/quotes/?filter=expiring'
             },
             {
               label: 'Send Bulk Reminders',
@@ -505,7 +505,7 @@ class DashboardService {
             {
               label: 'Review Overdue',
               action: 'navigate',
-              target: '/quotes-content/?filter=overdue'
+              target: '/quotes/?filter=overdue'
             },
             {
               label: 'Bulk Archive',
@@ -538,7 +538,7 @@ class DashboardService {
             {
               label: 'Review High-Value',
               action: 'navigate',
-              target: '/quotes-content/?filter=high-value'
+              target: '/quotes/?filter=high-value'
             }
           ],
           priority: 2,

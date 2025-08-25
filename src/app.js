@@ -59,9 +59,16 @@ app.use('/sales', express.static(path.join(__dirname, '../public/sales')));
 app.use('/user-management', express.static(path.join(__dirname, '../public/user-management')));
 app.use('/monitoring', express.static(path.join(__dirname, '../public/monitoring')));
 
-// Legacy static content
-app.use('/quotes-content', express.static(path.join(__dirname, '../public/quotes-content')));
-app.use('/logs-content', express.static(path.join(__dirname, '../public/logs-content')));
+// Legacy routes → permanent redirects to new modules
+app.use('/quotes-content', (req, res) => {
+  const target = '/quotes' + (req.url || '/');
+  res.redirect(301, target);
+});
+
+app.use('/logs-content', (req, res) => {
+  const target = '/logs' + (req.url || '/');
+  res.redirect(301, target);
+});
 
 // API routes
 app.use('/api', apiRoutes);
@@ -419,7 +426,9 @@ process.on('unhandledRejection', (reason, promise) => {
   process.exit(1);
 });
 
-// Start the server
-startServer();
+// Start the server only when run directly, not when imported (enables testing)
+if (require.main === module) {
+  startServer();
+}
 
 module.exports = app;

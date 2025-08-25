@@ -8,7 +8,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <link href="../shared/theme.css?v=2.1" rel="stylesheet">
+    <link href="../shared/theme.css?v=2.3" rel="stylesheet">
 </head>
 <body>
     <!-- Skip Link for Screen Readers -->
@@ -48,12 +48,19 @@
             <!-- Module Overview -->
             <div class="mb-8">
                 <div class="feature-card quotes">
-                    <i class="feature-icon fas fa-file-invoice-dollar" aria-hidden="true"></i>
-                    <h1 class="feature-title">Quote Management System</h1>
-                    <p class="feature-description">
-                        Comprehensive solution for creating, managing, and tracking customer quotes and invoices. 
-                        Generate professional PDFs, manage client relationships, and streamline your sales process.
-                    </p>
+                    <div class="feature-header">
+                        <div class="feature-icon quotes">
+                            <i class="fas fa-file-invoice-dollar" aria-hidden="true"></i>
+                        </div>
+                        <div class="feature-badge">Professional</div>
+                    </div>
+                    <div class="feature-content">
+                        <h1 class="feature-title">Quote Management System</h1>
+                        <p class="feature-description">
+                            Comprehensive solution for creating, managing, and tracking customer quotes and invoices. 
+                            Generate professional PDFs, manage client relationships, and streamline your sales process.
+                        </p>
+                    </div>
                     
                     <div class="feature-stats">
                         <div class="stat-item">
@@ -84,17 +91,17 @@
                          @keydown.enter="createNewQuote()"
                          @keydown.space.prevent="createNewQuote()"
                          aria-describedby="create-quote-desc">
-                        <i class="feature-icon fas fa-plus-circle" aria-hidden="true"></i>
+                        <div class="feature-icon quotes">
+                            <i class="fas fa-plus-circle" aria-hidden="true"></i>
+                        </div>
                         <h3 class="feature-title">Create Quote</h3>
                         <p id="create-quote-desc" class="feature-description">
                             Generate new customer quotes with itemized pricing, terms, and professional formatting.
                         </p>
-                        <div class="mt-6">
-                            <div class="btn btn-quotes">
-                                <i class="fas fa-plus" aria-hidden="true"></i>
-                                Start New Quote
-                            </div>
-                        </div>
+                        <button class="btn btn-quotes">
+                            <i class="fas fa-plus" aria-hidden="true"></i>
+                            Start New Quote
+                        </button>
                     </div>
 
                     <!-- Client Management Feature -->
@@ -105,17 +112,17 @@
                          @keydown.enter="manageClients()"
                          @keydown.space.prevent="manageClients()"
                          aria-describedby="client-mgmt-desc">
-                        <i class="feature-icon fas fa-users" aria-hidden="true"></i>
-                        <h3 class="feature-title">Manage Clients</h3>
+                        <div class="feature-icon quotes">
+                            <i class="fas fa-users" aria-hidden="true"></i>
+                        </div>
+                        <h3 class="feature-title">Client Management</h3>
                         <p id="client-mgmt-desc" class="feature-description">
                             Comprehensive customer information management with contact details, history, and preferences.
                         </p>
-                        <div class="mt-6">
-                            <div class="btn btn-quotes">
-                                <i class="fas fa-address-book" aria-hidden="true"></i>
-                                View Clients
-                            </div>
-                        </div>
+                        <button class="btn btn-quotes">
+                            <i class="fas fa-address-book" aria-hidden="true"></i>
+                            View Clients
+                        </button>
                     </div>
 
                     <!-- PDF Generation Feature -->
@@ -126,17 +133,17 @@
                          @keydown.enter="generateReports()"
                          @keydown.space.prevent="generateReports()"
                          aria-describedby="pdf-gen-desc">
-                        <i class="feature-icon fas fa-file-pdf" aria-hidden="true"></i>
+                        <div class="feature-icon quotes">
+                            <i class="fas fa-file-pdf" aria-hidden="true"></i>
+                        </div>
                         <h3 class="feature-title">PDF Generation</h3>
                         <p id="pdf-gen-desc" class="feature-description">
                             Professional quote documents with company branding, terms, and digital signature capabilities.
                         </p>
-                        <div class="mt-6">
-                            <div class="btn btn-quotes">
-                                <i class="fas fa-download" aria-hidden="true"></i>
-                                Generate PDF
-                            </div>
-                        </div>
+                        <button class="btn btn-quotes">
+                            <i class="fas fa-download" aria-hidden="true"></i>
+                            Generate PDF
+                        </button>
                     </div>
 
                     <!-- Quote Tracking Feature -->
@@ -147,17 +154,17 @@
                          @keydown.enter="trackQuotes()"
                          @keydown.space.prevent="trackQuotes()"
                          aria-describedby="tracking-desc">
-                        <i class="feature-icon fas fa-chart-line" aria-hidden="true"></i>
+                        <div class="feature-icon quotes">
+                            <i class="fas fa-chart-line" aria-hidden="true"></i>
+                        </div>
                         <h3 class="feature-title">Quote Tracking</h3>
                         <p id="tracking-desc" class="feature-description">
                             Monitor quote status, follow-up dates, conversion rates, and sales pipeline analytics.
                         </p>
-                        <div class="mt-6">
-                            <div class="btn btn-quotes">
-                                <i class="fas fa-analytics" aria-hidden="true"></i>
-                                View Analytics
-                            </div>
-                        </div>
+                        <button class="btn btn-quotes">
+                            <i class="fas fa-analytics" aria-hidden="true"></i>
+                            View Analytics
+                        </button>
                     </div>
 
                     <!-- Invoice Management Feature -->
@@ -168,17 +175,17 @@
                          @keydown.enter="manageInvoices()"
                          @keydown.space.prevent="manageInvoices()"
                          aria-describedby="invoice-mgmt-desc">
-                        <i class="feature-icon fas fa-receipt" aria-hidden="true"></i>
+                        <div class="feature-icon quotes">
+                            <i class="fas fa-receipt" aria-hidden="true"></i>
+                        </div>
                         <h3 class="feature-title">Invoice Management</h3>
                         <p id="invoice-mgmt-desc" class="feature-description">
                             Convert quotes to invoices, track payments, and manage billing cycles efficiently.
                         </p>
-                        <div class="mt-6">
-                            <div class="btn btn-quotes">
-                                <i class="fas fa-file-invoice" aria-hidden="true"></i>
-                                View Invoices
-                            </div>
-                        </div>
+                        <button class="btn btn-quotes">
+                            <i class="fas fa-file-invoice" aria-hidden="true"></i>
+                            View Invoices
+                        </button>
                     </div>
 
                     <!-- Email Integration Feature -->
@@ -189,17 +196,17 @@
                          @keydown.enter="emailIntegration()"
                          @keydown.space.prevent="emailIntegration()"
                          aria-describedby="email-desc">
-                        <i class="feature-icon fas fa-envelope" aria-hidden="true"></i>
+                        <div class="feature-icon quotes">
+                            <i class="fas fa-envelope" aria-hidden="true"></i>
+                        </div>
                         <h3 class="feature-title">Email Integration</h3>
                         <p id="email-desc" class="feature-description">
                             Send quotes directly via email with tracking, templates, and automated follow-up reminders.
                         </p>
-                        <div class="mt-6">
-                            <div class="btn btn-quotes">
-                                <i class="fas fa-paper-plane" aria-hidden="true"></i>
-                                Email Center
-                            </div>
-                        </div>
+                        <button class="btn btn-quotes">
+                            <i class="fas fa-paper-plane" aria-hidden="true"></i>
+                            Email Center
+                        </button>
                     </div>
                 </div>
             </section>
@@ -295,45 +302,45 @@
                 },
                 
                 navigateToFullModule() {
-                    window.location.href = '/quotes-content/';
+                    window.location.href = '/quotes/';
                 },
                 
                 createNewQuote() {
                     this.announcement = 'Navigating to create new quote';
-                    window.location.href = '/quotes-content/?action=new';
+                    window.location.href = '/quotes/?action=new';
                 },
                 
                 manageClients() {
                     this.announcement = 'Opening client management';
-                    window.location.href = '/quotes-content/?view=clients';
+                    window.location.href = '/quotes/?view=clients';
                 },
                 
                 generateReports() {
                     this.announcement = 'Opening PDF generation tools';
-                    window.location.href = '/quotes-content/?view=reports';
+                    window.location.href = '/quotes/?view=reports';
                 },
                 
                 trackQuotes() {
                     this.announcement = 'Opening quote analytics';
-                    window.location.href = '/quotes-content/?view=analytics';
+                    window.location.href = '/quotes/?view=analytics';
                 },
                 
                 manageInvoices() {
                     this.announcement = 'Opening invoice management';
-                    window.location.href = '/quotes-content/?view=invoices';
+                    window.location.href = '/quotes/?view=invoices';
                 },
                 
                 emailIntegration() {
                     this.announcement = 'Opening email center';
-                    window.location.href = '/quotes-content/?view=email';
+                    window.location.href = '/quotes/?view=email';
                 },
                 
                 viewRecentQuotes() {
-                    window.location.href = '/quotes-content/?filter=recent';
+                    window.location.href = '/quotes/?filter=recent';
                 },
                 
                 searchQuotes() {
-                    window.location.href = '/quotes-content/?action=search';
+                    window.location.href = '/quotes/?action=search';
                 },
                 
                 exportData() {
@@ -343,7 +350,7 @@
                 },
                 
                 viewReports() {
-                    window.location.href = '/quotes-content/?view=reports';
+                    window.location.href = '/quotes/?view=reports';
                 }
             };
         }
